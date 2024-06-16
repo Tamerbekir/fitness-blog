@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const profileSchema = new Schema({
   //profile name email and password
-  name: {
+  username: {
     type: String,
     required: true,
     unique: true
@@ -41,8 +41,12 @@ const profileSchema = new Schema({
   removeReactions: [{
       type: Schema.Types.ObjectId,
       ref: 'Post'
-    }]
-});
+    }],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+}, { timestamps: true });
 
 profileSchema.pre('save', async function(next) {
   if (this.isNew || this.isModified('password')) {

@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+
 const commentSchema = new Schema({
   // content for the comment
   content: {

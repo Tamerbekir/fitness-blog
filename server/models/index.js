@@ -1,6 +1,6 @@
-const Profile = require('./Profile');
+const Profile = require('./Profile')
 const Comment = require('./Comment');
-const Post = require('./Post');
+const Post = require('./Post')
 const Topic = require('./Topic')
 
 // Exporting out the models
