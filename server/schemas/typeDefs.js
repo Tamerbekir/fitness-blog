@@ -5,7 +5,7 @@ const typeDefs = `#graphql
     profiles: [Profile!]
     profile(_id: ID!): Profile
     posts: [Post!]
-    post: (_id: ID!): Post
+    post(_id: ID!): Post
     topics: [Topic!]
     comments: [Comment!]
   }
@@ -20,7 +20,7 @@ const typeDefs = `#graphql
     reactions: [Post!]
     removeReactions: [Post!]
     favorites: [Post!]
-    removeFavorite: [Post!]
+    removeFavorites: [Post!]
     createdAt: String!
   }
   # all things associated with a post
@@ -47,8 +47,7 @@ const typeDefs = `#graphql
     likes: [Profile!]
     dislikes: [Profile!]
     createdAt: String!
-    replies: [Comment!]
-  },
+  }
   
   # all things associated with a topic
   type Topic {
@@ -65,50 +64,50 @@ const typeDefs = `#graphql
   # mutations- things that are needed to preform the actions 
   #!! Because I am using context.user for Auth I will not need to define ProfileID
   type Mutation {
-    addProfile: (
-      username: String!, 
-      email: String!, 
-      password: String!
+    addProfile(
+      username: String!,
+      email: String!,
+      password: String!,
       ): Auth
 
-    updateProfile: (
-      username: String!, 
+    updateProfile(
+      username: String!,
       email: String!, 
       password: String!
     ): Auth
 
-    removeProfile: (
+    removeProfile(
       _id: ID!
       ): Profile
 
-    login: (
+    login(
       email: String!, 
       password: String!
       ): Auth
 
     # adding and updating a post by profile and post id and removing a comment by its ID using the Comment model
-    addPost: (
+    addPost(
       profileId: ID!, 
       title: String!, 
       content: String!, 
       topic: String!
       ): Post
 
-    updatePost: (
+    updatePost(
       title: String!, 
       content: String!, 
       topic: String!
     ): Post
 
-    removePost:(
+    removePost(
       _id: ID!
     ): Post
 
-    reactionPost: (
+    reactionPost(
       postId: ID!
     ): Post
 
-    removeReactionPost: (
+    removeReactionPost(
       postId: ID!
     ): Post
 
@@ -152,13 +151,14 @@ const typeDefs = `#graphql
     ): Comment
 
   # adding favorite and unfavorite post by post ID
-    addFavoritePost: (
+    addFavoritePost(
       postId: ID!
     ): Post
 
-    removeFavoritePost: (
+    removeFavoritePost(
       postId: ID!
     ): Post
-
   }
   `
+
+  module.exports = typeDefs
