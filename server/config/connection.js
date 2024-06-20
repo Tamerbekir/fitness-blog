@@ -1,16 +1,12 @@
-/* eslint-disable no-undef */
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/instructify';
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/fitness-blog';
 
 console.log(`Connecting to MongoDB with URI: ${mongoURI}`);
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(mongoURI);
 
 const db = mongoose.connection;
 

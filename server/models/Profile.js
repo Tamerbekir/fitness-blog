@@ -24,6 +24,10 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Post'
   }],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
+  }],
   // adding favorites and removing favs from profile
   favorites: [{ 
       type: Schema.Types.ObjectId,

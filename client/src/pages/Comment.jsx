@@ -11,14 +11,15 @@ const Comment = () => {
 
   return (
     <div>
-      <h2>Comments for seeds!</h2>
-      {data.comments.map(comment => 
-        <div key={data.comment._id}>
-          <P>{comment.content}</P>
+      <h2>Comments for seeds!</h2> 
+      <h3>Comments</h3>
+      {data.comments.map(comment => (
+        <div key={comment._id}>
+          <p>{comment.content}</p>
         </div>
-      )}
+      ))}
     </div>
   )
-}
+} 
 
 export default Comment

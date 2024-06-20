@@ -7,7 +7,9 @@ const typeDefs = `#graphql
     posts: [Post!]
     post(_id: ID!): Post
     topics: [Topic!]
+    topic(_id: ID!): Topic
     comments: [Comment!]
+    comment(_id: ID!): Comment
   }
   # all things associated with a profile
   type Profile {
@@ -28,7 +30,7 @@ const typeDefs = `#graphql
     _id: ID!
     title: String!
     content: String!
-    profile: [Profile!]
+    profile: Profile!  
     topic: [Topic!]
     comments: [Comment!]
     reactions: [Profile!]
@@ -42,7 +44,7 @@ const typeDefs = `#graphql
     _id: ID!
     content: String!
     replies: [Comment!]
-    profile: [Profile!]
+    profile: Profile!  
     posts: [Post!]
     likes: [Profile!]
     dislikes: [Profile!]
@@ -61,13 +63,13 @@ const typeDefs = `#graphql
     profile: Profile
   }
 
-  # mutations- things that are needed to preform the actions 
+  # mutations- things that are needed to perform the actions 
   #!! Because I am using context.user for Auth I will not need to define ProfileID
   type Mutation {
     addProfile(
       username: String!,
       email: String!,
-      password: String!,
+      password: String!
       ): Auth
 
     updateProfile(
@@ -159,6 +161,6 @@ const typeDefs = `#graphql
       postId: ID!
     ): Post
   }
-  `
+`
 
-  module.exports = typeDefs
+module.exports = typeDefs;
