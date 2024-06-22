@@ -42,10 +42,10 @@ const profileSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Post'
     }],
-  removeReactions: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Post'
-    }],
+  // removeReactions: [{
+  //     type: Schema.Types.ObjectId,
+  //     ref: 'Post'
+  //   }],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -60,8 +60,8 @@ profileSchema.pre('save', async function(next) {
   next();
 });
 
-profileSchema.methods.checkPassword = async function(loginPw) {
-  return bcrypt.compare(loginPw, this.password);
+profileSchema.methods.isCorrectPassword = async function(password) {
+  return bcrypt.compare(password, this.password);
 };
 
 const Profile = model('Profile', profileSchema);

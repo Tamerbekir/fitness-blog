@@ -42,10 +42,10 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Profile'
   }],
-  removeReactions: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Profile'
-  }],
+  // removeReactions: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Profile'
+  // }],
   createdAt: {
     type: Date,
     default: Date.now,

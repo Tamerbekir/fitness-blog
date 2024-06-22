@@ -17,7 +17,7 @@ const typeDefs = `#graphql
     username: String!
     email: String!
     password: String!
-    posts: [Post!]
+    posts: [Post!] 
     comments: [Comment!]
     reactions: [Post!]
     removeReactions: [Post!]
@@ -66,36 +66,36 @@ const typeDefs = `#graphql
   # mutations- things that are needed to perform the actions 
   #!! Because I am using context.user for Auth I will not need to define ProfileID
   type Mutation {
+    login(
+      email: String!, 
+      password: String!
+    ): Auth
+
     addProfile(
       username: String!,
       email: String!,
       password: String!
-      ): Auth
+    ): Auth
 
     updateProfile(
       username: String!,
       email: String!, 
       password: String!
-    ): Auth
+    ): Profile
 
     removeProfile(
       _id: ID!
-      ): Profile
-
-    login(
-      email: String!, 
-      password: String!
-      ): Auth
+    ): Profile
 
     # adding and updating a post by profile and post id and removing a comment by its ID using the Comment model
     addPost(
-      profileId: ID!, 
-      title: String!, 
-      content: String!, 
+      title: String!,
+      content: String!,
       topic: String!
-      ): Post
+    ): Post
 
     updatePost(
+      _id: ID!,
       title: String!, 
       content: String!, 
       topic: String!
@@ -105,13 +105,18 @@ const typeDefs = `#graphql
       _id: ID!
     ): Post
 
-    reactionPost(
+    addReactionPost(
       postId: ID!
+      profileId: ID!
     ): Post
-
+    
     removeReactionPost(
       postId: ID!
+      profileId: ID!
     ): Post
+
+    # addReactionPost(postId: ID!): Post
+    # removeReactionPost(postId: ID!): Post
 
     # For comments
     # adding a comment using model ID 
