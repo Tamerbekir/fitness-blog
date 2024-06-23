@@ -8,7 +8,7 @@ const topicSchema = new Schema({
   post: [{
     type: Schema.Types.ObjectId,
     ref: 'Post',
-  }]
+  }],
 })
 
 const Topic = model('Topic', topicSchema);

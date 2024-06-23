@@ -6,12 +6,13 @@ const Post = () => {
 
   if (loading) return <p>Loading...please wait</p> 
   if (error) return <p>Error: { error.message }</p> 
-  console.log('Data for posts:', data)
+  console.table(['Data for posts:', data])
   if (!data.posts) return <p>No posts found!</p>
 
   return (
     <div>
       <h2>Posts seeds!</h2>
+      <h3>Posts</h3>
       {data.posts.map(post => (
         <div key={post._id}> 
         <h3>{post.title}</h3>

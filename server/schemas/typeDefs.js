@@ -7,7 +7,9 @@ const typeDefs = `#graphql
     posts: [Post!]
     post(_id: ID!): Post
     topics: [Topic!]
+    topic(_id: ID!): Topic
     comments: [Comment!]
+    comment(_id: ID!): Comment
   }
   # all things associated with a profile
   type Profile {
@@ -15,7 +17,7 @@ const typeDefs = `#graphql
     username: String!
     email: String!
     password: String!
-    posts: [Post!]
+    posts: [Post!] 
     comments: [Comment!]
     reactions: [Post!]
     removeReactions: [Post!]
@@ -28,7 +30,7 @@ const typeDefs = `#graphql
     _id: ID!
     title: String!
     content: String!
-    profile: [Profile!]
+    profile: Profile!  
     topic: [Topic!]
     comments: [Comment!]
     reactions: [Profile!]
@@ -42,7 +44,7 @@ const typeDefs = `#graphql
     _id: ID!
     content: String!
     replies: [Comment!]
-    profile: [Profile!]
+    profile: Profile!  
     posts: [Post!]
     likes: [Profile!]
     dislikes: [Profile!]
@@ -61,39 +63,39 @@ const typeDefs = `#graphql
     profile: Profile
   }
 
-  # mutations- things that are needed to preform the actions 
+  # mutations- things that are needed to perform the actions 
   #!! Because I am using context.user for Auth I will not need to define ProfileID
   type Mutation {
+    login(
+      email: String!, 
+      password: String!
+    ): Auth
+
     addProfile(
       username: String!,
       email: String!,
-      password: String!,
-      ): Auth
+      password: String!
+    ): Auth
 
     updateProfile(
       username: String!,
       email: String!, 
       password: String!
-    ): Auth
+    ): Profile
 
     removeProfile(
       _id: ID!
-      ): Profile
-
-    login(
-      email: String!, 
-      password: String!
-      ): Auth
+    ): Profile
 
     # adding and updating a post by profile and post id and removing a comment by its ID using the Comment model
     addPost(
-      profileId: ID!, 
-      title: String!, 
-      content: String!, 
+      title: String!,
+      content: String!,
       topic: String!
-      ): Post
+    ): Post
 
     updatePost(
+      _id: ID!,
       title: String!, 
       content: String!, 
       topic: String!
@@ -103,13 +105,18 @@ const typeDefs = `#graphql
       _id: ID!
     ): Post
 
-    reactionPost(
+    addReactionPost(
       postId: ID!
+      # profileId: ID!
     ): Post
-
+    
     removeReactionPost(
       postId: ID!
+      # profileId: ID!
     ): Post
+
+    # addReactionPost(postId: ID!): Post
+    # removeReactionPost(postId: ID!): Post
 
     # For comments
     # adding a comment using model ID 
@@ -129,7 +136,7 @@ const typeDefs = `#graphql
     ): Comment
 
     removeComment(
-      commentId: ID!
+      _id: ID!
     ): Comment
 
     replyToComment(
@@ -159,6 +166,6 @@ const typeDefs = `#graphql
       postId: ID!
     ): Post
   }
-  `
+`
 
-  module.exports = typeDefs
+module.exports = typeDefs;

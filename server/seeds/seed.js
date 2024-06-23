@@ -36,13 +36,13 @@ const seedPosts = [
     title: 'I feel fat?',
     content: 'I feel so fat, what am I doing wrong. Can someone please tell me?',
     profile: null, // will be assigned after creating profiles
-    topic: null, // will be assigned after creating topics
+    topic: [], // will be assigned after creating topics
   },
   {
     title: 'Running faster!',
     content: 'I am trying to run fast because I am so slow and all my friends make fun of me',
     profile: null, // will be assigned after creating profiles
-    topic: null, // will be assigned after creating topics
+    topic: [], // will be assigned after creating topics
   },
 ];
 
@@ -54,6 +54,7 @@ const seedComments = [
   },
 ];
 
+
 const seedDB = async () => {
   try {
     await mongoose.connection.dropDatabase();
@@ -62,9 +63,9 @@ const seedDB = async () => {
     const createdTopics = await Topic.insertMany(seedTopics);
 
     seedPosts[0].profile = createdProfiles[0]._id;
-    seedPosts[0].topic = createdTopics[0]._id;
+    seedPosts[0].topic = [createdTopics[0]._id];
     seedPosts[1].profile = createdProfiles[1]._id;
-    seedPosts[1].topic = createdTopics[1]._id;
+    seedPosts[1].topic = [createdTopics[1]._id];
 
     const createdPosts = await Post.insertMany(seedPosts);
 

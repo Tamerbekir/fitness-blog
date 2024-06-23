@@ -19,7 +19,8 @@ const postSchema = new Schema({
   // the topic whats associated with the post
   topic: [{
     type: Schema.Types.ObjectId,
-    ref: 'Topic'
+    ref: 'Topic',
+    required: true
   }],
   // the comments associated with the post
   comments: [{
@@ -41,10 +42,10 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Profile'
   }],
-  removeReactions: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Profile'
-  }],
+  // removeReactions: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Profile'
+  // }],
   createdAt: {
     type: Date,
     default: Date.now,

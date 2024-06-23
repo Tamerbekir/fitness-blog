@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import {
+  Home,
   Profile, 
   Topic,
   Comment,
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { index : true, element: <Profile /> },
+      { index : true, element: <Home /> },
+      { path: 'profile', element: <Profile /> },
       { path: 'comment', element: <Comment /> },
       { path: 'post', element: <Post /> },
       { path: 'topic', element: <Topic /> },

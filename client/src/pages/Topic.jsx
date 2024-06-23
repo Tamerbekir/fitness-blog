@@ -12,6 +12,7 @@ const Topic = () => {
   return (
     <div>
       <p>Topic seed test!</p>
+      <h4>Topics</h4>
       {data.topics.map(topic => (
         <div key={topic._id}>
           <p>{topic.topicName}</p>
