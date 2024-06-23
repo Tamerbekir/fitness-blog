@@ -8,10 +8,10 @@ const commentSchema = new Schema({
     maxlength: 6000
   },
   // a nested object that refers to the comment model for replying tp comments
-  replies: {
+  replies: [{
     type: Schema.Types.ObjectId,
     ref: 'Comment'
-  },
+  }],
   // the profile who's leaving the comment
   profile: {
     type: Schema.Types.ObjectId,

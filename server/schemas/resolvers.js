@@ -18,8 +18,8 @@ const resolvers = {
     profiles: async () => Profile.find({}),
     // from type Query, finding single profile
     profile: async (parent, { _id }) => Profile.findById(_id).populate('posts comments reactions removeReactions favorites removeFavorites'),
-    // from type Query, finding all posts
-    posts: async () => Post.find({}),
+    // from type Query, finding all posts and their associations
+    posts: async () => Post.find({}).populate('profile topic comments reactions favorites removeFavorites'),
     // from type Query, finding single post
     post: async (parent, { _id }) => Post.findById(_id).populate('profile topic comments reactions removeReactions favorites removeFavorites'),
     // from type Query, finding all topics
@@ -232,8 +232,8 @@ const resolvers = {
         // looking for a post by its _id and updating it
         const updatePost = await Post.findByIdAndUpdate(
           // going off the posts id
-          _id,
           // setting new title, content and the topic, which is the id of the topic we found and defined above
+          _id,
           { $set: { title, content, topic: topicChoice._id } },
           { new: true, runValidators: true }
           //populate everything via post
@@ -256,6 +256,12 @@ const resolvers = {
         if (!removePost) {
           console.error('there was a problem finding post to delete', error)
         }
+
+        await Profile.findByIdAndUpdate(
+          removePost.profile,
+          { $pull: { posts: _id } },
+          { new: true, runValidators: true }
+        )
 
         return removePost
 
@@ -282,6 +288,7 @@ const resolvers = {
         // this means the user can only add ONE reaction per post. 
         await Profile.findByIdAndUpdate(
           context.user._id,
+          //addToSet only allows one to be pushed into the array and avoids duplicates
           { $addToSet: { reactions: postId } },
           { new: true, runValidators: true }
         );
@@ -320,6 +327,171 @@ const resolvers = {
     }
     throw new AuthenticationError('You must be logged in to remove a reaction from a post.');
   },
+
+  // going off the addComment mutation, taking in postId and content as an argument
+  addComment: async (parent, { postId, content }, context) => {
+    if (context.user) {
+      try { 
+        // creating a comment and passing in the content, profile(context.user) and the post it is on, and defining it as the postId. This way the new comment is attached to these three things
+        const addComment = await Comment.create({
+          content,
+          profile: context.user._id,
+          post: postId
+        })
+
+        if (!addComment) {
+          console.error('there was an issue creating you comment', error.message)
+        }
+
+         // finding the post by its id and pushing the argument for comments from the Post query via typeDefs and letting that comment be the addedComment along with its new Id
+        //using $push method because it allows us to keep pushing elements into the array, even if they are duplicates
+        await Post.findByIdAndUpdate(
+          postId,
+          { $push: { comments: addComment._id } },
+          { new: true, runValidators: true }
+        )
+
+         // finding the profile by its id and pushing the argument for comments from the Profile query via typeDefs and letting that comment be the addedComment along with its new Id
+        await Profile.findByIdAndUpdate(
+          context.user._id,
+          { $push: { comments: addComment._id } },
+          { new: true, runValidators: true }
+        )
+
+        return addComment
+
+      } catch (error) {
+        console.error('There was an error adding your comment', error.message)
+        throw new AuthenticationError('There was an error adding your comment')
+      }
+    }
+    throw new AuthenticationError('You need to be logged in to add a comment')
+  },
+
+  // updating comment mutation
+  updateComment: async (parent, { commentId, content }, context) => {
+    if (context.user) {
+      try {
+        // finding comment by its id and using it to update the comment
+        // adding #set method to edit content
+        // populating all things associated with the comment model
+        const updateComment = await Comment.findByIdAndUpdate(
+          commentId,
+          { $set: { content } },
+          { new: true, runValidators: true }
+        ).populate('content replies profile post likes dislikes')
+
+        return updateComment
+
+      } catch (error) {
+        console.error('There was an error updating your comment', error.message)
+      }
+    }
+    throw new AuthenticationError('There was an error updating your comment')
+  },
+
+  // adding remove comment mutation
+  removeComment: async (parent, { _id }, context) => {
+    if (context.user) {
+      try {
+        // finding comment by its id
+        const removeComment = await Comment.findByIdAndDelete(
+          _id
+        )
+
+        if (!removeComment) {
+          console.error('That comment was not found', error.message)
+        }
+        // finding the post its under by its id and removing it from the post / updating the post to reflect the new changes
+        // 'comments' from the post schema associated with Comment model
+        await Post.findByIdAndUpdate(
+          removeComment.post,
+          { $pull: { comments: _id } },
+          { new: true, runValidators: true }
+        )
+        // finding the profile its under by its id and removing it from the post / updating the profile to reflect the new changes.
+        // 'comments' from the profile schema associated with Comment model
+        await Profile.findByIdAndUpdate(
+          removeComment.profile,
+          { $pull: { comments: _id } },
+          { new: true, runValidators: true }
+        )
+
+        return removeComment
+
+      } catch (error) {
+      console.error('There was an error removing your comment', error.message)
+      throw new AuthenticationError('There was an error removing your comment')
+      }
+    }
+    throw new AuthenticationError('You need to be logged in to remove a comment');
+  },
+
+  // adding a reply to a comment mutation
+  // adding in the commentId from the main comment and the content for the comment reply
+  replyToComment: async (parent, { commentId, content }, context) => {
+    if (context.user) {
+      try {
+        // console.log('creating reply..')
+        // creating a comment using content from parameter, 
+        // associating it with the context.user for profile from Comment model
+        // associating the comment id with the post from from Comment model
+        const replyToComment = await Comment.create({
+          content,
+          profile: context.user._id,
+          post: commentId,
+        })
+
+        console.log(replyToComment)
+
+        if (!replyToComment) {
+          console.error('There was an issue replying to this comment', error.message)
+        }
+
+        // finding the main comment and updating it by pushing new comment into the replies array, which is from the replyToComment id defined above,
+        // populating everything from comment model
+        await Comment.findByIdAndUpdate(
+          commentId,
+          { $push: { replies: replyToComment._id } },
+          { new: true, runValidators: true }
+        ).populate('content replies profile post likes dislikes')
+
+        return replyToComment
+
+      } catch (error) {
+        console.error('There was an error replying to this comment', error.message)
+        throw new AuthenticationError('There was an error replying to this comment')
+      }
+    }
+  },
+
+  removeReplyToComment: async (parent, { commentId, replyId }, context) => {
+    if (context.user) {
+      try {
+        const removeReplyToComment = await Comment.findByIdAndDelete(
+          replyId
+        )
+
+        if(!removeReplyToComment) {
+          console.error('There was an error removing the reply to this comment', error.message)
+        }
+
+        await Comment.findByIdAndUpdate(
+          commentId,
+          { $pull: { replies: replyId } },
+          { new: true, runValidators: true }
+        )
+
+        return removeReplyToComment
+
+      } catch (error) {
+        console.error('There was an error removing the reply to this comment', error.message)
+        throw new AuthenticationError('There was an error removing the reply to this comment')
+      }
+    }
+  }
+
+
 
 
 

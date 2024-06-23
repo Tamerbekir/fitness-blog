@@ -107,12 +107,12 @@ const typeDefs = `#graphql
 
     addReactionPost(
       postId: ID!
-      profileId: ID!
+      # profileId: ID!
     ): Post
     
     removeReactionPost(
       postId: ID!
-      profileId: ID!
+      # profileId: ID!
     ): Post
 
     # addReactionPost(postId: ID!): Post
@@ -136,7 +136,7 @@ const typeDefs = `#graphql
     ): Comment
 
     removeComment(
-      commentId: ID!
+      _id: ID!
     ): Comment
 
     replyToComment(
