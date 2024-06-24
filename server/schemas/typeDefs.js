@@ -20,10 +20,10 @@ const typeDefs = `#graphql
     posts: [Post!] 
     comments: [Comment!]
     reactions: [Post!]
-    removeReactions: [Post!]
-    favorites: [Post!]
-    removeFavorites: [Post!]
+    favoritePost: [Post!]
+    # removeFavorites: [Post!]
     createdAt: String!
+    # likeDislikeComment: [Comment!]
   }
   # all things associated with a post
   type Post {
@@ -35,8 +35,8 @@ const typeDefs = `#graphql
     comments: [Comment!]
     reactions: [Profile!]
     removeReactions: [Profile!]
-    favorites: [Profile!]
-    removeFavorites: [Profile!]
+    favoritePost: [Profile!]
+    # removeFavorites: [Profile!]
     createdAt: String!
   }
   # all things associated with a comment
@@ -162,9 +162,9 @@ const typeDefs = `#graphql
       postId: ID!
     ): Post
 
-    removeFavoritePost(
-      postId: ID!
-    ): Post
+    # removeFavoritePost(
+    #   postId: ID!
+    # ): Post
   }
 `
 

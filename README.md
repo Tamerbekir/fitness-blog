@@ -1,3 +1,4 @@
 
-Coming soon!
-![Comming Soon](image.png)
+Coming soon
+
+![Gym Logo](IMG_0473.JPG)
