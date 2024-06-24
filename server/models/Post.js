@@ -28,12 +28,7 @@ const postSchema = new Schema({
     ref: 'Comment'
   }],
   // a profiles ability to favorite a post
-  favorites: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Profile'
-  }],
-  // a profiles ability to remove a favorite post
-  removeFavorites: [{
+  favoritePost: [{
     type: Schema.Types.ObjectId,
     ref: 'Profile'
   }],
@@ -42,10 +37,6 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Profile'
   }],
-  // removeReactions: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Profile'
-  // }],
   createdAt: {
     type: Date,
     default: Date.now,

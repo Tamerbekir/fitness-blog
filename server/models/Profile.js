@@ -29,23 +29,14 @@ const profileSchema = new Schema({
     ref: 'Comment'
   }],
   // adding favorites and removing favs from profile
-  favorites: [{ 
+  favoritePost: [{ 
       type: Schema.Types.ObjectId,
       ref: 'Post'
     }],
-  removeFavorites: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Post'
-    }],
-  // adding / removing reactions from posts from profile
   reactions: [{
       type: Schema.Types.ObjectId,
       ref: 'Post'
     }],
-  // removeReactions: [{
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Post'
-  //   }],
   createdAt: {
     type: Date,
     default: Date.now,
