@@ -13,8 +13,16 @@ import {
   Profile, 
   Topic,
   Comment,
-  Post
+  Post,
+  Login,
+  Signup
 } from './pages/index.js'
+
+import {
+  NavBar
+} from './components/index.js'
+
+
 
 const router = createBrowserRouter([
   {
@@ -26,6 +34,8 @@ const router = createBrowserRouter([
       { path: 'comment', element: <Comment /> },
       { path: 'post', element: <Post /> },
       { path: 'topic', element: <Topic /> },
+      { path: 'login', element: <Login /> },
+      { path: 'signup', element: <Signup /> },
 ],
   },
 ]);

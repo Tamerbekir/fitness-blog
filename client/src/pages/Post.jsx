@@ -17,6 +17,10 @@ const Post = () => {
         <div key={post._id}> 
         <h3>{post.title}</h3>
         <h5>{post.content}</h5>
+
+        <div key={post.profile._id}> 
+        <h3>{post.profile.username}</h3>
+        </div>
         </div>
       ))}
     </div>

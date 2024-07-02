@@ -29,7 +29,7 @@ const resolvers = {
     // from type Query, finding all comments
     comments: async () => Comment.find({}),
     // from type Query, finding single comment
-    comment: async (parent, { _id }) => Comment.findById(_id).populate('profile replies posts likes dislikes')
+    comment: async (parent, { _id }) => Comment.findById(_id).populate('profile commentReplies posts likes dislikes')
   },
 
   // from type Profile and all things associated with the query
@@ -61,7 +61,7 @@ const resolvers = {
 
     posts: async (parent) => Post.findById(parent.post),
 
-    replies: async (parent) => Comment.find({ _id: { $in: parent.replies } }),
+    commentReplies: async (parent) => Comment.find({ _id: { $in: parent.commentReplies } }),
 
     likes: async (parent) => Profile.find({ _id: { $in: parent.likes } }),
 
@@ -73,10 +73,10 @@ const resolvers = {
   },
 
   Mutation: {
-    addProfile: async (parent, { username, email, password }) => {
+    addProfile: async (parent, { username, email, password, bio, socialHandle, location }) => {
       try {
 
-        const profile = await Profile.create({ username, email, password })
+        const profile = await Profile.create({ username, email, password, bio, socialHandle, location })
 
         const token = signToken(profile)
         console.log(token)
@@ -118,7 +118,7 @@ const resolvers = {
 
     // updating profile mutation
     // taking in their username, email and their password
-    updateProfile: async (parent, { username, email, password }, context) => {
+    updateProfile: async (parent, { username, email, password, bio, socialHandle, location }, context) => {
       // using context.user for verification
       if (context.user) {
         try {
@@ -134,9 +134,10 @@ const resolvers = {
 
           const updatedProfile = await Profile.findByIdAndUpdate(
             context.user._id,
-            { $set: { username, email } },
+            { $set: { username, email, bio, socialHandle, location } },
             { new: true, runValidators: true }
-          ).populate('posts comments reactions removeReactions favorites removeFavorites');
+            //populating all things associated with profile model
+          ).populate('posts comments reactions favoritePost');
 
           if (!updatedProfile) {
             throw new AuthenticationError('No profile found.')
@@ -266,27 +267,50 @@ const resolvers = {
 
     // adding a reaction mutation
     // using postId and profileId which is used to identify a specific profile and post via mutation
-    addReactionPost: async (parent, { postId }, context) => {
+    addOrRemoveReactionPost: async (parent, { postId }, context) => {
       if (context.user) {
         try {
           // finding the post by its ID and adding the reaction going off the of the context user's id
-          const addReactionPost = await Post.findByIdAndUpdate(
-            postId,
-            { $addToSet: { reactions: context.user._id } },
-            { new: true, runValidators: true }
-          ).populate('profile reactions');
 
-          // finding the profile and fetching data and updating it
-          // going off context.user, add the reaction to their profile. 
-          // this means the user can only add ONE reaction per post. 
-          await Profile.findByIdAndUpdate(
-            context.user._id,
-            //addToSet only allows one to be pushed into the array and avoids duplicates
-            { $addToSet: { reactions: postId } },
-            { new: true, runValidators: true }
-          );
+          const post = await Post.findById(
+            postId
+          )
+          
+          const hasReaction = post.reactions.includes(context.user._id)
 
-          return addReactionPost;
+          if(hasReaction) {
+              await Post.findByIdAndUpdate(
+                postId,
+                { $pull: { reactions: context.user._id } },
+                { new: true, runValidators: true }
+              ).populate('profile reactions')
+    
+              await Profile.findByIdAndUpdate(
+                context.user._id,
+                { $pull: { reactions: postId } },
+                { new: true, runValidators: true }
+              )
+
+          } else {
+            await Post.findByIdAndUpdate(
+                postId,
+                { $addToSet: { reactions: context.user._id } },
+                { new: true, runValidators: true }
+              )
+
+            // finding the profile and fetching data and updating it
+            // going off context.user, add the reaction to their profile. 
+            // this means the user can only add ONE reaction per post. 
+              await Profile.findByIdAndUpdate(
+                context.user._id,
+                //addToSet only allows one to be pushed into the array and avoids duplicates
+                { $addToSet: { reactions: postId } },
+                { new: true, runValidators: true }
+              )
+            }
+
+          return Post.findById(postId).populate('profile reactions')
+
         } catch (error) {
           console.error('There was an error adding a reaction to the post:', error)
           throw new AuthenticationError('There was an error adding a reaction to the post.')
@@ -295,31 +319,32 @@ const resolvers = {
       throw new AuthenticationError('You must be logged in to react to a post.');
     },
 
+    //! removing logic because I created just mutation that handles both logics 'addOrRemoveReactions'. Confirmed working. Will retain for now 
     // same logic as adding reaction but in this case we are pulling the reaction the profile added
     // using $pull instead of $onset because I want to leave array empty if there are no reactions. Onset would remove it completely
-    removeReactionPost: async (parent, { postId }, context) => {
-      if (context.user) {
-        try {
-          const removeReactionPost = await Post.findByIdAndUpdate(
-            postId,
-            { $pull: { reactions: context.user._id } },
-            { new: true, runValidators: true }
-          ).populate('profile reactions')
+    // removeReactionPost: async (parent, { postId }, context) => {
+    //   if (context.user) {
+    //     try {
+    //       const removeReactionPost = await Post.findByIdAndUpdate(
+    //         postId,
+    //         { $pull: { reactions: context.user._id } },
+    //         { new: true, runValidators: true }
+    //       ).populate('profile reactions')
 
-          await Profile.findByIdAndUpdate(
-            context.user._id,
-            { $pull: { reactions: postId } },
-            { new: true, runValidators: true }
-          );
+    //       await Profile.findByIdAndUpdate(
+    //         context.user._id,
+    //         { $pull: { reactions: postId } },
+    //         { new: true, runValidators: true }
+    //       );
 
-          return removeReactionPost;
-        } catch (error) {
-          console.error('There was an error removing the reaction from the post:', error);
-          throw new AuthenticationError('There was an error removing the reaction from the post.')
-        }
-      }
-      throw new AuthenticationError('You must be logged in to remove a reaction from a post.');
-    },
+    //       return removeReactionPost;
+    //     } catch (error) {
+    //       console.error('There was an error removing the reaction from the post:', error);
+    //       throw new AuthenticationError('There was an error removing the reaction from the post.')
+    //     }
+    //   }
+    //   throw new AuthenticationError('You must be logged in to remove a reaction from a post.');
+    // },
 
     // going off the addComment mutation, taking in postId and content as an argument
     addComment: async (parent, { postId, content }, context) => {
@@ -372,7 +397,7 @@ const resolvers = {
             commentId,
             { $set: { content } },
             { new: true, runValidators: true }
-          ).populate('content replies profile post likes dislikes')
+          ).populate('content commentReplies profile post likes dislikes')
 
           return updateComment
 
@@ -445,9 +470,9 @@ const resolvers = {
           // populating everything from comment model
           await Comment.findByIdAndUpdate(
             commentId,
-            { $push: { replies: replyToComment._id } },
+            { $push: { commentReplies: replyToComment._id } },
             { new: true, runValidators: true }
-          ).populate('content replies profile post likes dislikes')
+          ).populate('content commentReplies profile post likes dislikes')
 
           return replyToComment
 
@@ -475,7 +500,7 @@ const resolvers = {
           // pulling it from the replies array by going off the reply id above
           await Comment.findByIdAndUpdate(
             commentId,
-            { $pull: { replies: replyId } },
+            { $pull: { commentReplies: replyId } },
             { new: true, runValidators: true }
           )
 
@@ -641,7 +666,7 @@ const resolvers = {
 
 
     //mutation for adding and removing favorite 
-    addFavoritePost: async (parent, { postId }, context) => {
+    addOrRemoveFavoritePost: async (parent, { postId }, context) => {
       if (context.user) {
         try {
           const post = await Post.findById(

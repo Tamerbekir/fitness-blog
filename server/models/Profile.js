@@ -19,7 +19,16 @@ const profileSchema = new Schema({
     required: true,
     minlength: 10
   }, 
-  //the profiles posts
+  bio: {
+    type: String,
+  },
+  socialHandle: {
+    type: String
+  },
+  location: {
+    type: String
+  },
+  //the profiles posts via arrays
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'

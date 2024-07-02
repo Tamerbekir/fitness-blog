@@ -17,13 +17,14 @@ const typeDefs = `#graphql
     username: String!
     email: String!
     password: String!
+    bio: String
+    socialHandle: String
+    location: String
     posts: [Post!] 
-    comments: [Comment!]
     reactions: [Post!]
+    comments: [Comment!]
     favoritePost: [Post!]
-    # removeFavorites: [Post!]
     createdAt: String!
-    # likeDislikeComment: [Comment!]
   }
   # all things associated with a post
   type Post {
@@ -31,23 +32,21 @@ const typeDefs = `#graphql
     title: String!
     content: String!
     profile: Profile!  
-    topic: [Topic!]
     comments: [Comment!]
     reactions: [Profile!]
-    removeReactions: [Profile!]
     favoritePost: [Profile!]
-    # removeFavorites: [Profile!]
+    topic: [Topic!]
     createdAt: String!
   }
   # all things associated with a comment
   type Comment {
     _id: ID!
     content: String!
-    replies: [Comment!]
     profile: Profile!  
-    posts: [Post!]
+    commentReplies: [Comment!]
     likes: [Profile!]
     dislikes: [Profile!]
+    posts: [Post!]
     createdAt: String!
   }
   
@@ -75,12 +74,18 @@ const typeDefs = `#graphql
       username: String!,
       email: String!,
       password: String!
+      bio: String
+      socialHandle: String
+      location: String
     ): Auth
 
     updateProfile(
       username: String!,
       email: String!, 
       password: String!
+      bio: String
+      socialHandle: String
+      location: String
     ): Profile
 
     removeProfile(
@@ -105,19 +110,10 @@ const typeDefs = `#graphql
       _id: ID!
     ): Post
 
-    addReactionPost(
+    addOrRemoveReactionPost(
       postId: ID!
-      # profileId: ID!
     ): Post
-    
-    removeReactionPost(
-      postId: ID!
-      # profileId: ID!
-    ): Post
-
-    # addReactionPost(postId: ID!): Post
-    # removeReactionPost(postId: ID!): Post
-
+  
     # For comments
     # adding a comment using model ID 
     # able to update a comment from the post ID
@@ -158,13 +154,9 @@ const typeDefs = `#graphql
     ): Comment
 
   # adding favorite and unfavorite post by post ID
-    addFavoritePost(
+    addOrRemoveFavoritePost(
       postId: ID!
     ): Post
-
-    # removeFavoritePost(
-    #   postId: ID!
-    # ): Post
   }
 `
 

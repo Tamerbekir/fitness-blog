@@ -2,6 +2,12 @@ import './App.css';
 import { Outlet } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import {
+  NavBar
+} from './components/index.js'
+
+
+
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -26,6 +32,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
+      <NavBar />
         <Outlet />
     </ApolloProvider>
   );
