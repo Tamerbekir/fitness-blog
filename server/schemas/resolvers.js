@@ -10,14 +10,14 @@ const resolvers = {
     me: async (parent, args, context) => {
       if (context.user) {
         console.log(context.user)
-        return Profile.findOne({ _id: context.user._id }).populate('posts comments reactions likes dislikes favoritePost');
+        return Profile.findOne({ _id: context.user._id }).populate('posts comments reactions favoritePost');
       }
       throw new AuthenticationError('There was an error finding profile.');
     },
     // from type Query, finding all profiles
     profiles: async () => Profile.find({}),
     // from type Query, finding single profile
-    profile: async (parent, { _id }) => Profile.findById(_id).populate('posts comments reactions likes dislikes favoritePost'),
+    profile: async (parent, { _id }) => Profile.findById(_id).populate('posts comments reactions favoritePost'),
     // from type Query, finding all posts and their associations
     posts: async () => Post.find({}).populate('profile topic comments reactions favoritePost'),
     // from type Query, finding single post
