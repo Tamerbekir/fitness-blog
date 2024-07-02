@@ -15,7 +15,8 @@ import {
   Comment,
   Post,
   Login,
-  Signup
+  Signup,
+  Account
 } from './pages/index.js'
 
 import {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: 'topic', element: <Topic /> },
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
+      { path: 'account', element: <Account /> },
 ],
   },
 ]);

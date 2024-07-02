@@ -121,7 +121,9 @@ const Login = () => {
           <Form.Control
             type="email"
             name="email"
+            // the value is the useState + the variables
             value={userLogin.email}
+            // the onchange calls the function
             onChange={handleUserChange}
           />
         </FloatingLabel>
