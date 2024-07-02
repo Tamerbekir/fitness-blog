@@ -5,6 +5,10 @@ query Me {
   me {
     email
     username
+    password
+    location
+    socialHandle
+    bio
     posts {
       title
       content

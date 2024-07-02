@@ -1,6 +1,8 @@
 import Auth from '../../../utils/auth'
 import { useQuery } from '@apollo/client'
 import { useState } from 'react'
+import { useMutation } from '@apollo/client'
+import { UPDATE_PROFILE } from '../../../utils/mutations'
 import { QUERY_ME } from '../../../utils/queries'
 
 const Account = () => {
@@ -13,14 +15,20 @@ const Account = () => {
     window.location.href = "./login"
   }
 
+  const handleChangeInfo = () => {
+    alert('cant do that let')
+  }
+
   if (loading) return <p>Loading your profile.</p>
   if (error) return <div> <p> Whoops! You need to be logged in to do that.</p><button onClick={loginPage}> Login</button></div>
   if (!data || !data.me) return <p>Profile not found</p>
 
   const email = data.me.email
   const username = data.me.username
-  const posts = data.me.posts
-  const favoritePosts = data.me.favoritePost
+  const password = data.me.password
+  const location = data.me.location
+  const socialHandle = data.me.socialHandle
+  const bio = data.me.bio
   // console.table(data.me.favoritePost)
 
   
@@ -28,37 +36,19 @@ const Account = () => {
   return (
     <div>
       {loggedIn && <p>if you can read this then user is Authenticated</p>}
-      <h3>This is your account information.</h3>
+      <h3> Hey there, {username}. This is your account information.</h3>
       <p>My email is your email: {email}</p>
+      <button onClick={handleChangeInfo} >Change Username</button>
       <p>This is your username: {username}</p>
-      <div>
-        <h3>These are your posts:</h3>
-        {posts.map((post, index) => (
-          <div key={index}>
-
-            {/* bringing in title by user*/}
-            <h2>Title</h2>
-            <h4>{post.title}</h4>
-
-            {/* bringing in posts by user*/}
-            <h2>Content</h2>
-            <p>{post.content}</p>
-
-              {/* mapping over posts and getting title for user */}
-            <h2>Topic</h2>
-            {post.topic.map((topic, index) => (
-                <p key={index}>{topic.topicName}</p>
-              ))}
-
-              {/* mapping over favorites and getting title for user */}
-            <h2>Your favorites</h2>
-            {favoritePosts.map((favorite, index) => (
-              <p key={index}> {favorite.title}</p>
-            ))}  
-
-          </div>
-        ))}
-      </div>
+      <button onClick={handleChangeInfo} >Change Email</button>
+      <p>Change your password</p>
+      <button onClick={handleChangeInfo} >Change Password</button>
+      <p>From: {location}</p>
+      <button onClick={handleChangeInfo} >Change location</button>
+      <p>Social: {socialHandle}</p>
+      <button onClick={handleChangeInfo} >Change social handle</button>
+      <p>Bio: {bio}</p>
+      <button onClick={handleChangeInfo} >Change bio</button>
     </div>
   )
 }
