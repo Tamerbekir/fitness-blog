@@ -25,6 +25,9 @@ const profileSchema = new Schema({
   socialHandle: {
     type: String
   },
+  location: {
+    type: String
+  },
   //the profiles posts via arrays
   posts: [{
     type: Schema.Types.ObjectId,

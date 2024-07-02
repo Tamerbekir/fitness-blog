@@ -8,7 +8,7 @@ const commentSchema = new Schema({
     maxlength: 6000
   },
   // a nested object that refers to the comment model for replying tp comments
-  replies: [{
+  commentReplies: [{
     type: Schema.Types.ObjectId,
     ref: 'Comment'
   }],

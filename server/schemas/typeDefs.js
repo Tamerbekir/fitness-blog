@@ -19,13 +19,12 @@ const typeDefs = `#graphql
     password: String!
     bio: String
     socialHandle: String
-    createdAt: String!
+    location: String
     posts: [Post!] 
     reactions: [Post!]
     comments: [Comment!]
     favoritePost: [Post!]
-    # removeFavorites: [Post!]
-    # likeDislikeComment: [Comment!]
+    createdAt: String!
   }
   # all things associated with a post
   type Post {
@@ -35,10 +34,8 @@ const typeDefs = `#graphql
     profile: Profile!  
     comments: [Comment!]
     reactions: [Profile!]
-    # removeReactions: [Profile!]
     favoritePost: [Profile!]
     topic: [Topic!]
-    # removeFavorites: [Profile!]
     createdAt: String!
   }
   # all things associated with a comment
@@ -46,11 +43,11 @@ const typeDefs = `#graphql
     _id: ID!
     content: String!
     profile: Profile!  
-    createdAt: String!
-    replies: [Comment!]
+    commentReplies: [Comment!]
     likes: [Profile!]
     dislikes: [Profile!]
     posts: [Post!]
+    createdAt: String!
   }
   
   # all things associated with a topic
@@ -79,6 +76,7 @@ const typeDefs = `#graphql
       password: String!
       bio: String
       socialHandle: String
+      location: String
     ): Auth
 
     updateProfile(
@@ -87,6 +85,7 @@ const typeDefs = `#graphql
       password: String!
       bio: String
       socialHandle: String
+      location: String
     ): Profile
 
     removeProfile(
@@ -113,17 +112,8 @@ const typeDefs = `#graphql
 
     addOrRemoveReactionPost(
       postId: ID!
-      # profileId: ID!
     ): Post
-    
-    # removeReactionPost(
-    #   postId: ID!
-    #   # profileId: ID!
-    # ): Post
-
-    # addReactionPost(postId: ID!): Post
-    # removeReactionPost(postId: ID!): Post
-
+  
     # For comments
     # adding a comment using model ID 
     # able to update a comment from the post ID
@@ -167,10 +157,6 @@ const typeDefs = `#graphql
     addOrRemoveFavoritePost(
       postId: ID!
     ): Post
-
-    # removeFavoritePost(
-    #   postId: ID!
-    # ): Post
   }
 `
 

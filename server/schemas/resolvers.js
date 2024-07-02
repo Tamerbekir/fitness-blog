@@ -29,7 +29,7 @@ const resolvers = {
     // from type Query, finding all comments
     comments: async () => Comment.find({}),
     // from type Query, finding single comment
-    comment: async (parent, { _id }) => Comment.findById(_id).populate('profile replies posts likes dislikes')
+    comment: async (parent, { _id }) => Comment.findById(_id).populate('profile commentReplies posts likes dislikes')
   },
 
   // from type Profile and all things associated with the query
@@ -61,7 +61,7 @@ const resolvers = {
 
     posts: async (parent) => Post.findById(parent.post),
 
-    replies: async (parent) => Comment.find({ _id: { $in: parent.replies } }),
+    commentReplies: async (parent) => Comment.find({ _id: { $in: parent.commentReplies } }),
 
     likes: async (parent) => Profile.find({ _id: { $in: parent.likes } }),
 
@@ -73,10 +73,10 @@ const resolvers = {
   },
 
   Mutation: {
-    addProfile: async (parent, { username, email, password, bio, socialHandle }) => {
+    addProfile: async (parent, { username, email, password, bio, socialHandle, location }) => {
       try {
 
-        const profile = await Profile.create({ username, email, password, bio, socialHandle })
+        const profile = await Profile.create({ username, email, password, bio, socialHandle, location })
 
         const token = signToken(profile)
         console.log(token)
@@ -118,7 +118,7 @@ const resolvers = {
 
     // updating profile mutation
     // taking in their username, email and their password
-    updateProfile: async (parent, { username, email, password, bio, socialHandle }, context) => {
+    updateProfile: async (parent, { username, email, password, bio, socialHandle, location }, context) => {
       // using context.user for verification
       if (context.user) {
         try {
@@ -134,7 +134,7 @@ const resolvers = {
 
           const updatedProfile = await Profile.findByIdAndUpdate(
             context.user._id,
-            { $set: { username, email, bio, socialHandle } },
+            { $set: { username, email, bio, socialHandle, location } },
             { new: true, runValidators: true }
             //populating all things associated with profile model
           ).populate('posts comments reactions favoritePost');
@@ -397,7 +397,7 @@ const resolvers = {
             commentId,
             { $set: { content } },
             { new: true, runValidators: true }
-          ).populate('content replies profile post likes dislikes')
+          ).populate('content commentReplies profile post likes dislikes')
 
           return updateComment
 
@@ -470,9 +470,9 @@ const resolvers = {
           // populating everything from comment model
           await Comment.findByIdAndUpdate(
             commentId,
-            { $push: { replies: replyToComment._id } },
+            { $push: { commentReplies: replyToComment._id } },
             { new: true, runValidators: true }
-          ).populate('content replies profile post likes dislikes')
+          ).populate('content commentReplies profile post likes dislikes')
 
           return replyToComment
 
@@ -500,7 +500,7 @@ const resolvers = {
           // pulling it from the replies array by going off the reply id above
           await Comment.findByIdAndUpdate(
             commentId,
-            { $pull: { replies: replyId } },
+            { $pull: { commentReplies: replyId } },
             { new: true, runValidators: true }
           )
 

@@ -31,12 +31,17 @@ export const QUERY_PROFILES = gql`
 export const QUERY_POSTS = gql`
   query Post {
     posts {
+    _id
+    title
+    content
+    profile {
       _id
-      title
-      content
+      username
+      }
     }
   }
 `
+
 
 export const QUERY_TOPICS = gql`
   query Topic {

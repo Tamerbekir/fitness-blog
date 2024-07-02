@@ -19,8 +19,9 @@ const Profile = () => {
           <p>{profile.email}</p>
           <p>there favorite posts are {profile.title}</p>
 
-      {profile.posts.map(post => (
-        <div key={post._id}>
+      {profile.posts.map
+      (post => 
+      ( <div key={post._id}>
           <h2>{post.title}</h2>
           <p>{post.content}</p>
 
