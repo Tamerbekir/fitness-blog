@@ -10,6 +10,12 @@ import './assets/account.css'
 import TextField from '@mui/material/TextField';
 import { DateFormat } from '../../components/index'
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 
 
 const Account = () => {
@@ -187,15 +193,23 @@ const Account = () => {
             variant="filled"
           />
           <div>
-            <TextField
-              className='userLocation'
-              type="text"
-              name='location'
-              value={userInfo.location}
-              onChange={handleInputChange}
-              label="Location"
-              variant="filled"
-            />
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl className='locationForm'>
+                <InputLabel id="location-select-label">Location</InputLabel>
+                <Select
+                  className='userLocation'
+                  name='location'
+                  value={userInfo.location}
+                  label="Location"
+                  onChange={handleInputChange}
+                >
+                  <MenuItem value={""}>Location Not Provided</MenuItem>
+                  <MenuItem value={"New York"}>New York</MenuItem>
+                  <MenuItem value={"San Francisco"}>San Francisco</MenuItem>
+                  <MenuItem value={"Los Angeles"}>Los Angeles</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </div>
           <div>
             <TextField
@@ -204,7 +218,7 @@ const Account = () => {
               name='socialHandle'
               value={userInfo.socialHandle}
               onChange={handleInputChange}
-              label="Social"
+              label="Social Handle"
               variant="filled"
             />
           </div>

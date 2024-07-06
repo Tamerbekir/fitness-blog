@@ -2,3 +2,8 @@
   background-color: rgba(240, 248, 255, 0.709);
   /* border-radius: 20px 20px 0 0; */
 }
+
+.locationForm {
+  width: 20%;
+  /* min-width: 10%; */
+}
