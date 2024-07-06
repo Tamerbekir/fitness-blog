@@ -9,6 +9,7 @@ query Me {
     location
     socialHandle
     bio
+    createdAt
     posts {
       title
       content

@@ -9,7 +9,6 @@ export const ADD_PROFILE = gql`
         _id
         username
         email
-        password
         bio
         location
         socialHandle
@@ -41,6 +40,14 @@ mutation Mutation($username: String!, $email: String!, $password: String!, $bio:
     bio
   }
 }
+`
+
+export const UPDATE_PASSWORD = gql`
+  mutation UpdatePassword($currentPassword: String!, $newPassword: String!) {
+    updatePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
+      _id
+    }
+  }
 `
 
 export const REMOVE_PROFILE = gql`

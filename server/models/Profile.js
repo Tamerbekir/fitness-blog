@@ -19,6 +19,11 @@ const profileSchema = new Schema({
     required: true,
     minlength: 10
   }, 
+  // updatePassword: {
+  //   type: String,
+  //   required: true,
+  //   minlength: 10
+  // }, 
   bio: {
     type: String,
   },

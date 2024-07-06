@@ -88,6 +88,11 @@ const typeDefs = `#graphql
       location: String
     ): Profile
 
+    # updatePassword(
+    #   currentPassword: String!, 
+    #   newPassword: String!
+    # ): Profile
+
     removeProfile(
       _id: ID!
     ): Profile

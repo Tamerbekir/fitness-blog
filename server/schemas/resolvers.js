@@ -91,30 +91,23 @@ const resolvers = {
       throw new AuthenticationError('Sorry, there seems to be a problem making a new profile')
     },
 
-
     login: async (parent, { email, password }) => {
-      try {
-        const profile = await Profile.findOne({ email })
-
-        if (!profile) {
-          throw new AuthenticationError('No profile found with this email address.')
-        }
-
-        const correctPw = await profile.isCorrectPassword(password)
-
-        if (!correctPw) {
-          throw new AuthenticationError('Incorrect password or email')
-        }
-
-        const token = signToken(profile)
-
-        return { token, profile }
-
-      } catch (error) {
-        console.error('There was a problem logging in', error)
-        throw new AuthenticationError()
+      const profile = await Profile.findOne({ email });
+    
+      if (!profile) {
+        throw new AuthenticationError('Incorrect password or email');
       }
+    
+      const correctPassword = await bcrypt.compare(password, profile.password);
+    
+      if (!correctPassword) {
+        throw new AuthenticationError('Incorrect password or email');
+      }
+    
+      const token = signToken(profile);
+      return { token, profile };
     },
+
 
     // updating profile mutation
     // taking in their username, email and their password
@@ -122,19 +115,22 @@ const resolvers = {
       // using context.user for verification
       if (context.user) {
         try {
-          // creating a variable that takes in a username and email
-          // const updateData = { username, email }
+          // creating a variable that takes in a username and email along with other variables for user
+          const updateData = { username, email, bio, socialHandle, location }
+          // console.log(updatedData)
 
           if (password) {
             // when the user changes their password, the new password will become hashed using bcrypt
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(password, saltRounds);
-            // updateData.password = hashedPassword
+            //users info to be passed through along with password variable to be hashed separately 
+            updateData.password = hashedPassword
           }
 
           const updatedProfile = await Profile.findByIdAndUpdate(
             context.user._id,
-            { $set: { username, email, bio, socialHandle, location } },
+            //using variable with users info to be updated
+            { $set: updateData },
             { new: true, runValidators: true }
             //populating all things associated with profile model
           ).populate('posts comments reactions favoritePost');
