@@ -32,7 +32,7 @@ const Account = () => {
   // using the UPDATE PROFILE mutation to update users info
   const [updateProfile] = useMutation(UPDATE_PROFILE)
   const [removeProfile] = useMutation(REMOVE_PROFILE)
-  // setting up a useState for showing the form when clicked 
+  // setting up a useState for showing the a form when clicked 
   const [showUserForm, setShowUserForm] = useState(false)
   const [showPasswordForm, setPasswordForm] = useState(false)
   const [removeAcctForm, setRemoveAcctForm] = useState(false)
@@ -46,6 +46,7 @@ const Account = () => {
     bio: ''
   })
 
+  // setting up useState for password field separately 
   const [userPwdInfo, setUserPwdInfo] = useState({
     password: '',
     confirmPassword: ''
@@ -53,7 +54,7 @@ const Account = () => {
 
 
 
-  // useEffect for placing pre existing userInfo IN SIDE of the empty strings in the useState above (userInfo, setUserInfo).
+  // useEffect for placing pre existing userInfo IN SIDE of the empty strings in the useState above (userInfo, setUserInfo). // Doing the same for the password useState. This is so when the user saves their information and didnt change anything else, their current info stays in place
   useEffect(() => {
     if (data) {
       setUserInfo({
@@ -72,7 +73,8 @@ const Account = () => {
     }
   }, [data])
 
-  // handling the useState for handling the userInfo. 
+  // handling the useState for handling the users email, username, bio, etc text fields
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setUserInfo({
@@ -81,6 +83,7 @@ const Account = () => {
     })
   }
 
+  // handling the useState for handling the users password text fields
   const handlePwdChange = (event) => {
     const { name, value } = event.target
     setUserPwdInfo({
@@ -89,20 +92,35 @@ const Account = () => {
     })
   }
 
-
+  // a function that handles when the delete account form is activated or not
+  // set to true because the form will show when calling the function
   const handleDeleteForm = () => {
     setRemoveAcctForm(true)
   }
 
-
+  // a function that handles when changing the users settings form is activated or not
+  // set to true because the form will show when calling the function
   const handleChangeInfo = () => {
     setShowUserForm(true)
   }
 
+  // a function that handles when the password form is activated or not
+  // set to true because the form will show when calling the function
   const handlePasswordInfo = () => {
     setPasswordForm(true)
   }
 
+    // a function that handles when to close the form is activated or not
+  // set to false because the form will close when calling the function
+  const handleCloseAll = () => {
+    setShowUserForm(false)
+    setPasswordForm(false)
+  }
+
+  // removingProfile mutation. taking in the _id from the query me and removing it from the database
+  // the _id is the variable name we are giving it, data is what we loaded in via the query me, 'me' is the query we are grabbing it from, and the '_id' is what we are using from within the 'me' query.
+  // applying UI for toastify and having user logOut after function is called.
+  // function called, in this case, within the delete btn
   const handleDeleteAcctChange = async () => {
     try {
           const { data: deleteUser } = await removeProfile({
@@ -127,6 +145,8 @@ const Account = () => {
     }
   }
 
+  // a function thats called when the user clicks on the save button
+  // the function will confirm the passwords and if they dont match, will get alert via UI toastify
   const handleSaveChange = async () => {
     if (userPwdInfo.password !== userPwdInfo.confirmPassword) {
       toast.error('Passwords do not match', {
@@ -143,6 +163,9 @@ const Account = () => {
       return
     }
 
+    // using updateProfile mutation. Taking in custom names and assigning the value to them. Using the handleSaveChange function, user will get a confirmation upon save.
+    // taking in both useState names and variables from userInfo and userPwdInfo  
+    //! keep in mind, confirmPassword is NOT part of the query me and is only added to the useState and given a variable because its only purpose is to match the password textfield below when the user changes their password and is NOT being added or updated to the database. The only thing added to the database is the password variable
     try {
       const { data: updateUserInfo } = await updateProfile({
         variables: {
@@ -156,7 +179,7 @@ const Account = () => {
           location: userInfo.location,
         }
       })
-      toast.success('Saved', {
+      toast.success('Your changes have been saved', {
         position: 'top-left',
         autoClose: 2000,
         hideProgressBar: true,
@@ -167,8 +190,8 @@ const Account = () => {
         theme: 'light',
         transition: Bounce,
       })
-      setShowUserForm(false)
-      setPasswordForm(false)
+      // setShowUserForm(false)
+      // setPasswordForm(false)
     } catch (error) {
       console.error(error)
       toast.error('There was an issue saving your new information', {
@@ -186,10 +209,13 @@ const Account = () => {
   }
 
 
+  // function to redirect user to the login page.
+  // can be used in button clicks.
   const loginPage = () => {
     window.location.href = './login'
   }
 
+  // returning text for handling the loading, errors or if there is no data found
   if (loading) return <p>Loading your profile.</p>
   if (error) return <div> <p> Whoops! You need to be logged in to do that.</p><button onClick={loginPage}> Login</button></div>
   if (!data || !data.me) return <p>Profile not found</p>
@@ -214,7 +240,7 @@ const Account = () => {
         </>
       )}
       {showUserForm && (
-        <form>
+        <form >
           <div className='userEmailDiv'>
             <TextField
               className='userEmail'
@@ -280,8 +306,15 @@ const Account = () => {
               variant="filled"
             />
           </div>
-          <button type="button" onClick={handleSaveChange}>Save</button>
-          <button type="button" onClick={() => setShowUserForm(false)} >Cancel</button>
+          {!showPasswordForm && (
+            <>
+            <div>
+            <button onClick={handlePasswordInfo}>Change Password</button>
+            </div>
+            <button type="button" onClick={handleSaveChange}>Apply</button>
+            <button type="button" onClick={() => setShowUserForm(false)} >Done</button>
+            </>
+          )}
         </form>
       )}
       {showPasswordForm && (
@@ -308,12 +341,9 @@ const Account = () => {
               variant="filled"
             />
           </div>
-          <button type="button" onClick={handleSaveChange}>Save</button>
-          <button type="button" onClick={() => setPasswordForm(false)} >Cancel</button>
+          <button type="button" onClick={handleSaveChange}>Apply</button>
+          <button type='button' onClick={handleCloseAll}> Done </button>
         </form>
-      )}
-      {!showPasswordForm && (
-        <button onClick={handlePasswordInfo}>Change Password</button>
       )}
       <ToastContainer />
       {!removeAcctForm && !showPasswordForm && !showUserForm && (

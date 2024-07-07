@@ -16,11 +16,13 @@ import {
   Post,
   Login,
   Signup,
-  Account
+  Account,
 } from './pages/index.js'
 
 import {
-  NavBar
+  NavBar,
+  CreatePost,
+  LogWorkout
 } from './components/index.js'
 
 
@@ -32,12 +34,12 @@ const router = createBrowserRouter([
     children: [
       { index : true, element: <Home /> },
       { path: 'profile', element: <Profile /> },
-      { path: 'comment', element: <Comment /> },
       { path: 'post', element: <Post /> },
-      { path: 'topic', element: <Topic /> },
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
       { path: 'account', element: <Account /> },
+      { path: 'create-post', element: <CreatePost/>},
+      { path: 'log-workout', element: <LogWorkout/> }
 ],
   },
 ]);

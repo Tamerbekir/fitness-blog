@@ -1,0 +1,29 @@
+.userContent, 
+.userTopic,
+.userTopicForm{ 
+  background-color: rgba(240, 248, 255, 0.709);
+  width: 40%;
+  border-radius: 10px 10px 10px 10px;
+}
+
+.userPost {
+  height: 400px;
+  width: 100%;
+  background-color: rgba(240, 248, 255, 0.709);
+  border-radius: 10px 10px 10px 10px;
+  white-space:inherit;
+}
+
+.userTitle {
+  width: 100%;
+  background-color: rgba(240, 248, 255, 0.709);
+  border-radius: 10px 10px 10px 10px;
+}
+
+.userTitleDiv,
+.userPostDiv, 
+.userContentDiv, 
+.userTopicDiv,
+.userTopicForm {
+  margin: 1%;
+}

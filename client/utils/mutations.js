@@ -42,13 +42,6 @@ mutation Mutation($username: String!, $email: String!, $password: String!, $bio:
 }
 `
 
-export const UPDATE_PASSWORD = gql`
-  mutation UpdatePassword($currentPassword: String!, $newPassword: String!) {
-    updatePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
-      _id
-    }
-  }
-`
 
 export const REMOVE_PROFILE = gql`
   mutation RemoveProfile($_id: ID!) {

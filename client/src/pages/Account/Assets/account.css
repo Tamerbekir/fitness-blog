@@ -6,7 +6,7 @@
 .userPassword {
   background-color: rgba(240, 248, 255, 0.709);
   width: 40%;
-  /* border-radius: 20px 20px 0 0; */
+  border-radius: 10px 10px 10px 10px;
 }
 
 .userEmailDiv, 
@@ -17,6 +17,10 @@
 .userPwdDiv, 
 .userConfirmPwdDiv {
   margin: 1%;
+}
+
+.test {
+  border-radius: 40%;
 }
 
 .userLocationBox {

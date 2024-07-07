@@ -18,14 +18,11 @@ import { useEffect, useState } from 'react';
 
 import './assets/navBar.css'
 
-const pages = ['Home', 'Create Post', 'Log Workout'];
 
-const NavBar = () => { 
-
-  
+const NavBar = () => {
   //using useState to determine if user is logged in or not
   const [loggedIn, setIsLoggedIn] = useState(false)
-  
+
   // useEffect for logging user in 
   // this is ALSO used to determine if user is logged in
   // setting useState to users login auth/token
@@ -52,12 +49,22 @@ const NavBar = () => {
     window.location.href = './account'
   }
 
+  const handleCreatePostPage = () => {
+    window.location.href = './create-post'
+  }
+  const handleLogWorkoutPage = () => {
+    window.location.href = './log-workout'
+  }
+  const handleHomePage = () => {
+    window.location.href = './'
+  }
+
   //variable that used to determine user is not logged in
   const notLoggedIn = !Auth.loggedIn()
 
 
-// Boiler plate navBar from Material MUI
-// Adjustments were made to meet criteria
+  //! Boiler plate navBar from Material MUI
+  //! Adjustments were made to meet criteria
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -127,11 +134,15 @@ const NavBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleHomePage}>
+                <Typography>Home</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCreatePostPage}>
+                <Typography>CreatePost</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogWorkoutPage}>
+                <Typography>Log Workout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -151,18 +162,22 @@ const NavBar = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Fitness
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              sx={{ my: 2, color: 'white'}}
+            >
+              <MenuItem onClick={handleHomePage}>
+                <Typography>Home</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCreatePostPage}>
+                <Typography>CreatePost</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogWorkoutPage}>
+                <Typography>Log Workout</Typography>
+              </MenuItem>
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -188,13 +203,13 @@ const NavBar = () => {
               onClose={handleCloseUserMenu}
             >
               {/* {settings.map((setting) => ( */}
-                <MenuItem>
-                  {notLoggedIn && <IconButton className='loginBtn' onClick={handleLoginPage}>Login</IconButton>}
-                  <IconButton onClick={handleProfilePage}>Profile</IconButton>
-                  <IconButton onClick={handleAccountPage}>Account</IconButton> 
-                  {loggedIn && <IconButton className='logoutBtn' onClick={handleLogout}>Logout</IconButton>}
-                  <Typography textAlign="center">{}</Typography>
-                </MenuItem>
+              <MenuItem>
+                {notLoggedIn && <IconButton className='loginBtn' onClick={handleLoginPage}>Login</IconButton>}
+                <IconButton onClick={handleProfilePage}>Profile</IconButton>
+                <IconButton onClick={handleAccountPage}>Account</IconButton>
+                {loggedIn && <IconButton className='logoutBtn' onClick={handleLogout}>Logout</IconButton>}
+                <Typography textAlign="center">{ }</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
