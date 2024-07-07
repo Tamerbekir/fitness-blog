@@ -51,12 +51,12 @@ export const UPDATE_PASSWORD = gql`
 `
 
 export const REMOVE_PROFILE = gql`
-mutation Mutation($id: ID!) {
-  removeProfile(_id: $id) {
-    _id
+  mutation RemoveProfile($_id: ID!) {
+    removeProfile(_id: $_id) {
+      _id
+    }
   }
-}
-`
+`;
 
 export const ADD_POST = gql`
 mutation Mutation($title: String!, $content: String!, $topic: String!) {

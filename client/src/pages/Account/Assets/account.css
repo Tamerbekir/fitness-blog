@@ -1,9 +1,33 @@
-.userEmail, .username, .userBio, .userSocialHandle, .userLocation, .userPassword {
+.userEmail, 
+.username, 
+.userBio, 
+.userSocialHandle, 
+.userLocationBox, 
+.userPassword {
   background-color: rgba(240, 248, 255, 0.709);
+  width: 40%;
   /* border-radius: 20px 20px 0 0; */
 }
 
-.locationForm {
-  width: 20%;
+.userEmailDiv, 
+.usernameDiv, 
+.userLocationDiv, 
+.userSocialHandleDiv, 
+.userBioDiv, 
+.userPwdDiv, 
+.userConfirmPwdDiv {
+  margin: 1%;
+}
+
+.userLocationBox {
+  width: 40%;
   /* min-width: 10%; */
+}
+
+.deleteAcctBtn {
+  color: red;
+}
+
+.confirmDeleteText {
+  color: red
 }

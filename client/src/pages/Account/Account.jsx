@@ -1,34 +1,41 @@
-import Auth from '../../../utils/auth'
-import { useQuery, useMutation } from '@apollo/client'
-import { useState, useEffect } from 'react'
-import { UPDATE_PROFILE } from '../../../utils/mutations'
-import { QUERY_ME } from '../../../utils/queries'
-import { ToastContainer, toast, Bounce } from 'react-toastify'
+import {
+  Auth,
+  useQuery,
+  useMutation,
+  useState, 
+  useEffect,
+  UPDATE_PROFILE,
+  REMOVE_PROFILE,
+  QUERY_ME,
+  ToastContainer,
+  toast,
+  Bounce,
+  TextField,
+  DateFormat,
+  Box,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select
+} from './account'
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/account.css'
-// import { Input } from '@mui/material'
-import TextField from '@mui/material/TextField';
-import { DateFormat } from '../../components/index'
 
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 
 
 const Account = () => {
-
   //Used to ensure user is logged in during development purposes only
   const loggedIn = Auth.loggedIn()
   // setting up loading, error and data are the variables when querying the user me details 
   const { loading, error, data } = useQuery(QUERY_ME)
   // using the UPDATE PROFILE mutation to update users info
   const [updateProfile] = useMutation(UPDATE_PROFILE)
+  const [removeProfile] = useMutation(REMOVE_PROFILE)
   // setting up a useState for showing the form when clicked 
   const [showUserForm, setShowUserForm] = useState(false)
   const [showPasswordForm, setPasswordForm] = useState(false)
+  const [removeAcctForm, setRemoveAcctForm] = useState(false)
 
   // setting up the useState for the user and the info that will be used when changing their settings. Empty strings. This useState will be used with the useEffect below as well as taking in whatever the user types in
   const [userInfo, setUserInfo] = useState({
@@ -43,6 +50,7 @@ const Account = () => {
     password: '',
     confirmPassword: ''
   })
+
 
 
   // useEffect for placing pre existing userInfo IN SIDE of the empty strings in the useState above (userInfo, setUserInfo).
@@ -81,6 +89,12 @@ const Account = () => {
     })
   }
 
+
+  const handleDeleteForm = () => {
+    setRemoveAcctForm(true)
+  }
+
+
   const handleChangeInfo = () => {
     setShowUserForm(true)
   }
@@ -89,6 +103,29 @@ const Account = () => {
     setPasswordForm(true)
   }
 
+  const handleDeleteAcctChange = async () => {
+    try {
+          const { data: deleteUser } = await removeProfile({
+            variables: {
+              _id: data.me._id
+            }
+          })
+          toast.warning('Your account has been deleted. Bye!', {
+            position: 'top-left',
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+            transition: Bounce,
+          })
+          Auth.logout()
+    } catch (error) {
+      console.error('There was an error deleting profile:', error)
+    }
+  }
 
   const handleSaveChange = async () => {
     if (userPwdInfo.password !== userPwdInfo.confirmPassword) {
@@ -110,13 +147,13 @@ const Account = () => {
       const { data: updateUserInfo } = await updateProfile({
         variables: {
           ...userInfo,
-          username: userInfo.username || data.me.username,
-          email: userInfo.email || data.me.email,
-          password: userPwdInfo.password || data.me.password,
-          confirmPassword: userPwdInfo.confirmPassword || data.me.confirmPassword,
-          bio: userInfo.bio || data.me.bio,
-          socialHandle: userInfo.socialHandle || data.me.socialHandle,
-          location: userInfo.location || data.me.location,
+          username: userInfo.username,
+          email: userInfo.email,
+          password: userPwdInfo.password,
+          confirmPassword: userPwdInfo.confirmPassword,
+          bio: userInfo.bio,
+          socialHandle: userInfo.socialHandle ,
+          location: userInfo.location,
         }
       })
       toast.success('Saved', {
@@ -131,6 +168,7 @@ const Account = () => {
         transition: Bounce,
       })
       setShowUserForm(false)
+      setPasswordForm(false)
     } catch (error) {
       console.error(error)
       toast.error('There was an issue saving your new information', {
@@ -148,6 +186,9 @@ const Account = () => {
   }
 
 
+  const loginPage = () => {
+    window.location.href = './login'
+  }
 
   if (loading) return <p>Loading your profile.</p>
   if (error) return <div> <p> Whoops! You need to be logged in to do that.</p><button onClick={loginPage}> Login</button></div>
@@ -160,19 +201,21 @@ const Account = () => {
       {!showUserForm && (
         <>
           <h3 className='welcomeText'>Hey there, {userInfo.username}, This is your account information.</h3>
-          <p>Email: {userInfo.email}</p>
-          <p>Username: {userInfo.username}</p>
-          <p>Location: {userInfo.location}</p>
-          <p>Social: {userInfo.socialHandle}</p>
-          <p>Bio: {userInfo.bio}</p>
-          <button onClick={handleChangeInfo} >Change Account Settings</button>
+          <div>
+            <Box component="section" sx={{ p: 2, border: '3px solid grey' }}>
+              <p>Email: {userInfo.email}</p>
+              <p>Username: {userInfo.username}</p>
+              <p>Location: {userInfo.location}</p>
+              <p>Social: {userInfo.socialHandle}</p>
+              <p>Bio: {userInfo.bio}</p>
+            </Box>
+            <button onClick={handleChangeInfo} >Change Account Settings</button>
+          </div>
         </>
       )}
-
-
       {showUserForm && (
         <form>
-          <div>
+          <div className='userEmailDiv'>
             <TextField
               className='userEmail'
               type='text'
@@ -183,6 +226,7 @@ const Account = () => {
               variant="filled"
             />
           </div>
+          <div className='usernameDiv'>
           <TextField
             className='username'
             type='text'
@@ -192,9 +236,10 @@ const Account = () => {
             label="Username"
             variant="filled"
           />
+          </div>
           <div>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl className='locationForm'>
+            <Box className='userLocationDiv'>
+              <FormControl variant="filled" className="userLocationBox" >
                 <InputLabel id="location-select-label">Location</InputLabel>
                 <Select
                   className='userLocation'
@@ -211,7 +256,7 @@ const Account = () => {
               </FormControl>
             </Box>
           </div>
-          <div>
+          <div className='userSocialHandleDiv'>
             <TextField
               className='userSocialHandle'
               type='text'
@@ -222,7 +267,7 @@ const Account = () => {
               variant="filled"
             />
           </div>
-          <div>
+          <div className='userBioDiv'>
             <TextField
               className='userBio'
               type='text'
@@ -239,10 +284,9 @@ const Account = () => {
           <button type="button" onClick={() => setShowUserForm(false)} >Cancel</button>
         </form>
       )}
-
       {showPasswordForm && (
         <form>
-          <div>
+          <div className='userPwdDiv'>
             <TextField
               className='userPassword'
               type='password'
@@ -253,7 +297,7 @@ const Account = () => {
               variant="filled"
             />
           </div>
-          <div>
+          <div className='userConfirmPwdDiv'>
             <TextField
               className='userPassword'
               type='password'
@@ -264,18 +308,26 @@ const Account = () => {
               variant="filled"
             />
           </div>
-
           <button type="button" onClick={handleSaveChange}>Save</button>
           <button type="button" onClick={() => setPasswordForm(false)} >Cancel</button>
         </form>
-
       )}
-
       {!showPasswordForm && (
         <button onClick={handlePasswordInfo}>Change Password</button>
       )}
-
       <ToastContainer />
+      {!removeAcctForm && !showPasswordForm && !showUserForm && (
+        <button className='deleteAcctBtn' onClick={handleDeleteForm}> Delete Account</button>
+      )}
+      {removeAcctForm && !showPasswordForm && !showUserForm &&(
+        <div>
+        <>
+        <p className='confirmDeleteText' >Are you sure you want to delete your account? This is irreversible</p>
+        <button className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange}>Confirm Delete</button>
+        <button className='cancelAcctDeleteBtn' type="button" onClick={() => setRemoveAcctForm(false)} >Cancel</button>
+        </>
+      </div>
+      )}
       <p className='dateFormat'>Account created on <DateFormat /> </p>
     </div>
   )
