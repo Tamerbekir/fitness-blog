@@ -80,12 +80,29 @@ mutation Mutation($id: ID!, $title: String!, $content: String!, $topic: String!)
 `
 
 export const REMOVE_POST = gql `
-mutation Mutation($id: ID!) {
+mutation removePost($id: ID!) {
   removePost(_id: $id) {
     _id
   }
 }
 `
+
+
+export const ADD_WORKOUT = gql`
+mutation addWorkout($exercise: String!, $weight: Float!, $reps: Int!) {
+  addWorkout(exercise: $exercise, weight: $weight, reps: $reps) {
+    _id
+    weight
+    reps
+    exercise {
+      _id
+      exerciseName
+    }
+  }
+}
+`
+
+
 
 
 export const ADD_COMMENT = gql`

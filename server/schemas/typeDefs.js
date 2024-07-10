@@ -6,6 +6,10 @@ const typeDefs = `#graphql
     profile(_id: ID!): Profile
     posts: [Post!]
     post(_id: ID!): Post
+    workouts:[Workout!]
+    workout(_id: ID!): Workout
+    exercises: [Exercise!]
+    exercise(_id: ID!): Exercise
     topics: [Topic!]
     topic(_id: ID!): Topic
     comments: [Comment!]
@@ -21,10 +25,20 @@ const typeDefs = `#graphql
     socialHandle: String
     location: String
     posts: [Post!] 
+    workouts: [Workout!]
     reactions: [Post!]
     comments: [Comment!]
     favoritePost: [Post!]
     createdAt: String!
+  }
+
+  type Workout {
+    _id: ID!
+    weight: Float
+    reps: Int
+    createdAt: String!
+    profile: Profile!
+    exercise: [Exercise!]
   }
   # all things associated with a post
   type Post {
@@ -32,11 +46,11 @@ const typeDefs = `#graphql
     title: String!
     content: String!
     profile: Profile!  
+    createdAt: String!
     comments: [Comment!]
     reactions: [Profile!]
     favoritePost: [Profile!]
     topic: [Topic!]
-    createdAt: String!
   }
   # all things associated with a comment
   type Comment {
@@ -55,6 +69,12 @@ const typeDefs = `#graphql
     _id: ID!
     topicName: String!
     posts: [Post!]
+  }
+
+  type Exercise {
+    _id: ID!
+    exerciseName: String!
+    workouts: [Workout!] 
   }
   # for auth and who its assigned to
   type Auth {
@@ -114,6 +134,23 @@ const typeDefs = `#graphql
     removePost(
       _id: ID!
     ): Post
+
+    addWorkout(
+      exercise: String!
+      weight: Float!
+      reps: Int!
+    ): Workout
+
+    updateWorkout(
+      _id: ID!
+      exercise: String!
+      weight: Float!
+      reps: Int!
+    ): Workout
+
+    removeWorkout(
+      _id: ID!
+    ): Workout
 
     addOrRemoveReactionPost(
       postId: ID!

@@ -358,7 +358,8 @@ const Account = () => {
         </>
       </div>
       )}
-      <p className='dateFormat'>Account created on <DateFormat /> </p>
+      {/* Bringing in DateFormat and prop called createdAt and passing in the data from thw QUERY ME called createdAt */}
+      <p className='dateFormat'>Account created on <DateFormat createdAt={data.me.createdAt} /> </p>
     </div>
   )
 }

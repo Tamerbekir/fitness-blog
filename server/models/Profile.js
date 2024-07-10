@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, SchemaType } = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const profileSchema = new Schema({
@@ -19,11 +19,6 @@ const profileSchema = new Schema({
     required: true,
     minlength: 10
   }, 
-  // updatePassword: {
-  //   type: String,
-  //   required: true,
-  //   minlength: 10
-  // }, 
   bio: {
     type: String,
   },
@@ -37,6 +32,11 @@ const profileSchema = new Schema({
   posts: [{
     type: Schema.Types.ObjectId,
     ref: 'Post'
+  }],
+  //bringing in workout model for profile(s)
+  workouts: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Workout'
   }],
   comments: [{
     type: Schema.Types.ObjectId,

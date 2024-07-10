@@ -1,4 +1,4 @@
-const { Profile, Post, Comment, Topic } = require('../models');
+const { Profile, Post, Comment, Topic, Workout, Exercise } = require('../models');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 const bcrypt = require('bcrypt');
@@ -22,6 +22,17 @@ const resolvers = {
     posts: async () => Post.find({}).populate('profile topic comments reactions favoritePost'),
     // from type Query, finding single post
     post: async (parent, { _id }) => Post.findById(_id).populate('profile topic comments reactions removeReactions favoritePost'),
+
+    //finding workouts and populating the profile associated with them 
+    workouts: async () => Workout.find({}).populate(),
+
+    //finding a workout by its ID and populating the profile it is associated with it
+    workout: async (parent, { _id }) => Workout.findById(_id).populate('profile'),
+
+    exercises: async () => Exercise.find({}),
+
+    exercise: async (parent, { _id }) => Exercise.findById(_id).populate('workouts'),
+
     // from type Query, finding all topics
     topics: async () => Topic.find({}),
     // from type Query, finding single topics
@@ -42,6 +53,8 @@ const resolvers = {
 
     favoritePost: async (parent) => Post.find({ _id: { $in: parent.favoritePost } }),
 
+    //finding the workouts found in the profile by
+    workouts: async (parent) => Workout.find({ _id: { $in: parent.workouts } })
   },
 
   Post: {
@@ -56,6 +69,12 @@ const resolvers = {
     topic: async (parent) => Topic.find({ _id: { $in: parent.topic } })
   },
 
+  Workout: {
+    profile: async (parent) => Profile.findById(parent.profile),
+
+    exercise: async (parent) => Exercise.find({ _id: { $in: parent.exercise } })
+  },
+
   Comment: {
     profile: async (parent) => Profile.findById(parent.profile),
 
@@ -66,6 +85,10 @@ const resolvers = {
     likes: async (parent) => Profile.find({ _id: { $in: parent.likes } }),
 
     dislikes: async (parent) => Profile.find({ _id: { $in: parent.dislikes } })
+  },
+
+  Exercise: {
+    workouts: async (parent) => Workout.find({ _id: { $in: parent.workouts } })
   },
 
   Topic: {
@@ -93,17 +116,17 @@ const resolvers = {
 
     login: async (parent, { email, password }) => {
       const profile = await Profile.findOne({ email });
-    
+
       if (!profile) {
         throw new AuthenticationError('Incorrect password or email');
       }
-    
+
       const correctPassword = await bcrypt.compare(password, profile.password);
-    
+
       if (!correctPassword) {
         throw new AuthenticationError('Incorrect password or email');
       }
-    
+
       const token = signToken(profile);
       return { token, profile };
     },
@@ -207,6 +230,95 @@ const resolvers = {
       throw new AuthenticationError
     },
 
+    addWorkout: async (parent, { exercise, weight, reps }, context) => {
+      try {
+        if (context.user) {
+
+          const exerciseChoice = await Exercise.findOne({ exerciseName: exercise })
+
+          if (!exerciseChoice) {
+            throw new Error('No Exercise found')
+          }
+
+          const newWorkout = await Workout.create({
+            profile: context.user._id,
+            exercise: exerciseChoice._id,
+            weight,
+            reps,
+            createdAt: new Date()
+          })
+
+          await Profile.findByIdAndUpdate(
+            context.user._id,
+            { $addToSet: { workouts: newWorkout._id } },
+            { new: true, runValidators: true }
+          )
+
+          return Workout.findById(newWorkout._id).populate('profile exercise')
+        }
+      } catch (error) {
+        console.error('There was an error creating workout', error)
+        throw new AuthenticationError('There was an error creating workout', error)
+      }
+    },
+
+    updateWorkout: async (parent, { _id, exercise, reps, weight }, context) => {
+      try {
+        if (context.user) {
+          // variable for finding an exercise
+          const exerciseChoice = await Exercise.findOne(
+            // from the typeDefs Exercise Type, we say the exerciseName as a string will be the exercise found in the updateWorkout mutation
+            { exerciseName: exercise })
+
+          if (!exerciseChoice) {
+            throw new Error('Exercise cannot be found')
+          }
+
+          //finding the workout by its id, using set (becasue we arent adding, just setting) the exercise ID, weight and reps
+          const updateWorkout = await Workout.findByIdAndUpdate(
+            _id,
+            { $set: { exercise: exerciseChoice._id, weight, reps } },
+            { new: true, runValidators: true }
+          ).populate('profile exercise')
+
+
+          return updateWorkout
+        }
+      } catch (error) {
+        console.error('there was an error updating workout ->', error)
+        throw new AuthenticationError('there was an error updating workout ')
+      }
+    },
+
+    //remove workout mutation
+    removeWorkout: async (parent, { _id }, context) => {
+      try {
+        if (context.user) {
+          //find the workout by its id
+          const removeWorkout = await Workout.findByIdAndDelete(_id)
+
+          if (!removeWorkout) {
+            console.error('cannot locate workout to delete', error)
+          }
+
+          //find the profile by its id and update the workout associated with it
+          //removeWorkout mutation with profile
+          // pull the variable workouts from the profile model by its id
+          await Profile.findByIdAndUpdate(
+            removeWorkout.profile,
+            { $pull: { workouts: _id } },
+            { new: true, runValidators: true }
+          )
+
+          return removeWorkout
+
+        }
+      } catch (error) {
+        console.error('Error deleting workout', error)
+        throw new AuthenticationError('Error deleting workout')
+      }
+    },
+
     //updating post mutation
     updatePost: async (parent, { _id, title, content, topic }, context) => {
       if (context.user) {
@@ -271,39 +383,39 @@ const resolvers = {
           const post = await Post.findById(
             postId
           )
-          
+
           const hasReaction = post.reactions.includes(context.user._id)
 
-          if(hasReaction) {
-              await Post.findByIdAndUpdate(
-                postId,
-                { $pull: { reactions: context.user._id } },
-                { new: true, runValidators: true }
-              ).populate('profile reactions')
-    
-              await Profile.findByIdAndUpdate(
-                context.user._id,
-                { $pull: { reactions: postId } },
-                { new: true, runValidators: true }
-              )
+          if (hasReaction) {
+            await Post.findByIdAndUpdate(
+              postId,
+              { $pull: { reactions: context.user._id } },
+              { new: true, runValidators: true }
+            ).populate('profile reactions')
+
+            await Profile.findByIdAndUpdate(
+              context.user._id,
+              { $pull: { reactions: postId } },
+              { new: true, runValidators: true }
+            )
 
           } else {
             await Post.findByIdAndUpdate(
-                postId,
-                { $addToSet: { reactions: context.user._id } },
-                { new: true, runValidators: true }
-              )
+              postId,
+              { $addToSet: { reactions: context.user._id } },
+              { new: true, runValidators: true }
+            )
 
             // finding the profile and fetching data and updating it
             // going off context.user, add the reaction to their profile. 
             // this means the user can only add ONE reaction per post. 
-              await Profile.findByIdAndUpdate(
-                context.user._id,
-                //addToSet only allows one to be pushed into the array and avoids duplicates
-                { $addToSet: { reactions: postId } },
-                { new: true, runValidators: true }
-              )
-            }
+            await Profile.findByIdAndUpdate(
+              context.user._id,
+              //addToSet only allows one to be pushed into the array and avoids duplicates
+              { $addToSet: { reactions: postId } },
+              { new: true, runValidators: true }
+            )
+          }
 
           return Post.findById(postId).populate('profile reactions')
 
@@ -548,9 +660,9 @@ const resolvers = {
             );
           }
 
-            // if the user has liked the comment already
-            // pull the like from the comment id from the comment model 'likes'
-            if (hasLiked) {
+          // if the user has liked the comment already
+          // pull the like from the comment id from the comment model 'likes'
+          if (hasLiked) {
             await Comment.findByIdAndUpdate(
               commentId,
               { $pull: { likes: context.user._id } },
@@ -668,15 +780,15 @@ const resolvers = {
           const post = await Post.findById(
             postId
           )
-  
-          if(!post) {
+
+          if (!post) {
             throw new Error('No post with this id found')
           }
 
           const alreadyFavorite = post.favoritePost.includes(context.user._id)
           // const notFavorite = post.removeFavorites.includes(context.user._id)
 
-          if(alreadyFavorite) {
+          if (alreadyFavorite) {
             await Post.findByIdAndUpdate(
               postId,
               { $pull: { favoritePost: context.user._id } },
@@ -684,8 +796,8 @@ const resolvers = {
             )
 
             await Profile.findByIdAndUpdate(
-            context.user._id,
-              { $pull: { favoritePost: postId} },
+              context.user._id,
+              { $pull: { favoritePost: postId } },
               { new: true, runValidators: true }
             )
 

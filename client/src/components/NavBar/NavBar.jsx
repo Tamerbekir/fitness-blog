@@ -172,7 +172,7 @@ const NavBar = () => {
                 <Typography>Home</Typography>
               </MenuItem>
               <MenuItem onClick={handleCreatePostPage}>
-                <Typography>CreatePost</Typography>
+                <Typography>Create Post</Typography>
               </MenuItem>
               <MenuItem onClick={handleLogWorkoutPage}>
                 <Typography>Log Workout</Typography>

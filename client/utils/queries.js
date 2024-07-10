@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const QUERY_ME = gql`
-query Me {
+query Query {
   me {
     _id
     email
@@ -11,7 +11,17 @@ query Me {
     socialHandle
     bio
     createdAt
+      workouts {
+    _id
+    weight
+    reps
+    createdAt
+    exercise {
+      exerciseName
+    }
+  }
     posts {
+      _id
       title
       content
       topic {
@@ -59,6 +69,7 @@ export const QUERY_POSTS = gql`
     _id
     title
     content
+    createdAt
     profile {
       _id
       username

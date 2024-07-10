@@ -1,42 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_ME, QUERY_TOPICS } from '../../../utils/queries';
-import { ADD_POST } from '../../../utils/mutations';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import FormHelperText from '@mui/material/FormHelperText';
-import Auth from '../../../utils/auth'
+import {
+  useState,
+  useQuery, useMutation,
+  QUERY_ME, QUERY_TOPICS,
+  ADD_POST,
+  TextField,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  FormHelperText,
+  ToastContainer, toast, Bounce,
+  Auth
+} from './createPost'
 
 import './assets/createPost.css'
 
+
 const CreatePost = () => {
+  // used for testing purposes
   const loggedIn = Auth.loggedIn()
 
-  const { 
-    loading: loadingMe, 
-    error: errorMe, 
+  // Bringing in QUERY ME. Used property values to define bringing in data from 'me' query so it does not conflict with other queries. For example, in most cases it would be loading, error and data.
+  const {
+    loading: loadingMe,
+    error: errorMe,
     data: dataMe } = useQuery(QUERY_ME)
 
-  const { 
-    loading: loadingTopics, 
-    error: errorTopics, 
+  // Bringing in QUERY for topics
+  const {
+    loading: loadingTopics,
+    error: errorTopics,
     data: dataTopics } = useQuery(QUERY_TOPICS)
 
+  // adding mutation to add a post
   const [addPost] = useMutation(ADD_POST)
 
-  const redirect = () => {
-    window.location.href = './profile'
-  }
+  // redirect function that sends user to the profile page after post is made
+  // const redirect = () => {
+  //   window.location.href = './profile'
+  // }
 
+  // useState for creating a post
   const [addPostInfo, setAddPostInfo] = useState({
     title: '',
     content: '',
     topic: ''
   })
 
+  const [viewPostForm, setViewPostForm] = useState(false)
+
+  // handling the viewPost button
+  const handleViewPost = () => {
+    window.location.href = './profile'
+  }
+
+  // function for handling the change when a post is made, taking in useState name and values
   const handleAddPostChange = (event) => {
     const { name, value } = event.target;
     setAddPostInfo({
@@ -45,6 +63,7 @@ const CreatePost = () => {
     })
   }
 
+  // adding mutation to function to create a post and taking in useState variables
   const handleAddPost = async () => {
     try {
       await addPost({
@@ -54,26 +73,50 @@ const CreatePost = () => {
           topic: addPostInfo.topic
         }
       });
-      redirect()
-      console.log('Post added');
+      // console.log('Post added');
+       // once posted,show success
+      toast.success('Posted!', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+      //show the view post form/button once post is made
+      setViewPostForm(true)
     } catch (error) {
+      toast.error('There was an issue creating your post. Please check the fields and try again.', {
+        position: 'bottom-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
       console.error('There was an error creating this post:', error);
     }
   }
 
+  // function for going to login page
   const loginPage = () => {
     window.location.href = './login'
   }
 
+  // handling all loading for query Me and query topics
   if (loadingMe || loadingTopics) return <p>Loading your post creation...</p>
   if (errorMe || errorTopics) return <div> <p>Whoops! You need to be logged in to do that.</p></div>
   if (!dataMe || !dataTopics) return <p>Profile not found to create post</p>
 
-  // const topics = dataTopics.topics
 
   return (
     <div>
-
       {!loggedIn && (
         <button onClick={loginPage}>Login</button>
       )}
@@ -92,7 +135,7 @@ const CreatePost = () => {
         </div>
         <div className="userPostDiv">
           <TextField
-            minRows={15} 
+            minRows={15}
             multiline
             className='userPost'
             type='text'
@@ -115,11 +158,14 @@ const CreatePost = () => {
               label="Topic"
             >
               <MenuItem className='userTopicForm'>
-                <em>Select a topic</em>
               </MenuItem>
+              {/* Mapping over dataTopics with 'topics' from QUERY TOPICS */}
               {dataTopics.topics.map((topic) => (
+                // key will be the name we defined here (topic) along with its ._id which comes from Mongoose Atlas collection 
                 <MenuItem key={topic._id} value={topic.topicName}>
+                  {/* We make the value the defined value (topic) with the topicName, from the QUERY TOPICS */}
                   {topic.topicName}
+                  {/* We then display the topic names */}
                 </MenuItem>
               ))}
             </Select>
@@ -127,7 +173,11 @@ const CreatePost = () => {
           </FormControl>
         </div>
         <button type='button' onClick={handleAddPost}>Add Post</button>
+        {viewPostForm && (
+          <button type='button' onClick={handleViewPost} >View Posts</button>
+        )}
       </form>
+      <ToastContainer />
     </div>
   )
 }

@@ -1,59 +1,43 @@
-import Auth from '../../../utils/auth'
-import { useQuery } from '@apollo/client'
-import { useState } from 'react'
-import { QUERY_ME } from '../../../utils/queries'
+import Auth from '../../../utils/auth';
+import { useQuery } from '@apollo/client';
+import { QUERY_ME } from '../../../utils/queries';
+import DateFormatPost from '../../components/DateFormat/DateFormatPost';
+import DeletePost from '../../components/DeletePost/DeletePost';
+import { ToastContainer } from 'react-toastify'
 
+// export for profile
 const Profile = () => {
-  const loggedIn = Auth.loggedIn()
-  const { loading, error, data } = useQuery(QUERY_ME)
+  const loggedIn = Auth.loggedIn();
+  // using QUERY ME and taking in loading, error and data and also refetch
+  const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
   const loginPage = () => {
-    window.location.href = "./login"
-  }
+    window.location.href = "./login";
+  };
 
-  
-  
-  
-  if (loading) return <p>Loading your profile.</p>
+  if (loading) return <p>Loading your profile...please wait.</p>
   if (error) return <div> <p> Whoops! You need to be logged in to do that.</p><button onClick={loginPage}> Login</button></div>
-  if (!data || !data.me) return <p>Profile not found</p>
+  if (!data) return <p>Profile not found</p>
 
-  const posts = data.me.posts
-  const favoritePosts = data.me.favoritePost
-  // console.table(data.me.favoritePost)
-  
+  const posts = data.me.posts;
   
   return (
     <div>
-      {loggedIn && <p>if you can read this then user is Authenticated</p>}
+      {loggedIn && <p>If you can read this then user is Authenticated</p>}
       <div>
-        <h3>These are your posts:</h3>
-        {posts.map((post, index) => (
-          <div key={index}>
-
-            {/* bringing in title by user*/}
-            <h2>{post.title}</h2>
-
-            {/* bringing in posts by user*/}
-            <p>{post.content}</p>
-
-              {/* mapping over posts and getting title for user */}
-              {/* <p>Topic:</p> */}
-            {post.topic.map((topic, index) => (
-                <p key={index}>{topic.topicName}</p>
-              ))}
-
-              {/* mapping over favorites and getting title for user */}
-            <h2>Your favorites</h2>
-            {favoritePosts.map((favorite, index) => (
-              <p key={index}> {favorite.title}</p>
-            ))}  
-
+        <h1>Title</h1>
+        {posts.map((post) => (
+          <div key={post._id}>
+            <h1>{post.title}</h1>
+            {/* from the DeletePost component- the parameters we passed through, postId and refetch, will = the post._id and the refetch from the QUERY ME  */}
+            <DeletePost postId={post._id} refetch={refetch} />
+            <DateFormatPost createdAt={post.createdAt} />
           </div>
         ))}
       </div>
+      <ToastContainer />
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
