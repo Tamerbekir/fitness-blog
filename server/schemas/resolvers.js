@@ -195,6 +195,7 @@ const resolvers = {
 
     // taking in addPost mutations
     addPost: async (parent, { title, topic, content }, context) => {
+      try {
       if (context.user) {
         // because where are preassigned topics, we use the type Topic query and use the topicName as the topic and look that up 
         const topicChoice = await Topic.findOne({ topicName: topic })
@@ -227,8 +228,12 @@ const resolvers = {
         // returning the new post and updating the profile and topic
         return Post.findById(newPost._id).populate('profile topic')
       }
-      throw new AuthenticationError
-    },
+
+      } catch (error) {
+        console.error('error')
+        throw new AuthenticationError
+      }
+  },
 
     addWorkout: async (parent, { exercise, weight, reps }, context) => {
       try {

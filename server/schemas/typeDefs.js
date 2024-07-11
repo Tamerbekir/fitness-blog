@@ -34,8 +34,8 @@ const typeDefs = `#graphql
 
   type Workout {
     _id: ID!
-    weight: Float
-    reps: Int
+    weight: Float!
+    reps: Int!
     createdAt: String!
     profile: Profile!
     exercise: [Exercise!]
@@ -45,8 +45,8 @@ const typeDefs = `#graphql
     _id: ID!
     title: String!
     content: String!
-    profile: Profile!  
     createdAt: String!
+    profile: Profile!
     comments: [Comment!]
     reactions: [Profile!]
     favoritePost: [Profile!]
@@ -76,6 +76,7 @@ const typeDefs = `#graphql
     exerciseName: String!
     workouts: [Workout!] 
   }
+  
   # for auth and who its assigned to
   type Auth {
     token: ID!

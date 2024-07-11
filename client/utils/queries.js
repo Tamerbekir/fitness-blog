@@ -11,15 +11,15 @@ query Query {
     socialHandle
     bio
     createdAt
-      workouts {
-    _id
-    weight
-    reps
-    createdAt
-    exercise {
-      exerciseName
+    workouts {
+      _id
+      weight
+      reps
+      createdAt
+      exercise {
+        exerciseName
+      }
     }
-  }
     posts {
       _id
       title
@@ -33,7 +33,7 @@ query Query {
     }
   }
 }
-`
+`;
 
 export const QUERY_PROFILES = gql`
   query Profile {
@@ -64,18 +64,21 @@ export const QUERY_PROFILES = gql`
 `
 
 export const QUERY_POSTS = gql`
-  query Post {
-    posts {
+query Posts {
+  posts {
     _id
     title
     content
     createdAt
+    topic {
+      topicName
+    }
     profile {
       _id
       username
-      }
     }
   }
+}
 `
 
 
@@ -84,6 +87,15 @@ export const QUERY_TOPICS = gql`
     topics {
       _id
       topicName
+    }
+  }
+`
+
+export const QUERY_EXERCISE = gql`
+  query Exercise {
+    exercises {
+      _id
+      exerciseName
     }
   }
 `

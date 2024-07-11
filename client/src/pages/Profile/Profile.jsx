@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify'
 const Profile = () => {
   const loggedIn = Auth.loggedIn();
   // using QUERY ME and taking in loading, error and data and also refetch
+  // const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
   const loginPage = () => {
@@ -16,10 +17,14 @@ const Profile = () => {
   };
 
   if (loading) return <p>Loading your profile...please wait.</p>
-  if (error) return <div> <p> Whoops! You need to be logged in to do that.</p><button onClick={loginPage}> Login</button></div>
+  if (error) return <div> <p>{error.message}</p></div>
   if (!data) return <p>Profile not found</p>
 
-  const posts = data.me.posts;
+  const posts = data.me.posts
+  const workouts = data.me.workouts
+  const exercises = data.me.exercise
+
+  // console.log(workout)
   
   return (
     <div>
@@ -27,11 +32,25 @@ const Profile = () => {
       <div>
         <h1>Title</h1>
         {posts.map((post) => (
-          <div key={post._id}>
+        <div key={post._id}>
             <h1>{post.title}</h1>
             {/* from the DeletePost component- the parameters we passed through, postId and refetch, will = the post._id and the refetch from the QUERY ME  */}
+            {/* <p>{post.topic.topicName}</p> */}
             <DeletePost postId={post._id} refetch={refetch} />
             <DateFormatPost createdAt={post.createdAt} />
+          </div>
+        ))}
+        <p>Workout</p>
+        {workouts.map(workout => (
+          <div key={workout._id}>
+            <h5>Weight</h5>
+            <p>{workout.weight}</p>
+            <h5>Reps</h5>
+            <p>{workout.reps}</p>
+            <h5>Exercise</h5>
+            {workout.exercise.map((exercise) => (
+              <p key={exercise}>{exercise.exerciseName}</p>
+            ))}
           </div>
         ))}
       </div>

@@ -22,7 +22,7 @@ import {
 import {
   NavBar,
   CreatePost,
-  LogWorkout
+  CreateWorkout
 } from './components/index.js'
 
 
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       { path: 'signup', element: <Signup /> },
       { path: 'account', element: <Account /> },
       { path: 'create-post', element: <CreatePost/>},
-      { path: 'log-workout', element: <LogWorkout/> }
+      { path: 'log-workout', element: <CreateWorkout/> }
 ],
   },
 ]);
