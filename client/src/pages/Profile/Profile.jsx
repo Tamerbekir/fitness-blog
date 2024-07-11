@@ -1,15 +1,16 @@
-import Auth from '../../../utils/auth';
-import { useQuery } from '@apollo/client';
-import { QUERY_ME } from '../../../utils/queries';
-import DateFormatPost from '../../components/DateFormat/DateFormatPost';
-import DeletePost from '../../components/DeletePost/DeletePost';
+import Auth from '../../../utils/auth'
+import { useQuery } from '@apollo/client'
+import { QUERY_ME } from '../../../utils/queries'
+import DateFormatPost from '../../components/DateFormat/DateFormatPost'
+import DeletePost from '../../components/DeletePost/DeletePost'
 import { ToastContainer } from 'react-toastify'
+import Box from '@mui/material/Box'
+import { DataGrid } from '@mui/x-data-grid'
+import './assets/profile.css'
 
 // export for profile
 const Profile = () => {
   const loggedIn = Auth.loggedIn();
-  // using QUERY ME and taking in loading, error and data and also refetch
-  // const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
   const loginPage = () => {
@@ -20,45 +21,60 @@ const Profile = () => {
   if (error) return <div> <p>{error.message}</p></div>
   if (!data) return <p>Profile not found</p>
 
-  const posts = data.me.posts
-  const workouts = data.me.workouts
-  const exercises = data.me.exercise
+  const posts = data.me.posts;
+  const workouts = data.me.workouts;
 
-  // console.log(workout)
-  
+  // Prepare the rows for DataGrid
+  const rows = workouts.map((workout, index) => ({
+    id: index + 1,
+    weight: workout.weight,
+    reps: workout.reps,
+    createdAt: workout.createdAt,
+    exercises: workout.exercise.map(ex => ex.exerciseName)
+  }));
+
+  const columns = [
+    { field: 'id', headerName: 'Workout', width: 90 },
+    { field: 'weight', headerName: 'Weight', width: 100, editable: false },
+    { field: 'reps', headerName: 'Reps', width: 100, editable: false },
+    { field: 'exercises', headerName: 'Exercises', width: 150, editable: true },
+    { field: 'createdAt', headerName: 'Date', width: 200, editable: false }
+  ]
+
   return (
     <div>
       {loggedIn && <p>If you can read this then user is Authenticated</p>}
       <div>
         <h1>Title</h1>
         {posts.map((post) => (
-        <div key={post._id}>
+          <div key={post._id}>
             <h1>{post.title}</h1>
-            {post.topic.map((topic) => (
-              <p key={topic}>{topic.topicName}</p>
-            ))}
-            <p>{post.topic.topicName}</p>
             <DeletePost postId={post._id} refetch={refetch} />
             <DateFormatPost createdAt={post.createdAt} />
           </div>
         ))}
-        <p>Workout</p>
-        {workouts.map(workout => (
-          <div key={workout._id}>
-            <h5>Weight</h5>
-            <p>{workout.weight}</p>
-            <h5>Reps</h5>
-            <p>{workout.reps}</p>
-            <h5>Exercise</h5>
-            {workout.exercise.map((exercise) => (
-              <p key={exercise}>{exercise.exerciseName}</p>
-            ))}
-          </div>
-        ))}
+        <h1>Workouts</h1>
+        <Box sx={{ height: 400, width: '70%' }}>
+          <DataGrid
+          className='workoutGrid'
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5]}
+            checkboxSelection
+            disableRowSelectionOnClick
+          />
+        </Box>
       </div>
       <ToastContainer />
     </div>
-  );
-};
+  )
+}
 
 export default Profile;

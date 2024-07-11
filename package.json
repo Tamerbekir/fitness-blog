@@ -17,6 +17,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.21",
+    "@mui/x-data-grid": "^7.9.0",
     "concurrently": "^8.2.2",
     "dayjs": "^1.11.11",
     "react-dayjs": "^0.3.2",

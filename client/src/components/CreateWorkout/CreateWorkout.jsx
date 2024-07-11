@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
+import { QUERY_EXERCISE } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
-import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 
 const CreateWorkout = () => {
-  const { loading, error, data, refetch } = useQuery(QUERY_ME);
-  const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
+
+  const { 
+    loading: loadingExercise, 
+    error: errorExercise, 
+    data: dataExercise } = useQuery(QUERY_EXERCISE)
 
   const [addWorkout] = useMutation(ADD_WORKOUT, {
     onCompleted: () => {
       refetch(); // Refetch the data after the mutation is completed
     }
   });
+
+  const [addWorkoutForm, setAddWorkoutForm] = useState()
+
+  const profileRedirect = () => {
+    window.location.href = './profile'
+  }
 
   const [addWorkoutInfo, setAddWorkoutInfo] = useState({
     weight: '',
@@ -36,23 +45,24 @@ const CreateWorkout = () => {
           exercise: addWorkoutInfo.exercise
         }
       });
-      // Reset the form after successful mutation
+      // Resetting the form after successful mutation
       setAddWorkoutInfo({
         weight: '',
         reps: '',
         exercise: ''
       });
+      setAddWorkoutForm(true)
     } catch (error) {
       console.log('addWorkoutInfo', addWorkoutInfo);
       console.error('there was an error creating a workout');
     }
   };
 
-  if (loading || loadingExercise) return <p>Loading workout creation...</p>;
-  if (error || errorExercise) return <p>{error.message || errorExercise.message}</p>;
-  if (!data || !dataExercise) return <p>Profile or workout data not found</p>;
+  if (loadingExercise) return <p>Loading workout creation...</p>;
+  if (errorExercise) return <p>{error.message || errorExercise.message}</p>;
+  if (!dataExercise) return <p>Profile or workout data not found</p>;
 
-  const workouts = data.me.workouts;
+  // const workouts = data.me.workouts;
 
   return (
     <div>
@@ -93,18 +103,12 @@ const CreateWorkout = () => {
         </select>
       </div>
       <button onClick={handleAddWorkout}>Log workout</button>
+      {addWorkoutForm && (
+        <button onClick={profileRedirect}>View Workouts</button>
+      )}
       <div>
-        <h2>Workouts</h2>
-        {workouts.map((workout) => (
-          <div key={workout._id}>
-            <h3>Exercise</h3>
-            <p>{workout.exercise.exerciseName}</p>
-            <h4>Weight</h4>
-            <p>{workout.weight}</p>
-            <h4>Reps</h4>
-            <p>{workout.reps}</p>
-          </div>
-        ))}
+
+
       </div>
     </div>
   );
