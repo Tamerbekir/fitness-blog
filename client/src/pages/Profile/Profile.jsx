@@ -34,8 +34,10 @@ const Profile = () => {
         {posts.map((post) => (
         <div key={post._id}>
             <h1>{post.title}</h1>
-            {/* from the DeletePost component- the parameters we passed through, postId and refetch, will = the post._id and the refetch from the QUERY ME  */}
-            {/* <p>{post.topic.topicName}</p> */}
+            {post.topic.map((topic) => (
+              <p key={topic}>{topic.topicName}</p>
+            ))}
+            <p>{post.topic.topicName}</p>
             <DeletePost postId={post._id} refetch={refetch} />
             <DateFormatPost createdAt={post.createdAt} />
           </div>
