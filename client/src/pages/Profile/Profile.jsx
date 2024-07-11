@@ -7,15 +7,16 @@ import { ToastContainer } from 'react-toastify'
 import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
 import './assets/profile.css'
+import  PostCard  from '../../components/PostCard/PostCard'
 
 // export for profile
 const Profile = () => {
   const loggedIn = Auth.loggedIn();
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
-  const loginPage = () => {
-    window.location.href = "./login";
-  };
+  // const loginPage = () => {
+  //   window.location.href = "./login";
+  // };
 
   if (loading) return <p>Loading your profile...please wait.</p>
   if (error) return <div> <p>{error.message}</p></div>
@@ -45,14 +46,19 @@ const Profile = () => {
     <div>
       {loggedIn && <p>If you can read this then user is Authenticated</p>}
       <div>
-        <h1>Title</h1>
+        <h1>Posts</h1>
         {posts.map((post) => (
-          <div key={post._id}>
-            <h1>{post.title}</h1>
+          <PostCard
+            key={post._id}
+            title={post.title}
+            content={post.content}
+            topicName={post.topic.topicName}
+            createdAt={post.createdAt}
+            >
+            {/* <DateFormatPost createdAt={post.createdAt} /> */}
             <DeletePost postId={post._id} refetch={refetch} />
-            <DateFormatPost createdAt={post.createdAt} />
-          </div>
-        ))}
+          </PostCard>
+          ))}
         <h1>Workouts</h1>
         <Box sx={{ height: 400, width: '70%' }}>
           <DataGrid
@@ -73,6 +79,8 @@ const Profile = () => {
         </Box>
       </div>
       <ToastContainer />
+<DateFormatPost />
+<DeletePost />
     </div>
   )
 }

@@ -22,7 +22,7 @@ import {
 import {
   NavBar,
   CreatePost,
-  CreateWorkout
+  CreateWorkout,
 } from './components/index.js'
 
 
