@@ -4,35 +4,35 @@ import { QUERY_EXERCISE } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
 
 const CreateWorkout = () => {
-
-  const { 
-    loading: loadingExercise, 
-    error: errorExercise, 
-    data: dataExercise } = useQuery(QUERY_EXERCISE)
+  const {
+    loading: loadingExercise,
+    error: errorExercise,
+    data: dataExercise,
+  } = useQuery(QUERY_EXERCISE);
 
   const [addWorkout] = useMutation(ADD_WORKOUT, {
     onCompleted: () => {
       refetch(); // Refetch the data after the mutation is completed
-    }
+    },
   });
 
-  const [addWorkoutForm, setAddWorkoutForm] = useState()
+  const [addWorkoutForm, setAddWorkoutForm] = useState();
 
   const profileRedirect = () => {
-    window.location.href = './profile'
-  }
+    window.location.href = "./profile";
+  };
 
   const [addWorkoutInfo, setAddWorkoutInfo] = useState({
-    weight: '',
-    reps: '',
-    exercise: ''
+    weight: "",
+    reps: "",
+    exercise: "",
   });
 
   const handleAddWorkoutChange = (event) => {
     const { name, value } = event.target;
     setAddWorkoutInfo({
       ...addWorkoutInfo,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -42,19 +42,19 @@ const CreateWorkout = () => {
         variables: {
           weight: parseFloat(addWorkoutInfo.weight),
           reps: parseInt(addWorkoutInfo.reps),
-          exercise: addWorkoutInfo.exercise
-        }
+          exercise: addWorkoutInfo.exercise,
+        },
       });
-      // Resetting the form after successful mutation
+      // resetting the form after mutation for adding a workout
       setAddWorkoutInfo({
-        weight: '',
-        reps: '',
-        exercise: ''
+        weight: "",
+        reps: "",
+        exercise: "",
       });
-      setAddWorkoutForm(true)
+      setAddWorkoutForm(true);
     } catch (error) {
-      console.log('addWorkoutInfo', addWorkoutInfo);
-      console.error('there was an error creating a workout');
+      console.log("addWorkoutInfo", addWorkoutInfo);
+      console.error("there was an error creating a workout");
     }
   };
 
@@ -70,9 +70,9 @@ const CreateWorkout = () => {
       <div>
         <label htmlFor="weight">Weight</label>
         <input
-          type='text'
-          id='weight'
-          name='weight'
+          type="text"
+          id="weight"
+          name="weight"
           value={addWorkoutInfo.weight}
           onChange={handleAddWorkoutChange}
         />
@@ -80,9 +80,9 @@ const CreateWorkout = () => {
       <div>
         <label htmlFor="reps">Reps</label>
         <input
-          type='text'
-          name='reps'
-          id='reps'
+          type="text"
+          name="reps"
+          id="reps"
           value={addWorkoutInfo.reps}
           onChange={handleAddWorkoutChange}
         />
@@ -90,8 +90,8 @@ const CreateWorkout = () => {
       <div>
         <label htmlFor="exercise">Exercise</label>
         <select
-          name='exercise'
-          id='exercise'
+          name="exercise"
+          id="exercise"
           value={addWorkoutInfo.exercise}
           onChange={handleAddWorkoutChange}
         >
@@ -106,12 +106,9 @@ const CreateWorkout = () => {
       {addWorkoutForm && (
         <button onClick={profileRedirect}>View Workouts</button>
       )}
-      <div>
-
-
-      </div>
+      <div></div>
     </div>
   );
 };
 
-export default CreateWorkout
+export default CreateWorkout;

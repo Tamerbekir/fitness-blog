@@ -1,35 +1,34 @@
-import { 
+import {
   useState,
   Form,
   Button,
   FloatingLabel,
   ToastContainer,
   toast,
-  Bounce
-  } from './login'
+  Bounce,
+} from "./login";
 
-import { useMutation } from '@apollo/client';
-import { LOGIN } from '../../../utils/mutations';
-import Auth from '../../../utils/auth';
-import './assets/login.css';
-import 'react-toastify/dist/ReactToastify.css';
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../../../utils/mutations";
+import Auth from "../../../utils/auth";
+import "./assets/login.css";
+import "react-toastify/dist/ReactToastify.css";
 
 // setting useState for taking in user information
 const Login = () => {
   const [userLogin, setUserLogin] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-// setting useState for an error message that occur
+  // setting useState for an error message that occur
   const [error, setError] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-
 
   // adding mutation for adding profile
-  const [login] = useMutation(LOGIN)
+  const [login] = useMutation(LOGIN);
 
   // handling function that registers the user inputs in the text field
   //updates the userLogin useState
@@ -42,8 +41,8 @@ const Login = () => {
   };
 
   const signUpOption = () => {
-    window.location.href = './signup'
-  }
+    window.location.href = "./signup";
+  };
 
   const confirmLogin = async (event) => {
     event.preventDefault();
@@ -53,18 +52,18 @@ const Login = () => {
     //using Toastify for UI aesthetics
     if (!userLogin.email || !userLogin.password) {
       setError({
-        email: !userLogin.email ? 'Please enter an email' : '',
-        password: !userLogin.password ? 'Please enter your password' : '',
+        email: !userLogin.email ? "Please enter an email" : "",
+        password: !userLogin.password ? "Please enter your password" : "",
       });
-      toast.error('Please fill out all fields.', {
-        position: 'top-left',
+      toast.error("Please fill out all fields.", {
+        position: "bottom-right",
         autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: 'light',
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -83,29 +82,29 @@ const Login = () => {
       if (data.login.token) {
         Auth.login(data.login.token);
         // This line calls the login method of the Auth object, passing the token obtained from the addProfile mutation. The token is now stored with the logged in user
-        toast.success('Logged in!', {
-          position: 'top-left',
+        toast.success("Welcome back!", {
+          position: "bottom-right",
           autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: false,
           draggable: true,
           progress: undefined,
-          theme: 'light',
+          theme: "light",
           transition: Bounce,
         });
       }
     } catch (err) {
       console.error(err);
-      toast.error('There was an error logging in.', {
-        position: 'top-left',
+      toast.error("There was an error logging in.", {
+        position: "top-left",
         autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: 'light',
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -113,10 +112,10 @@ const Login = () => {
 
   return (
     <div>
-      <h1 className='loginHeader'>Login</h1>
-      <Form onSubmit={confirmLogin} className='contactContainer'>
+      <h1 className="loginHeader">Login</h1>
+      <Form onSubmit={confirmLogin} className="contactContainer">
         <br />
-        <Form.Text className='messageEmail'></Form.Text>
+        <Form.Text className="messageEmail"></Form.Text>
         <FloatingLabel label="Email">
           <Form.Control
             type="email"
@@ -127,18 +126,18 @@ const Login = () => {
             onChange={handleUserChange}
           />
         </FloatingLabel>
-        <p style={{ color: '#F56742' }}>{error.email}</p>
-        <Form.Text className='passwordText'></Form.Text>
+        <p style={{ color: "#F56742" }}>{error.email}</p>
+        <Form.Text className="passwordText"></Form.Text>
         <FloatingLabel label="Password">
           <Form.Control
-            className='passwordInput'
+            className="passwordInput"
             type="password"
             name="password"
             value={userLogin.password}
             onChange={handleUserChange}
           />
         </FloatingLabel>
-        <p style={{ color: '#F56742' }}>{error.password}</p>
+        <p style={{ color: "#F56742" }}>{error.password}</p>
         <br />
         <Button type="submit" size="sm">
           Login
@@ -157,10 +156,9 @@ const Login = () => {
         theme="light"
       />
       <br />
-      <button
-      className='signUpHere'
-      onClick={signUpOption}
-      >Don't have an account? Sign up here </button>
+      <button className="signUpHere" onClick={signUpOption}>
+        Don't have an account? Sign up here{" "}
+      </button>
     </div>
   );
 };
