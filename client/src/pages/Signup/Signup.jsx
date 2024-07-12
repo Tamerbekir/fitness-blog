@@ -88,8 +88,8 @@ const Signup = () => {
       if (data.addProfile.token) {
         Auth.login(data.addProfile.token);
         // This line calls the login method of the Auth object, passing the token obtained from the addProfile mutation. The token is now stored with the logged in user
-        toast.success('Account created successfully!', {
-          position: 'top-left',
+        toast.success('Welcome to the Fitness Blog!', {
+          position: 'bottom-left',
           autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,

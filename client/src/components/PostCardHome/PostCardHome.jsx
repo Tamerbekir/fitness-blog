@@ -14,9 +14,8 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
+import DeletePost from "../DeletePost/DeletePost";
 
-import { QUERY_POSTS } from '../../../utils/queries'
-import { useQuery } from '@apollo/client'
 
 const ExpandMore = styled((props) => {
 
@@ -30,18 +29,14 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const PostCardHome = ({ username, title, content, createdAt }) => {
+const PostCardHome = ({  deletePostId, username, title, content, topicName, createdAt, showDeleteBtn, refetch }) => {
   const [expanded, setExpanded] = useState(false);
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const { loading, error, data } = useQuery(QUERY_POSTS)
-
-  if (loading) return <p>Loading users posts...please wait</p>
-  if (error) return <p>{error}</p>
-  if (!data) return <p>No posts from users found</p>
 
 
   return (
@@ -58,24 +53,15 @@ const PostCardHome = ({ username, title, content, createdAt }) => {
           </IconButton>
         }
         title={title}
-        subheader={new Date(createdAt).toLocaleDateString()}
+        subheader={createdAt}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {content}
         </Typography>
-        <div>
-          {data.posts.map(post => (
-            <div key={post._id}>
-              <Typography variant="body2" color="text.primary">
-                {/* <p>Topic</p> */}
-                {post.topic.map(topic => (
-                  <p>{topic.topicName}</p>
-                ))}
-              </Typography>
-            </div>
-          ))}
-        </div>
+        <Typography variant="body2" color="text.primary">
+          {topicName}
+        </Typography>
         <Typography variant="body2" color="text.primary">
         </Typography>
       </CardContent>
@@ -97,10 +83,10 @@ const PostCardHome = ({ username, title, content, createdAt }) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Add additional details or methods related to the post here.
-          </Typography>
+          {/* <Typography paragraph>Method:</Typography>
+          <Typography paragraph> */}
+            {showDeleteBtn && <DeletePost postId={deletePostId} refetch={refetch} />}
+          {/* </Typography> */}
         </CardContent>
       </Collapse>
     </Card>
