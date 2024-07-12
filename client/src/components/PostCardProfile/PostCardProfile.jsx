@@ -14,12 +14,8 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
-// import { QUERY_POSTS } from '../../../utils/queries';
-// import { useQuery } from '@apollo/client';
 
 const ExpandMore = styled((props) => {
-
-  // const {loading, error, data} = useQuery(QUERY_POSTS)
 
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -31,24 +27,20 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const RecipeReviewCard = ({ title, content, topicName, createdAt }) => {
+const PostCardProfile = ({ username, title, content, topicName, createdAt }) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  // if (loading) return <p>Loading...please wait</p>;
-  // if (error) return <p>Error: { error.message }</p>;
-  // if (!data || !data.posts) return <p>No posts found!</p>;
-
 
   return (
-    <Card sx={{ maxWidth: 345, margin: 2 }}>
+    <Card sx={{ maxWidth: 10000, margin: 2 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            {title[0]}
+            {username[0]}
           </Avatar>
         }
         action={
@@ -64,14 +56,7 @@ const RecipeReviewCard = ({ title, content, topicName, createdAt }) => {
           {content}
         </Typography>
         <Typography variant="body2" color="text.primary">
-        {/* {data.posts.map(post => (
-        <div key={post._id}> 
-          {post.topic.map(topic => (
-            <p key={topic._id}>{topic.topicName}</p>
-          ))}
-        </div>
-      ))} */}
-      Topic:
+        Topic:
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -102,4 +87,4 @@ const RecipeReviewCard = ({ title, content, topicName, createdAt }) => {
   );
 }
 
-export default RecipeReviewCard
+export default PostCardProfile

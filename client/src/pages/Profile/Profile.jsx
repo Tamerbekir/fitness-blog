@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
 import './assets/profile.css'
-import  PostCard  from '../../components/PostCard/PostCard'
+import PostCardProfile from '../../components/PostCardProfile/PostCardProfile'
 
 // export for profile
 const Profile = () => {
@@ -42,27 +42,37 @@ const Profile = () => {
     { field: 'createdAt', headerName: 'Date', width: 200, editable: false }
   ]
 
+  //making the users first initial capital in the post card
+  const usernameInitial = (str) => {
+    return str.toUpperCase()
+  }
+
   return (
     <div>
       {loggedIn && <p>If you can read this then user is Authenticated</p>}
       <div>
-        <h1>Posts</h1>
+        <h1>Hey there, {data.me.username}, here are all of your posts and workouts!</h1>
         {posts.map((post) => (
-          <PostCard
+          <PostCardProfile
             key={post._id}
             title={post.title}
+            username={usernameInitial(data.me.username)}
             content={post.content}
             topicName={post.topic.topicName}
             createdAt={post.createdAt}
-            >
-            {/* <DateFormatPost createdAt={post.createdAt} /> */}
+          >   
+                   {/* not working for topic names */}
+          {/* {post.topic.map(topic => (
+            <p key={topic._id}>{topic.topicName}</p>
+          ))} */}
+            <DateFormatPost createdAt={post.createdAt} />
             <DeletePost postId={post._id} refetch={refetch} />
-          </PostCard>
-          ))}
+          </PostCardProfile>
+        ))}
         <h1>Workouts</h1>
         <Box sx={{ height: 400, width: '70%' }}>
           <DataGrid
-          className='workoutGrid'
+            className='workoutGrid'
             rows={rows}
             columns={columns}
             initialState={{
@@ -79,8 +89,8 @@ const Profile = () => {
         </Box>
       </div>
       <ToastContainer />
-<DateFormatPost />
-<DeletePost />
+      <DateFormatPost />
+      <DeletePost />
     </div>
   )
 }

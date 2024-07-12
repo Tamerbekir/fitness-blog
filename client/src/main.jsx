@@ -13,7 +13,6 @@ import {
   Profile, 
   Topic,
   Comment,
-  Post,
   Login,
   Signup,
   Account,
@@ -34,7 +33,6 @@ const router = createBrowserRouter([
     children: [
       { index : true, element: <Home /> },
       { path: 'profile', element: <Profile /> },
-      { path: 'post', element: <Post /> },
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
       { path: 'account', element: <Account /> },
