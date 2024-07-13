@@ -6,3 +6,4 @@ export { default as CreateWorkout } from "./CreateWorkout/CreateWorkout";
 export { default as DeletePost } from "./DeletePost/DeletePost";
 export { default as PostCard } from "./PostCard/PostCard";
 export { default as AddReaction } from "./AddReaction/AddReaction";
+export { default as EditPost } from "./EditPost/EditPost";

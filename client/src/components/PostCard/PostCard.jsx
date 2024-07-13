@@ -22,6 +22,8 @@ import Paper from '@mui/material/Paper';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import AddReaction from '../AddReaction/AddReaction'
+import EditIcon from '@mui/icons-material/Edit';
+import EditPost from "../EditPost/EditPost";
 
 
 
@@ -47,6 +49,7 @@ const PostCard = ({
   topicName,
   createdAt,
   showDeleteBtn,
+  showEditBtn,
   refetch,
 }) => {
   const [expanded, setExpanded] = useState();
@@ -105,7 +108,7 @@ const PostCard = ({
         </IconButton>
         <Collapse in={showEmojis} timeout='auto' unmountOnExit>
           <Paper>
-            <AddReaction/>
+            <AddReaction />
           </Paper>
         </Collapse>
         <IconButton />
@@ -124,6 +127,9 @@ const PostCard = ({
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
+          {showEditBtn && (
+            <EditPost postId={postId} refetch={refetch} />
+          )}
         </CardContent>
       </Collapse>
     </Card>

@@ -21,6 +21,8 @@ import {
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/account.css'
 
+import EditPost from '../../components/EditPost/EditPost'
+
 
 
 

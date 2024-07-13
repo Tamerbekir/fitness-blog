@@ -344,7 +344,7 @@ const resolvers = {
             { $set: { title, content, topic: topicChoice._id } },
             { new: true, runValidators: true }
             //populate everything via post
-          ).populate('title content profile topic comments reactions removeReactions favoritePost')
+          ).populate('title content profile topic comments reactions favoritePost')
 
           return updatePost
 

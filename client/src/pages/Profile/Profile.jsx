@@ -1,8 +1,6 @@
 import Auth from "../../../utils/auth";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../../../utils/queries";
-import DateFormatPost from "../../components/DateFormat/DateFormatPost";
-import DeletePost from "../../components/DeletePost/DeletePost";
 import { ToastContainer } from "react-toastify";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
@@ -14,7 +12,7 @@ const Profile = () => {
   const loggedIn = Auth.loggedIn();
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
-  const logIn = () => {
+  const login = () => {
     window.location.href = "./login";
   };
   const signUp = () => {
@@ -28,7 +26,7 @@ const Profile = () => {
         <p>Whoops! You need to be signed in to do that.</p>
         <p>Not already a member?</p>
         <p>
-          Be sure to <button onClick={logIn}>Login</button> or{" "}
+          Be sure to <button onClick={login}>Login</button> or{" "}
           <button onClick={signUp}>sign up</button> here.
         </p>
       </div>
@@ -36,10 +34,10 @@ const Profile = () => {
   if (!data) return <p>Profile not found</p>;
 
   //making handling data easier, but will not use for now
-  const posts = data.me.posts;
-  const workouts = data.me.workouts;
-  const username = data.me.username;
-  const userData = data.me;
+  // const posts = data.me.posts;
+  // const workouts = data.me.workouts;
+  // const username = data.me.username;
+  // const userData = data.me;
 
   // Prepare the rows for DataGrid
   const rows = data.me.workouts.map((workout, index) => ({
@@ -81,6 +79,7 @@ const Profile = () => {
             createdAt={data.me.createdAt}
             topicName={post.topic.map((topic) => topic.topicName)}
             showDeleteBtn={loggedIn}
+            showEditBtn={loggedIn}
             refetch={refetch}
           >
           </PostCard>

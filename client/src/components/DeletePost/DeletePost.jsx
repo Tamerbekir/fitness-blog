@@ -59,19 +59,19 @@ const DeletePost = ({ postId, refetch }) => {
     <div>
       {/* Do not show the delete confirm form, just show the delete button and setDeleteForm to true on button press- which means when the this button is pressed the deleteForm will show */}
       {!deleteForm && (
-        <IconButton>
-          <DeleteIcon className='deletePostBtn' type="button" onClick={() => setDeleteForm(true)} />
+        <IconButton className='deletePostBtn' type="button" onClick={() => setDeleteForm(true)}>
+          <DeleteIcon className='deletePostBtn'/>
         </IconButton>
       )}
       {/* the confirm delete form. Button click calls delete function and closes the form (false as shown above) and cancel will close the form as well */}
       {deleteForm && (
         <>
           {/* <p className='confirmDeletePostText'>Are you sure you want to delete this post? This is irreversible.</p> */}
-          <IconButton className='confirmDeletePostBtn'>
-            <DeleteIcon className='deletePostBtn' type="button" onClick={handleDeletePost} />
+          <IconButton className='deletePostBtn' type="button" onClick={handleDeletePost}>
+            <DeleteIcon className='confirmDeletePostBtn'/>
           </IconButton>
-          <IconButton>
-            <CancelIcon className='deletePostCancel' type="button" onClick={() => setDeleteForm(false)} />
+          <IconButton className='deletePostCancel' type="button" onClick={() => setDeleteForm(false)}>
+            <CancelIcon className='deletePostCancel' />
           </IconButton>
         </>
       )}
