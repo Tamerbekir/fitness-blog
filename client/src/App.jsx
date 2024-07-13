@@ -33,6 +33,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <NavBar />
+      <style>{'body { background-color: #303134; }'}</style>
         <Outlet />
     </ApolloProvider>
   );

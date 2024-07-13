@@ -158,7 +158,6 @@ const Signup = () => {
     <ThemeProvider theme={defaultTheme}>
       <Box
         sx={{
-          backgroundColor: 'grey',
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
@@ -177,7 +176,7 @@ const Signup = () => {
               alignItems: 'center',
             }}
           >
-            
+
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

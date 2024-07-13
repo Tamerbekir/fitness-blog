@@ -1,21 +1,38 @@
-import {
-  useState,
-  Form,
-  Button,
-  FloatingLabel,
-  ToastContainer,
-  toast,
-  Bounce,
-} from "./login";
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '../../../utils/mutations';
+import Auth from '../../../utils/auth';
+import { useState } from 'react';
+import { ToastContainer, Bounce ,toast } from 'react-toastify';
 
-import { useMutation } from "@apollo/client";
-import { LOGIN } from "../../../utils/mutations";
-import Auth from "../../../utils/auth";
-import "./assets/login.css";
-import "react-toastify/dist/ReactToastify.css";
 
-// setting useState for taking in user information
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="/">
+        Fitness Blog
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const defaultTheme = createTheme()
+
 const Login = () => {
+
   const [userLogin, setUserLogin] = useState({
     email: "",
     password: "",
@@ -40,9 +57,9 @@ const Login = () => {
     });
   };
 
-  const signUpOption = () => {
-    window.location.href = "./signup";
-  };
+  // const signUpOption = () => {
+  //   window.location.href = "./signup";
+  // };
 
   const confirmLogin = async (event) => {
     event.preventDefault();
@@ -56,7 +73,7 @@ const Login = () => {
         password: !userLogin.password ? "Please enter your password" : "",
       });
       toast.error("Please fill out all fields.", {
-        position: "bottom-right",
+        position: "bottom-left",
         autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -96,8 +113,8 @@ const Login = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("There was an error logging in.", {
-        position: "top-left",
+      toast.error("Incorrect username or password", {
+        position: "bottom-right",
         autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -110,41 +127,89 @@ const Login = () => {
     }
   };
 
+
   return (
-    <div>
-      <h1 className="loginHeader">Login</h1>
-      <Form onSubmit={confirmLogin} className="contactContainer">
-        <br />
-        <Form.Text className="messageEmail"></Form.Text>
-        <FloatingLabel label="Email">
-          <Form.Control
-            type="email"
-            name="email"
-            // the value is the useState + the variables
-            value={userLogin.email}
-            // the onchange calls the function
-            onChange={handleUserChange}
-          />
-        </FloatingLabel>
-        <p style={{ color: "#F56742" }}>{error.email}</p>
-        <Form.Text className="passwordText"></Form.Text>
-        <FloatingLabel label="Password">
-          <Form.Control
-            className="passwordInput"
-            type="password"
-            name="password"
-            value={userLogin.password}
-            onChange={handleUserChange}
-          />
-        </FloatingLabel>
-        <p style={{ color: "#F56742" }}>{error.password}</p>
-        <br />
-        <Button type="submit" size="sm">
-          Login
-        </Button>
-      </Form>
-      <ToastContainer
-        position="top-left"
+    <ThemeProvider theme={defaultTheme}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Container component="main" maxWidth="xs" sx={{ color: 'white' }}>
+          <CssBaseline />
+          <Box
+            onSubmit={confirmLogin}
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <Box component="form" sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  variant='filled'
+                  fullWidth
+                  id="email"
+                  className='userEmailInput'
+                  label="Email Address"
+                  autoComplete="email"
+                  type="email"
+                  name="email"
+                  value={userLogin.email}
+                  onChange={handleUserChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Password"
+                  variant='filled'
+                  required
+                  fullWidth
+                  className='userPasswordInput'
+                  type="password"
+                  name="password"
+                  value={userLogin.password}
+                  onChange={handleUserChange}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Login
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="./signup" variant="body2">
+                  Dont have an account? Signup
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <ToastContainer
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -155,12 +220,11 @@ const Login = () => {
         pauseOnHover
         theme="light"
       />
-      <br />
-      <button className="signUpHere" onClick={signUpOption}>
-        Don't have an account? Sign up here{" "}
-      </button>
-    </div>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+      </Box>
+    </ThemeProvider>
   );
-};
+}
 
 export default Login;
