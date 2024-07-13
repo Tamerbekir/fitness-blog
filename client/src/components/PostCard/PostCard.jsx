@@ -67,7 +67,7 @@ const PostCard = ({
     <Card sx={{ maxWidth: 10000, margin: 2 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[800] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: '#44074d' }} aria-label="recipe">
             {username[0]}
           </Avatar>
         }
@@ -121,7 +121,7 @@ const PostCard = ({
           <ExpandMoreIcon />
         </ExpandMore>
         {showDeleteBtn && (
-          <DeletePost postId={postId} refetch={refetch} />
+          <DeletePost postId={postId} refetch={refetch}/>
         )}
         <ToastContainer />
       </CardActions>
@@ -132,7 +132,7 @@ const PostCard = ({
           )}
         </CardContent>
       </Collapse>
-    </Card>
+    </Card> 
   );
 };
 

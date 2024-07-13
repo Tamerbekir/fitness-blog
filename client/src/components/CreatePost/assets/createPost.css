@@ -1,7 +1,7 @@
 .userContent, 
 .userTopic,
 .userTopicForm{ 
-  background-color: rgba(240, 248, 255, 0.709);
+  background-color: rgba(255, 255, 255, 0.987);
   width: 40%;
   border-radius: 10px 10px 10px 10px;
 }
@@ -9,14 +9,14 @@
 .userPost {
   height: 400px;
   width: 100%;
-  background-color: rgba(240, 248, 255, 0.709);
+  background-color: rgba(255, 255, 255, 0.987);
   border-radius: 10px 10px 10px 10px;
   white-space:inherit;
 }
 
 .userTitle {
   width: 100%;
-  background-color: rgba(240, 248, 255, 0.709);
+  background-color: rgba(255, 255, 255, 0.987);
   border-radius: 10px 10px 10px 10px;
 }
 

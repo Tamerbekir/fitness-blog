@@ -67,6 +67,7 @@ const DeletePost = ({ postId, refetch }) => {
       {deleteForm && (
         <>
           {/* <p className='confirmDeletePostText'>Are you sure you want to delete this post? This is irreversible.</p> */}
+          <small>Confirm Delete</small>
           <IconButton className='deletePostBtn' type="button" onClick={handleDeletePost}>
             <DeleteIcon className='confirmDeletePostBtn'/>
           </IconButton>
