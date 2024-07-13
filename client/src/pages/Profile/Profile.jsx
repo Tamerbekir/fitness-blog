@@ -74,7 +74,7 @@ const Profile = () => {
           <PostCard
             className="PostCard"
             key={post._id}
-            deletePostId={post._id}
+            postId={post._id}
             title={post.title}
             username={usernameInitial(data.me.username)}
             content={post.content}
@@ -83,7 +83,6 @@ const Profile = () => {
             showDeleteBtn={loggedIn}
             refetch={refetch}
           >
-            <DateFormatPost createdAt={post.createdAt} />
           </PostCard>
         ))}
         <h1>Workouts</h1>

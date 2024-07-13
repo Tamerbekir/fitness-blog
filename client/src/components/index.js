@@ -5,4 +5,4 @@ export { default as CreatePost } from "./CreatePost/CreatePost";
 export { default as CreateWorkout } from "./CreateWorkout/CreateWorkout";
 export { default as DeletePost } from "./DeletePost/DeletePost";
 export { default as PostCard } from "./PostCard/PostCard";
-// export { default as PostCardHome } from  './PostCardHome/PostCardHome'
+export { default as AddReaction } from "./AddReaction/AddReaction";

@@ -49,8 +49,6 @@ const Home = () => {
             createdAt={post.createdAt}
             topicName={post.topic.map((topic) => topic.topicName)}
           >
-            <DateFormatPost createdAt={post.createdAt} />
-            {loggedIn && <DeletePost postId={post._id} refetch={refetch} />}
           </PostCard>
         ))}
       </div>
@@ -68,8 +66,9 @@ const Home = () => {
               <PostCard
                 className="postCardHome"
                 key={post._id}
-                deletePostId={post._id}
+                postId={post._id}
                 title={post.title}
+                showYouForPost={loggedIn && dataMe.me._id === post.profile._id}
                 username={usernameInitial(post.profile.username)}
                 content={post.content}
                 createdAt={post.createdAt}
@@ -77,7 +76,7 @@ const Home = () => {
                 showDeleteBtn={loggedIn && dataMe.me._id === post.profile._id}
                 refetch={refetch}
               >
-                <DateFormatPost createdAt={post.createdAt} />
+                {/* <DateFormatPost createdAt={post.createdAt} /> */}
               </PostCard>
             ))}
           </>

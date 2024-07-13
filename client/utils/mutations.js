@@ -166,7 +166,7 @@ mutation DislikeComment($commentId: ID!) {
 `
 
 export const ADD_OR_REMOVE_REACTION_POST = gql`
-mutation Mutation($postId: ID!) {
+mutation AddOrRemoveFavoritePost($postId: ID!) {
   addOrRemoveReactionPost(postId: $postId) {
     _id
   }

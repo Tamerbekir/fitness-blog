@@ -31,6 +31,9 @@ query Query {
     favoritePost {
       title
     }
+    reactions {
+      _id
+    }
   }
 }
 `;
