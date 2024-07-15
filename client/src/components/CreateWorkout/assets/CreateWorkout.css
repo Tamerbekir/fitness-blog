@@ -1,0 +1,11 @@
+.exercise-select {
+  width: 20%;
+}
+
+.userWeight,
+.userReps,
+.userNotes,
+.userMiles,
+.userPace {
+  background-color: white;
+}

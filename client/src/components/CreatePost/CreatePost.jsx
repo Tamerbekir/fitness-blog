@@ -30,7 +30,8 @@ const CreatePost = () => {
   const {
     loading: loadingTopics,
     error: errorTopics,
-    data: dataTopics } = useQuery(QUERY_TOPICS)
+    data: dataTopics, 
+    refetch } = useQuery(QUERY_TOPICS)
 
   // adding mutation to add a post
   const [addPost] = useMutation(ADD_POST)
@@ -172,7 +173,7 @@ const CreatePost = () => {
             <FormHelperText>Select a topic for your post</FormHelperText>
           </FormControl>
         </div>
-        <button type='button' onClick={handleAddPost}>Add Post</button>
+        <button type='button' refetch={refetch} onClick={handleAddPost}>Add Post</button>
         {viewPostForm && (
           <button type='button' onClick={handleViewPost} >View Posts</button>
         )}

@@ -15,6 +15,9 @@ query Query {
       _id
       weight
       reps
+      miles
+      pace
+      notes
       createdAt
       exercise {
         exerciseName
@@ -101,6 +104,22 @@ export const QUERY_EXERCISE = gql`
       exerciseName
     }
   }
+`
+export const QUERY_WORKOUTS= gql`
+query Workout {
+  workouts {
+    _id
+    weight
+    reps
+    pace
+    notes
+    miles
+    createdAt
+    exercise {
+      exerciseName
+    }
+  }
+}
 `
 
 export const QUERY_COMMENTS = gql`

@@ -13,11 +13,27 @@ const workoutSchema = new Schema({
   }],
   weight: {
     type: Number,
-    required: true
+    required: false
   },
   reps: {
     type: Number,
-    required: true
+    required: false
+  },
+  miles: {
+    type: Number,
+    required: false
+  },
+  pace: {
+    type: Number,
+    required: false
+  },
+  workoutNotes: {
+    type: String,
+    required: false
+  },
+  notes: {
+    type: String,
+    required: false
   },
   createdAt: {
     type: Date,

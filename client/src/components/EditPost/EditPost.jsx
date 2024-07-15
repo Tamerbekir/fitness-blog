@@ -14,6 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
+import Accordion from '@mui/material/Accordion';
+
 
 const EditPost = ({ postId, refetch }) => {
   const {
@@ -36,7 +38,8 @@ const EditPost = ({ postId, refetch }) => {
   const [editPostInfo, setEditPostInfo] = useState({
     title: '',
     content: '',
-    topic: ''
+    topic: '',
+    edited: 'Edited'
   })
 
   // mapping through the data me QUERY to get to posts that way the post content can show when clicking on the edit button
@@ -48,7 +51,6 @@ const EditPost = ({ postId, refetch }) => {
           id: postId,
           title: post.title,
           content: post.content,
-          topic: post.topic
         });
       }
     }
@@ -81,7 +83,7 @@ const EditPost = ({ postId, refetch }) => {
     } catch (error) {
       console.error('There was an error editing post:', error)
     }
-    console.log("title:",editPostInfo.title, "content:", editPostInfo.content, "topic:", editPostInfo.topic)
+    console.log("title:", editPostInfo.title, "content:", editPostInfo.content, "topic:", editPostInfo.topic)
   }
 
   const handleViewPost = () => {
@@ -145,6 +147,9 @@ const EditPost = ({ postId, refetch }) => {
             </FormControl>
             <button type='button' onClick={handleEditPostChange}>Add Post</button>
           </div>
+          <div>
+
+          </div>
           {viewPostForm && (
             <button type='button' onClick={handleViewPost} >View Posts</button>
           )}
@@ -152,9 +157,9 @@ const EditPost = ({ postId, refetch }) => {
       )}
       {!editPostFormBtn && (
         <>
-          <IconButton type='button' onClick={()=> setEditPostFormBtn(true)}>
-            <EditIcon className="editPostBtn"/>
-            </IconButton>
+          <IconButton type='button' onClick={() => setEditPostFormBtn(true)}>
+            <EditIcon className="editPostBtn" />
+          </IconButton>
         </>
       )}
       <ToastContainer />

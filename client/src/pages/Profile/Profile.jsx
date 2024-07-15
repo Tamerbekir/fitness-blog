@@ -44,6 +44,9 @@ const Profile = () => {
     id: index + 1,
     weight: workout.weight,
     reps: workout.reps,
+    miles: workout.miles,
+    pace: workout.pace,
+    notes: workout.notes,
     createdAt: workout.createdAt,
     exercises: workout.exercise.map((exercise) => exercise.exerciseName),
   }));
@@ -53,6 +56,9 @@ const Profile = () => {
     { field: "weight", headerName: "Weight", width: 100, editable: false },
     { field: "reps", headerName: "Reps", width: 100, editable: false },
     { field: "exercises", headerName: "Exercises", width: 150, editable: true },
+    { field: "miles", headerName: "Miles", width: 200, editable: false },
+    { field: "pace", headerName: "Pace", width: 200, editable: false },
+    { field: "notes", headerName: "Notes", width: 200, editable: false },
     { field: "createdAt", headerName: "Date", width: 200, editable: false },
   ];
 
