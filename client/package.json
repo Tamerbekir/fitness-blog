@@ -20,6 +20,7 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@mui/x-data-grid": "^7.10.0",
+    "autosuggest-highlight": "^3.3.4",
     "jwt-decode": "^4.0.0",
     "mdb-react-ui-kit": "^8.0.0",
     "prop-types": "^15.8.1",
