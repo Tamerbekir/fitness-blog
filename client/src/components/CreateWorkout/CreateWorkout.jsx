@@ -9,8 +9,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import Autocomplete from '@mui/material/Autocomplete';
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
+import AutosuggestHighlightMatch from "autosuggest-highlight/match";
+import AutosuggestHighlightParse from "autosuggest-highlight/parse";
 import { IconButton } from '@mui/material';
 import './assets/CreateWorkout.css'
 
@@ -117,8 +117,8 @@ const CreateWorkout = () => {
            //boiler plate template
           renderOption={(props, option, { inputValue }) => {
             const { key, ...optionProps } = props;
-            const matches = match(option, inputValue, { insideWords: true });
-            const parts = parse(option, matches);
+            const matches = AutosuggestHighlightMatch(option, inputValue, { insideWords: true });
+            const parts = AutosuggestHighlightParse(option, matches);
 
             //boiler plate template
             return (

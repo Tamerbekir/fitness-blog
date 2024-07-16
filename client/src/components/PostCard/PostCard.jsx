@@ -54,6 +54,8 @@ const PostCard = ({
 }) => {
   const [expanded, setExpanded] = useState();
   const [showEmojis, setShowEmojis] = useState()
+  const [loggedIn, setLoggedInAction] = useState('Hey')
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -103,9 +105,13 @@ const PostCard = ({
           <CommentIcon />
         </IconButton>
         {/* once clicked on the icon button for AddReactionIcon, run useState which shows emojis to click on  */}
-        <IconButton onClick={handleReactionClick} aria-expanded={showEmojis} aria-label="show emojis">
-          <AddReactionIcon postId={postId} />
-        </IconButton>
+
+
+          <IconButton onClick={handleReactionClick} aria-expanded={showEmojis} aria-label="show emojis">
+            <AddReactionIcon postId={postId} />
+          </IconButton>
+
+
         <Collapse in={showEmojis} timeout='auto' unmountOnExit>
           <Paper>
             <AddReaction />
@@ -121,7 +127,7 @@ const PostCard = ({
           <ExpandMoreIcon />
         </ExpandMore>
         {showDeleteBtn && (
-          <DeletePost postId={postId} refetch={refetch}/>
+          <DeletePost postId={postId} refetch={refetch} />
         )}
         <ToastContainer />
       </CardActions>
@@ -132,7 +138,7 @@ const PostCard = ({
           )}
         </CardContent>
       </Collapse>
-    </Card> 
+    </Card>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 // import { useEffect } from "react";
-// import { useState } from "react";
+import { useState } from "react";
 import { QUERY_POSTS, QUERY_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
 import PostCard from "../components/PostCard/PostCard";
@@ -9,6 +9,7 @@ import PostCard from "../components/PostCard/PostCard";
 
 const Home = () => {
   const loggedIn = Auth.loggedIn();
+
 
   const { loading, error, data, refetch } = useQuery(QUERY_POSTS);
   const {
@@ -26,6 +27,8 @@ const Home = () => {
   //     localStorage.setItem('seenPopup', 'true')
   //   }
   // }, [])
+
+
  
   const usernameInitial = (str) => {
     return str.toUpperCase();
