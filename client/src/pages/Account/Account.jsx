@@ -2,7 +2,7 @@ import {
   Auth,
   useQuery,
   useMutation,
-  useState, 
+  useState,
   useEffect,
   UPDATE_PROFILE,
   REMOVE_PROFILE,
@@ -21,7 +21,8 @@ import {
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/account.css'
 
-import EditPost from '../../components/EditPost/EditPost'
+import { IconButton } from "@mui/material"
+
 
 
 
@@ -76,7 +77,7 @@ const Account = () => {
   }, [data])
 
   // handling the useState for handling the users email, username, bio, etc text fields
-  
+
   const handleInputChange = (event) => {
     const { name, value } = event.target
     setUserInfo({
@@ -112,7 +113,7 @@ const Account = () => {
     setPasswordForm(true)
   }
 
-    // a function that handles when to close the form is activated or not
+  // a function that handles when to close the form is activated or not
   // set to false because the form will close when calling the function
   const handleCloseAll = () => {
     setShowUserForm(false)
@@ -125,23 +126,23 @@ const Account = () => {
   // function called, in this case, within the delete btn
   const handleDeleteAcctChange = async () => {
     try {
-          const { data: deleteUser } = await removeProfile({
-            variables: {
-              _id: data.me._id
-            }
-          })
-          toast.warning('Your account has been deleted. Bye!', {
-            position: 'top-left',
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-            transition: Bounce,
-          })
-          Auth.logout()
+      const { data: deleteUser } = await removeProfile({
+        variables: {
+          _id: data.me._id
+        }
+      })
+      toast.warning('Your account has been deleted. Bye!', {
+        position: 'top-left',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+      Auth.logout()
     } catch (error) {
       console.error('There was an error deleting profile:', error)
     }
@@ -177,7 +178,7 @@ const Account = () => {
           password: userPwdInfo.password,
           confirmPassword: userPwdInfo.confirmPassword,
           bio: userInfo.bio,
-          socialHandle: userInfo.socialHandle ,
+          socialHandle: userInfo.socialHandle,
           location: userInfo.location,
         }
       })
@@ -231,13 +232,33 @@ const Account = () => {
           <h3 className='welcomeText'>Hey there, {userInfo.username}, This is your account information.</h3>
           <div>
             <Box component="section" sx={{ p: 2, border: '3px solid grey' }}>
-              <p>Email: {userInfo.email}</p>
-              <p>Username: {userInfo.username}</p>
-              <p>Location: {userInfo.location}</p>
-              <p>Social: {userInfo.socialHandle}</p>
-              <p>Bio: {userInfo.bio}</p>
+              <InputLabel
+                className='userEmailField'
+              >
+                Email: {userInfo.email}
+              </InputLabel>
+              <InputLabel
+                className='usernameField'
+              >
+                Username: {userInfo.username}
+              </InputLabel>
+              <InputLabel
+                className='userLocationField'
+              >
+                Location: {userInfo.location}
+              </InputLabel>
+              <InputLabel
+                className='userSocialHandleField'
+              >
+                Social: {userInfo.socialHandle}
+              </InputLabel>
+              <InputLabel
+                className='userBioField'
+              >
+                Bio: {userInfo.bio}
+              </InputLabel>
             </Box>
-            <button onClick={handleChangeInfo} >Change Account Settings</button>
+            <IconButton className='changeSettingsBtn' onClick={handleChangeInfo} >Change Account Settings</IconButton>
           </div>
         </>
       )}
@@ -255,15 +276,15 @@ const Account = () => {
             />
           </div>
           <div className='usernameDiv'>
-          <TextField
-            className='username'
-            type='text'
-            name='username'
-            value={userInfo.username}
-            onChange={handleInputChange}
-            label="Username"
-            variant="filled"
-          />
+            <TextField
+              className='username'
+              type='text'
+              name='username'
+              value={userInfo.username}
+              onChange={handleInputChange}
+              label="Username"
+              variant="filled"
+            />
           </div>
           <div>
             <Box className='userLocationDiv'>
@@ -310,11 +331,11 @@ const Account = () => {
           </div>
           {!showPasswordForm && (
             <>
-            <div>
-            <button onClick={handlePasswordInfo}>Change Password</button>
-            </div>
-            <button type="button" onClick={handleSaveChange}>Apply</button>
-            <button type="button" onClick={() => setShowUserForm(false)} >Done</button>
+              <div>
+                <IconButton onClick={handlePasswordInfo}>Change Password</IconButton>
+              </div>
+              <IconButton type="button" onClick={handleSaveChange}>Apply</IconButton>
+              <IconButton type="button" onClick={() => setShowUserForm(false)} >Done</IconButton>
             </>
           )}
         </form>
@@ -343,22 +364,22 @@ const Account = () => {
               variant="filled"
             />
           </div>
-          <button type="button" onClick={handleSaveChange}>Apply</button>
-          <button type='button' onClick={handleCloseAll}> Done </button>
+          <IconButton type="button" onClick={handleSaveChange}>Apply</IconButton>
+          <IconButton type='button' onClick={handleCloseAll}> Done </IconButton>
         </form>
       )}
       <ToastContainer />
       {!removeAcctForm && !showPasswordForm && !showUserForm && (
-        <button className='deleteAcctBtn' onClick={handleDeleteForm}> Delete Account</button>
+        <IconButton className='deleteAcctBtn' onClick={handleDeleteForm}> Delete Account</IconButton>
       )}
-      {removeAcctForm && !showPasswordForm && !showUserForm &&(
+      {removeAcctForm && !showPasswordForm && !showUserForm && (
         <div>
-        <>
-        <p className='confirmDeleteText' >Are you sure you want to delete your account? This is irreversible</p>
-        <button className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange}>Confirm Delete</button>
-        <button className='cancelAcctDeleteBtn' type="button" onClick={() => setRemoveAcctForm(false)} >Cancel</button>
-        </>
-      </div>
+          <>
+            <p className='confirmDeleteText' >Are you sure you want to delete your account? This is irreversible</p>
+            <IconButton className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange}>Confirm Delete</IconButton>
+            <IconButton className='cancelAcctDeleteBtn' type="button" onClick={() => setRemoveAcctForm(false)} >Cancel</IconButton>
+          </>
+        </div>
       )}
       {/* Bringing in DateFormat and prop called createdAt and passing in the data from thw QUERY ME called createdAt */}
       <p className='dateFormat'>Account created on <DateFormat createdAt={data.me.createdAt} /> </p>

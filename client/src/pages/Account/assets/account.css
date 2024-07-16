@@ -9,6 +9,16 @@
   border-radius: 10px 10px 10px 10px;
 }
 
+.userEmailField, 
+.usernameField, 
+.userBioField, 
+.userSocialHandleField, 
+.userLocationField, 
+.userPasswordField {
+  color: White !important;
+  font: 40px !important;
+}
+
 .userEmailDiv, 
 .usernameDiv, 
 .userLocationDiv, 

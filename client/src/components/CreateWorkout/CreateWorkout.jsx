@@ -3,10 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
 import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 import Autocomplete from '@mui/material/Autocomplete';
 import AutosuggestHighlightMatch from "autosuggest-highlight/match";
