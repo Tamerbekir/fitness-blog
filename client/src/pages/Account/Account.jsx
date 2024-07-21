@@ -21,7 +21,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css'
 import './assets/account.css'
 
-import { IconButton } from "@mui/material"
+import { Button } from "@mui/material"
 
 
 
@@ -258,7 +258,7 @@ const Account = () => {
                 Bio: {userInfo.bio}
               </InputLabel>
             </Box>
-            <IconButton className='changeSettingsBtn' onClick={handleChangeInfo} >Change Account Settings</IconButton>
+            <Button className='changeSettingsBtn' onClick={handleChangeInfo} >Change Account Settings</Button>
           </div>
         </>
       )}
@@ -332,10 +332,10 @@ const Account = () => {
           {!showPasswordForm && (
             <>
               <div>
-                <IconButton onClick={handlePasswordInfo}>Change Password</IconButton>
+                <Button onClick={handlePasswordInfo}>Change Password</Button>
               </div>
-              <IconButton type="button" onClick={handleSaveChange}>Apply</IconButton>
-              <IconButton type="button" onClick={() => setShowUserForm(false)} >Done</IconButton>
+              <Button type="button" onClick={handleSaveChange}>Apply</Button>
+              <Button type="button" onClick={() => setShowUserForm(false)} >Done</Button>
             </>
           )}
         </form>
@@ -364,20 +364,20 @@ const Account = () => {
               variant="filled"
             />
           </div>
-          <IconButton type="button" onClick={handleSaveChange}>Apply</IconButton>
-          <IconButton type='button' onClick={handleCloseAll}> Done </IconButton>
+          <Button type="button" onClick={handleSaveChange}>Apply</Button>
+          <Button type='button' onClick={handleCloseAll}> Done </Button>
         </form>
       )}
       <ToastContainer />
       {!removeAcctForm && !showPasswordForm && !showUserForm && (
-        <IconButton className='deleteAcctBtn' onClick={handleDeleteForm}> Delete Account</IconButton>
+        <Button className='deleteAcctBtn' onClick={handleDeleteForm}> Delete Account</Button>
       )}
       {removeAcctForm && !showPasswordForm && !showUserForm && (
         <div>
           <>
             <p className='confirmDeleteText' >Are you sure you want to delete your account? This is irreversible</p>
-            <IconButton className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange}>Confirm Delete</IconButton>
-            <IconButton className='cancelAcctDeleteBtn' type="button" onClick={() => setRemoveAcctForm(false)} >Cancel</IconButton>
+            <Button className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange}>Confirm Delete</Button>
+            <Button className='cancelAcctDeleteBtn' type="button" onClick={() => setRemoveAcctForm(false)} >Cancel</Button>
           </>
         </div>
       )}

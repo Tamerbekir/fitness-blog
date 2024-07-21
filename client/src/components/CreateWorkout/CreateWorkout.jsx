@@ -10,6 +10,7 @@ import AutosuggestHighlightMatch from "autosuggest-highlight/match";
 import AutosuggestHighlightParse from "autosuggest-highlight/parse";
 import { IconButton } from '@mui/material';
 import './assets/CreateWorkout.css'
+import WorkoutGird from '../../components/WorkoutGird/WorkoutGrid'
 
 const CreateWorkout = () => {
   const {
@@ -203,6 +204,7 @@ const CreateWorkout = () => {
       {addWorkoutForm && (
         <IconButton className="vieworkoutBtn" onClick={profileRedirect}>View Complete Workout</IconButton>
       )}
+      <WorkoutGird />
     </div>
   )
 }

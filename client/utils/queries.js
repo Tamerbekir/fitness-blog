@@ -11,6 +11,10 @@ query Query {
     socialHandle
     bio
     createdAt
+    comments {
+      _id
+      content
+    }
     workouts {
       _id
       weight

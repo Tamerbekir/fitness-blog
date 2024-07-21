@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { QUERY_ME } from '../../../utils/queries';
+import { useQuery } from '@apollo/client';
 
 import Auth from '../../../utils/auth'
 
@@ -22,6 +24,28 @@ import './assets/navBar.css'
 const NavBar = () => {
   //using useState to determine if user is logged in or not
   const [loggedIn, setIsLoggedIn] = useState(false)
+
+  const {
+    loading, 
+    data, 
+    error } = useQuery(QUERY_ME)
+
+    //adding the username only to make it capital so user can see their initial in the avatar
+    const [userInitial, setUserInitial] = useState({
+      username: '',
+    })
+
+    useEffect(() => {
+      if (data) {
+      setUserInitial({
+        ...userInitial,
+        username: data.me.username
+      })
+    }
+  }, [data])
+
+  //converting the username to capital and passing it through into the avatar
+  const uppercaseUserName = userInitial.username.toUpperCase()
 
   // useEffect for logging user in 
   // this is ALSO used to determine if user is logged in
@@ -82,6 +106,10 @@ const NavBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  if (loading) return <p>Loading...please wait</p>
+  if (error) return <p>{error}</p>
+  if (!data) return <p>No user data found</p>
 
   return (
     <AppBar position="static" sx={{ bgcolor: '#44074d' }}>
@@ -183,7 +211,7 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={uppercaseUserName} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

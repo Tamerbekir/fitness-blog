@@ -86,13 +86,15 @@ const Profile = () => {
             topicName={post.topic.map((topic) => topic.topicName)}
             showDeleteBtn={loggedIn}
             showEditBtn={loggedIn}
+            leaveComment={leaveComment}
             refetch={refetch}
           >
           </PostCard>
         ))}
-        <h1>Workouts</h1>
+        <h1>Latest workouts..</h1>
         <Box sx={{ height: 400, width: "70%" }}>
           <DataGrid
+            refetch={refetch}
             className="workoutGrid"
             rows={rows}
             columns={columns}

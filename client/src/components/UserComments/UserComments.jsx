@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { QUERY_COMMENTS } from "../../utils/queries";
+import { QUERY_COMMENTS } from "../../../utils/queries";
 
-const Comment = () => {
+const UserComments = () => {
   const { loading, error, data } = useQuery(QUERY_COMMENTS)
 
   if (loading) return <p>Loading comments..please wait</p> 
@@ -22,4 +22,4 @@ const Comment = () => {
   )
 } 
 
-export default Comment
+export default UserComments

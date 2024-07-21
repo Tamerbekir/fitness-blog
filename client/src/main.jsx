@@ -11,17 +11,16 @@ import {
 import {
   Home,
   Profile, 
-  Topic,
-  Comment,
   Login,
   Signup,
   Account,
+  UserProfile
 } from './pages/index.js'
 
 import {
   NavBar,
   CreatePost,
-  CreateWorkout,
+  CreateWorkout
 } from './components/index.js'
 
 
@@ -36,6 +35,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
       { path: 'account', element: <Account /> },
+      { path: 'userAccount', element: <UserProfile /> },
       { path: 'create-post', element: <CreatePost/>},
       { path: 'log-workout', element: <CreateWorkout/> }
 ],

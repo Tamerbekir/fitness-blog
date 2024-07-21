@@ -8,12 +8,11 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeletePost from "../DeletePost/DeletePost";
 import CommentIcon from '@mui/icons-material/Comment';
 import Person2Icon from '@mui/icons-material/Person2';
@@ -22,8 +21,14 @@ import Paper from '@mui/material/Paper';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import AddReaction from '../AddReaction/AddReaction'
-import EditIcon from '@mui/icons-material/Edit';
 import EditPost from "../EditPost/EditPost";
+import { Box } from "@mui/material";
+
+import { useQuery } from "@apollo/client";
+import { QUERY_PROFILES } from "../../../utils/queries";
+
+import AddComment from '../Comment/Comment'
+import UserComments from '../UserComments/UserComments'
 
 
 
@@ -52,10 +57,31 @@ const PostCard = ({
   showEditBtn,
   refetch,
 }) => {
+
+  const { loading, error, data } = useQuery(QUERY_PROFILES)
+
   const [expanded, setExpanded] = useState();
   const [showEmojis, setShowEmojis] = useState()
-  const [loggedIn, setLoggedInAction] = useState('Hey')
+  const [userLeaveComment, setUserLeaveComment] = useState()
 
+  const [userAccount, setUserAccount] = useState({
+    _id: ''
+  })
+
+  useEffect(() => {
+    if (data) {
+      setUserAccount({
+        ...userAccount,
+        _id: data.profiles._id
+      })
+    }
+  }, [data])
+  
+
+
+  const handleCommentClick = () => {
+    setUserLeaveComment(!userLeaveComment)
+  }
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -65,11 +91,22 @@ const PostCard = ({
     setShowEmojis(!showEmojis)
   }
 
+  const viewUserProfile = () => {
+    window.location.href = '/useraccount/{userAccount._id}'
+  }
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>{error}</p>
+  if (!data) return <p>No profile found..</p>
+
   return (
     <Card sx={{ maxWidth: 10000, margin: 2 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: '#44074d' }} aria-label="recipe">
+          <Avatar 
+            onClick={viewUserProfile}
+            key={userAccount._id}
+            sx={{ bgcolor: '#44074d' }} aria-label="recipe">
             {username[0]}
           </Avatar>
         }
@@ -101,15 +138,28 @@ const PostCard = ({
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-        <IconButton aria-label="comment">
+
+        <IconButton onClick={handleCommentClick} aria-expanded={userLeaveComment} aria-label="comment">
           <CommentIcon />
         </IconButton>
+
+
         {/* once clicked on the icon button for AddReactionIcon, run useState which shows emojis to click on  */}
 
 
           <IconButton onClick={handleReactionClick} aria-expanded={showEmojis} aria-label="show emojis">
-            <AddReactionIcon postId={postId} />
+            <AddReactionIcon postId={postId} refetch={refetch} />
           </IconButton>
+
+          <Collapse in={userLeaveComment} timeout='auto' unmountOnExit>
+          <Paper>
+            {/* added component here */}
+            <AddComment postId={postId}  refetch={refetch} /> 
+            <Box name="" id="">
+              <UserComments />
+            </Box>
+          </Paper>
+        </Collapse>
 
 
         <Collapse in={showEmojis} timeout='auto' unmountOnExit>
@@ -117,7 +167,7 @@ const PostCard = ({
             <AddReaction />
           </Paper>
         </Collapse>
-        <IconButton />
+        
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -126,9 +176,11 @@ const PostCard = ({
         >
           <ExpandMoreIcon />
         </ExpandMore>
+
         {showDeleteBtn && (
           <DeletePost postId={postId} refetch={refetch} />
         )}
+
         <ToastContainer />
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
