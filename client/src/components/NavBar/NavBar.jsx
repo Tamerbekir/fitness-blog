@@ -23,26 +23,26 @@ import './assets/navBar.css'
 
 const NavBar = () => {
   //using useState to determine if user is logged in or not
-  const [loggedIn, setIsLoggedIn] = useState(false)
+  const [loggedIn, setIsLoggedIn] = useState()
 
   const {
-    loading, 
-    data, 
-    error } = useQuery(QUERY_ME)
+    loading: loadingMe,
+    data: dataMe,
+    error: errorMe } = useQuery(QUERY_ME)
 
-    //adding the username only to make it capital so user can see their initial in the avatar
-    const [userInitial, setUserInitial] = useState({
-      username: '',
-    })
+  //adding the username only to make it capital so user can see their initial in the avatar
+  const [userInitial, setUserInitial] = useState({
+    username: '',
+  })
 
-    useEffect(() => {
-      if (data) {
+  useEffect(() => {
+    if (dataMe) {
       setUserInitial({
         ...userInitial,
-        username: data.me.username
+        username: dataMe.me.username
       })
     }
-  }, [data])
+  }, [dataMe])
 
   //converting the username to capital and passing it through into the avatar
   const uppercaseUserName = userInitial.username.toUpperCase()
@@ -107,9 +107,9 @@ const NavBar = () => {
     setAnchorElUser(null);
   };
 
-  if (loading) return <p>Loading...please wait</p>
-  if (error) return <p>{error}</p>
-  if (!data) return <p>No user data found</p>
+  if (loadingMe) return <p>Loading...please wait</p>
+  if (errorMe) return <p>{errorMe.message}</p>;
+  if (!dataMe) return <p>No user data found</p>
 
   return (
     <AppBar position="static" sx={{ bgcolor: '#44074d' }}>
@@ -194,7 +194,7 @@ const NavBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
-              sx={{ my: 2, color: 'white'}}
+              sx={{ my: 2, color: 'white' }}
             >
               <MenuItem onClick={handleHomePage}>
                 <Typography>Home</Typography>
@@ -211,7 +211,10 @@ const NavBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={uppercaseUserName} src="/static/images/avatar/2.jpg" />
+                {loggedIn && (
+                  <Avatar alt={uppercaseUserName} src="/static/images/avatar/2.jpg" />
+                )}
+                <Avatar src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

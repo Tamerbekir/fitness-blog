@@ -1,6 +1,6 @@
 import Auth from "../../../utils/auth";
 import { useQuery } from "@apollo/client";
-import { QUERY_ME } from "../../../utils/queries";
+import { QUERY_ME, QUERY_COMMENTS } from "../../../utils/queries";
 import { ToastContainer } from "react-toastify";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
@@ -11,6 +11,8 @@ import PostCard from "../../components/PostCard/PostCard";
 const Profile = () => {
   const loggedIn = Auth.loggedIn();
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
+
+  const { loading: loadingComments, error: errorComments, data: dataComments } = useQuery(QUERY_COMMENTS)
 
   const login = () => {
     window.location.href = "./login";
@@ -79,6 +81,7 @@ const Profile = () => {
             className="PostCard"
             key={post._id}
             postId={post._id}
+            postComments={post.comments.map((comment) => comment)}
             title={post.title}
             username={usernameInitial(data.me.username)}
             content={post.content}
@@ -86,7 +89,6 @@ const Profile = () => {
             topicName={post.topic.map((topic) => topic.topicName)}
             showDeleteBtn={loggedIn}
             showEditBtn={loggedIn}
-            leaveComment={leaveComment}
             refetch={refetch}
           >
           </PostCard>

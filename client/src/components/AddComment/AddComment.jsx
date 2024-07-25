@@ -41,6 +41,9 @@
             content: addCommentInfo.content
           }
         })
+        setAddCommentInfo({
+          content: ''
+        })
         console.log('comment added->',addCommentInfo.content)
       } catch (error) {
         console.error('there as an issue adding comment->', error)

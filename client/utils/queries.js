@@ -11,10 +11,6 @@ query Query {
     socialHandle
     bio
     createdAt
-    comments {
-      _id
-      content
-    }
     workouts {
       _id
       weight
@@ -34,6 +30,10 @@ query Query {
       topic {
         topicName
       }
+      comments {
+      _id
+      content
+    }
     }
     favoritePost {
       title
@@ -80,6 +80,10 @@ query Posts {
     title
     content
     createdAt
+    comments {
+      _id
+      content
+    }
     topic {
       topicName
     }

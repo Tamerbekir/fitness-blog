@@ -27,9 +27,9 @@ import { Box } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { QUERY_PROFILES } from "../../../utils/queries";
 
-import AddComment from '../Comment/Comment'
+import AddComment from '../AddComment/AddComment'
 import UserComments from '../UserComments/UserComments'
-
+import DeleteComment from "../DeleteComment/DeleteComment";
 
 
 
@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  transform: !expand  ? "rotate(0deg)" : "rotate(180deg)",
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
@@ -47,13 +47,16 @@ const ExpandMore = styled((props) => {
 
 const PostCard = ({
   postId,
+  commentId,
+  postComments,
   showYouForPost,
   username,
   title,
   content,
   topicName,
   createdAt,
-  showDeleteBtn,
+  showDeletePostBtn,
+  showDeleteCommentBtn,
   showEditBtn,
   refetch,
 }) => {
@@ -91,9 +94,9 @@ const PostCard = ({
     setShowEmojis(!showEmojis)
   }
 
-  const viewUserProfile = () => {
-    window.location.href = '/useraccount/{userAccount._id}'
-  }
+  // const viewUserProfile = () => {
+  //   window.location.href = '/useraccount/{userAccount._id}'
+  // }
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>{error}</p>
@@ -123,6 +126,7 @@ const PostCard = ({
         title={title}
         subheader={createdAt}
       />
+
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {content}
@@ -131,6 +135,7 @@ const PostCard = ({
           {topicName}
         </Typography>
       </CardContent>
+
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
@@ -144,23 +149,20 @@ const PostCard = ({
         </IconButton>
 
 
-        {/* once clicked on the icon button for AddReactionIcon, run useState which shows emojis to click on  */}
-
-
+        {/* Adding and seeing reactions */}
           <IconButton onClick={handleReactionClick} aria-expanded={showEmojis} aria-label="show emojis">
             <AddReactionIcon postId={postId} refetch={refetch} />
           </IconButton>
 
-          <Collapse in={userLeaveComment} timeout='auto' unmountOnExit>
-          <Paper>
-            {/* added component here */}
+          {/* Adding and seeing comments */}
+          {/* <Collapse in={userLeaveComment} timeout='auto' unmountOnExit> */}
+          {/* <Paper>
             <AddComment postId={postId}  refetch={refetch} /> 
             <Box name="" id="">
               <UserComments />
             </Box>
-          </Paper>
-        </Collapse>
-
+          </Paper> */}
+        {/* </Collapse> */}
 
         <Collapse in={showEmojis} timeout='auto' unmountOnExit>
           <Paper>
@@ -177,7 +179,7 @@ const PostCard = ({
           <ExpandMoreIcon />
         </ExpandMore>
 
-        {showDeleteBtn && (
+        {showDeletePostBtn && (
           <DeletePost postId={postId} refetch={refetch} />
         )}
 
@@ -190,6 +192,17 @@ const PostCard = ({
           )}
         </CardContent>
       </Collapse>
+
+      {/* <Paper> */}
+        <AddComment postId={postId}  refetch={refetch} /> 
+        <Box >
+        <UserComments postComments={postComments} refetch={refetch} />
+        {showDeleteCommentBtn && (
+          <DeleteComment commentId={commentId} refetch={refetch}/>
+        )}
+        </Box>  
+      {/* </Paper> */}
+
     </Card>
   );
 };
