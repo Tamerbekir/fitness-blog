@@ -113,6 +113,7 @@ export const QUERY_EXERCISE = gql`
     }
   }
 `
+
 export const QUERY_WORKOUTS= gql`
 query Workout {
   workouts {

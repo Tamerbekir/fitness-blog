@@ -7,6 +7,10 @@ const WorkoutGrid = () => {
 
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
+  if (loading) return <p>Loading workoutGrid..</p>;
+  if (error) return <p>{error}</p>
+  if (!data) return <p>Data for grid not found</p>;
+  
   const rows = data.me.workouts.map((workout, index) => ({
     id: index + 1,
     weight: workout.weight,
@@ -30,14 +34,12 @@ const WorkoutGrid = () => {
   ];
 
 
-  if (loading) return <p>Loading workoutGrid..</p>;
-  if (error) return <p>{error}</p>
-  if (!data) return <p>Data for grid not found</p>;
+
 
   return (
     <div>
       <h1>Workout</h1>
-        <Box sx={{ height: 400, width: "50%" }}>
+        <Box sx={{ height: 400, width: "90%" }}>
           <DataGrid
             refetch={refetch}
             className="workoutGrid"

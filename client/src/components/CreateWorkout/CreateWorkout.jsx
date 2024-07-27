@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
+import { QUERY_EXERCISE } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
@@ -20,11 +20,7 @@ const CreateWorkout = () => {
     refetch
   } = useQuery(QUERY_EXERCISE);
 
-  const {
-    loading: loading,
-    error: error,
-    data: data,
-  } = useQuery(QUERY_ME);
+
 
   const [addWorkout] = useMutation(ADD_WORKOUT, {
     onCompleted: () => {
@@ -81,19 +77,18 @@ const CreateWorkout = () => {
     } catch (error) {
       // console.log(addWorkoutInfo.weight, addWorkoutInfo.reps, addWorkoutInfo.exercise);
       console.log("addWorkoutInfo", addWorkoutInfo);
-      console.error("there was an error creating a workout");
+      console.error("there was an error creating a workout", error);
     }
   };
 
-  if (loadingExercise || loading) return <p>Loading workout creation...</p>;
-  if (errorExercise || error) return <p>{error.message || errorExercise.message}</p>;
-  if (!dataExercise || !data) return <p>Profile or workout data not found</p>;
-
+  if (loadingExercise) return <p>Loading workout creation...</p>;
+  if (errorExercise) return <p>Error: {errorExercise.message}</p>;
+  if (!dataExercise) return <p>Workout data not found</p>;
   // const workouts = data.me.workouts;
+  // console.log(errorExercise)
+
 
   return (
-
-
     <div>
       <div>
         <Autocomplete

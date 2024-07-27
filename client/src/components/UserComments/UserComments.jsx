@@ -14,6 +14,8 @@ import DeleteComment from "../DeleteComment/DeleteComment";
   console.table(['Data for comments:', data])
   if (!data.comments || !dataMe) return <p>No comments found!</p>
 
+  // const postComments = data.comments
+
 
 
   return (

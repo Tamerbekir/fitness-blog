@@ -107,8 +107,8 @@ const PostCard = ({
       <CardHeader
         avatar={
           <Avatar 
-            onClick={viewUserProfile}
-            key={userAccount._id}
+            // onClick={viewUserProfile}
+            // key={userAccount._id}
             sx={{ bgcolor: '#44074d' }} aria-label="recipe">
             {username[0]}
           </Avatar>

@@ -4,6 +4,7 @@ import Auth from "../../utils/auth";
 import PostCard from "../components/PostCard/PostCard";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { Button } from "@mui/material";
 // import Popper from '@mui/material/Popper';
 
 const Home = () => {
@@ -90,14 +91,16 @@ const Home = () => {
             <h1>Welcome to the Fitness Blog!</h1>
             <p>Not already a member?</p>
             <p>
-              Be sure to <button onClick={login}>Login</button> or{" "}
-              <button onClick={signUp}>sign up</button> here.
+              Be sure to <Button onClick={login}> Login </Button> 
+              or 
+              <Button onClick={signUp}> sign up </Button> here.
             </p>
             {dataPosts.posts.map((post) => (
               <PostCard
                 className="PostCard"
                 key={post._id}
                 title={post.title}
+                postComments={post.comments}                
                 username={usernameInitial(post.profile.username)}
                 content={post.content}
                 createdAt={post.createdAt}

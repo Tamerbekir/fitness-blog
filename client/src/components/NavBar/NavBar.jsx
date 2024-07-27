@@ -39,9 +39,9 @@ const NavBar = () => {
     if (dataMe) {
       setUserInitial({
         ...userInitial,
-        username: dataMe.me.username
+        // username: dataMe.me.username
       })
-    }
+    }  
   }, [dataMe])
 
   //converting the username to capital and passing it through into the avatar
@@ -84,7 +84,7 @@ const NavBar = () => {
   }
 
   //variable that used to determine user is not logged in
-  const notLoggedIn = !Auth.loggedIn()
+  // const notLoggedIn = !Auth.loggedIn()
 
 
   //! Boiler plate navBar from Material MUI
@@ -214,7 +214,9 @@ const NavBar = () => {
                 {loggedIn && (
                   <Avatar alt={uppercaseUserName} src="/static/images/avatar/2.jpg" />
                 )}
-                <Avatar src="/static/images/avatar/2.jpg" />
+                {!loggedIn && (
+                  <Avatar src="/static/images/avatar/2.jpg" />
+                )}
               </IconButton>
             </Tooltip>
             <Menu
@@ -235,7 +237,7 @@ const NavBar = () => {
             >
               {/* {settings.map((setting) => ( */}
               <MenuItem>
-                {notLoggedIn && <IconButton className='loginBtn' onClick={handleLoginPage}>Login</IconButton>}
+                {!loggedIn && <IconButton className='loginBtn' onClick={handleLoginPage}>Login</IconButton>}
                 <IconButton onClick={handleProfilePage}>Profile</IconButton>
                 <IconButton onClick={handleAccountPage}>Account</IconButton>
                 {loggedIn && <IconButton className='logoutBtn' onClick={handleLogout}>Logout</IconButton>}
