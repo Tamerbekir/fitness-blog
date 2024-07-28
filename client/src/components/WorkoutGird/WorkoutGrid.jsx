@@ -10,11 +10,12 @@ const WorkoutGrid = () => {
   if (loading) return <p>Loading workoutGrid..</p>;
   if (error) return <p>{error}</p>
   if (!data) return <p>Data for grid not found</p>;
-  
+
   const rows = data.me.workouts.map((workout, index) => ({
     id: index + 1,
     weight: workout.weight,
     reps: workout.reps,
+    sets: workout.sets,
     miles: workout.miles,
     pace: workout.pace,
     notes: workout.notes,
@@ -24,9 +25,10 @@ const WorkoutGrid = () => {
 
   const columns = [
     { field: "id", headerName: "Workout", width: 70 },
+    { field: "exercises", headerName: "Exercises", width: 100, editable: false },
+    { field: "sets", headerName: "Sets", width: 50, editable: true },
     { field: "weight", headerName: "Weight", width: 70, editable: true },
     { field: "reps", headerName: "Reps", width: 50, editable: true },
-    { field: "exercises", headerName: "Exercises", width: 100, editable: false },
     { field: "miles", headerName: "Miles", width: 60, editable: true },
     { field: "pace", headerName: "Pace", width: 60, editable: true },
     { field: "createdAt", headerName: "Date", width: 100, editable: false },

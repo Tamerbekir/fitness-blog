@@ -37,6 +37,7 @@ const CreateWorkout = () => {
   const [addWorkoutInfo, setAddWorkoutInfo] = useState({
     weight: '',
     reps: '',
+    sets: '',
     miles: '',
     pace: '',
     notes: '',
@@ -58,6 +59,7 @@ const CreateWorkout = () => {
         variables: {
           weight: parseFloat(addWorkoutInfo.weight),
           reps: parseFloat(addWorkoutInfo.reps),
+          sets: parseFloat(addWorkoutInfo.sets),
           miles: parseFloat(addWorkoutInfo.miles),
           pace: parseFloat(addWorkoutInfo.pace),
           notes: addWorkoutInfo.notes,
@@ -65,18 +67,18 @@ const CreateWorkout = () => {
         },
       });
       // resetting the form after mutation for adding a workout
-      setAddWorkoutInfo({
-        weight: '',
-        reps: '',
-        miles: '',
-        pace: '',
-        notes: '',
-        exercise: '',
-      })
+      // setAddWorkoutInfo({
+      //   weight: '',
+      //   reps: '',
+      //   miles: '',
+      //   pace: '',
+      //   notes: '',
+      //   exercise: '',
+      // })
       setAddWorkoutForm(true);
+      console.log("addWorkoutInfo", sets);
     } catch (error) {
       // console.log(addWorkoutInfo.weight, addWorkoutInfo.reps, addWorkoutInfo.exercise);
-      console.log("addWorkoutInfo", addWorkoutInfo);
       console.error("there was an error creating a workout", error);
     }
   };
@@ -134,6 +136,18 @@ const CreateWorkout = () => {
           }}
         />
         <FormControl />
+      </div>
+      <div>
+        <TextField
+          className="userSets"
+          label='Sets'
+          variant="filled"
+          type="text"
+          id="sets"
+          name="sets"
+          value={addWorkoutInfo.sets}
+          onChange={handleAddWorkoutChange}
+        />
       </div>
       <div>
         <TextField

@@ -23,12 +23,6 @@ const Home = () => {
     data: dataMe,
   } = useQuery(QUERY_ME)
 
-  // const {
-  //   loading: loadingComments,
-  //   error: errorComments,
-  //   data: dataComments,
-  // } = useQuery(QUERY_COMMENTS)
-
  
   const usernameInitial = (str) => {
     return str.toUpperCase();

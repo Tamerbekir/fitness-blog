@@ -15,6 +15,7 @@ query Query {
       _id
       weight
       reps
+      sets
       miles
       pace
       notes
@@ -120,6 +121,7 @@ query Workout {
     _id
     weight
     reps
+    sets
     pace
     notes
     miles

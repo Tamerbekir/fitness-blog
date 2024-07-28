@@ -19,6 +19,10 @@ const workoutSchema = new Schema({
     type: Number,
     required: false
   },
+  sets: {
+    type: Number,
+    required: false
+  },
   miles: {
     type: Number,
     required: false

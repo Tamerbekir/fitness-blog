@@ -89,8 +89,8 @@ mutation removePost($id: ID!) {
 
 
 export const ADD_WORKOUT = gql`
-mutation Mutation($exercise: String!, $reps: Float!, $miles: Float, $pace: Float, $weight: Float, $notes: String) {
-  addWorkout(exercise: $exercise, reps: $reps, miles: $miles, pace: $pace, weight: $weight, notes: $notes) {
+mutation Mutation($exercise: String!, $reps: Float!, $miles: Float, $sets: Float, $pace: Float, $weight: Float, $notes: String) {
+  addWorkout(exercise: $exercise, reps: $reps, sets: $sets, miles: $miles, pace: $pace, weight: $weight, notes: $notes) {
     _id
   }
 }
