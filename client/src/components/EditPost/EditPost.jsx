@@ -39,18 +39,19 @@ const EditPost = ({ postId, refetch }) => {
     title: '',
     content: '',
     topic: '',
-    edited: 'Edited'
   })
 
   // mapping through the data me QUERY to get to posts that way the post content can show when clicking on the edit button
   useEffect(() => {
     if (data) {
       const post = data.me.posts.find((post) => post._id === postId);
+      const postTopic = post.topic.map((topic) => topic.topicName)
       if (post) {
         setEditPostInfo({
           id: postId,
           title: post.title,
           content: post.content,
+          topic: postTopic
         });
       }
     }

@@ -7,6 +7,8 @@ import { ToastContainer } from "react-toastify";
 import "./assets/profile.css";
 import PostCard from "../../components/PostCard/PostCard";
 import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid"
+import EditWorkout from '../../components/EditWorkout/EditWorkout'
+
 // export for profile
 const Profile = () => {
   const loggedIn = Auth.loggedIn();

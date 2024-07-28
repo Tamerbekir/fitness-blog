@@ -22,8 +22,24 @@ import './assets/navBar.css'
 
 
 const NavBar = () => {
+
+  //using a variable to determine if user is logged in
+  const loggedIn = Auth.loggedIn()
+
+
+
+
   //using useState to determine if user is logged in or not
-  const [loggedIn, setIsLoggedIn] = useState()
+  // const [loggedIn, setIsLoggedIn] = useState()
+
+    // useEffect for logging user in 
+  // this is ALSO used to determine if user is logged in
+  // setting useState to users login auth/token
+
+  // useEffect(() => {
+  //   const loggedIn = Auth.loggedIn()
+  //   setIsLoggedIn(loggedIn)
+  // }, [])
 
   const {
     loading: loadingMe,
@@ -35,25 +51,25 @@ const NavBar = () => {
     username: '',
   })
 
-  useEffect(() => {
-    if (dataMe) {
-      setUserInitial({
-        ...userInitial,
-        // username: dataMe.me.username
-      })
-    }  
-  }, [dataMe])
+  // If user is logged in, begin to use useEffect,
+  //then check if there is data,
+  // if there is dataMe (data ME query) using useState to use initial for users Avatar
+  if (loggedIn) {
+    useEffect(() => {
+      if (dataMe) {
+        setUserInitial({
+          ...userInitial,
+          username: dataMe.me.username
+        })
+      }  
+    }, [dataMe])
+  } else {
+  }
 
+  
   //converting the username to capital and passing it through into the avatar
   const uppercaseUserName = userInitial.username.toUpperCase()
 
-  // useEffect for logging user in 
-  // this is ALSO used to determine if user is logged in
-  // setting useState to users login auth/token
-  useEffect(() => {
-    const loggedIn = Auth.loggedIn()
-    setIsLoggedIn(loggedIn)
-  }, [])
 
   // handling logout by user using logout method
   const handleLogout = () => {
@@ -83,8 +99,7 @@ const NavBar = () => {
     window.location.href = './'
   }
 
-  //variable that used to determine user is not logged in
-  // const notLoggedIn = !Auth.loggedIn()
+
 
 
   //! Boiler plate navBar from Material MUI

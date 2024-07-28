@@ -89,9 +89,27 @@ mutation removePost($id: ID!) {
 
 
 export const ADD_WORKOUT = gql`
-mutation Mutation($exercise: String!, $reps: Float!, $miles: Float, $sets: Float, $pace: Float, $weight: Float, $notes: String) {
+mutation addWorkout($exercise: String!, $reps: Float!, $miles: Float, $sets: Float, $pace: Float, $weight: Float, $notes: String) {
   addWorkout(exercise: $exercise, reps: $reps, sets: $sets, miles: $miles, pace: $pace, weight: $weight, notes: $notes) {
     _id
+  }
+}
+`
+
+export const UPDATE_WORKOUT = gql`
+mutation updateWorkout($id: ID!, $exercise: String!, $reps: Float!, $weight: Float, $sets: Float, $miles: Float, $pace: Float, $notes: String) {
+  updateWorkout(_id: $id, exercise: $exercise, reps: $reps, weight: $weight, sets: $sets, miles: $miles, pace: $pace, notes: $notes) {
+    _id
+    reps
+    pace
+    weights
+    reps
+    sets
+    notes
+    exercise {
+      _id
+      exerciseName
+    }
   }
 }
 `

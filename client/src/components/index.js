@@ -9,4 +9,5 @@ export { default as AddReaction } from "./AddReaction/AddReaction";
 export { default as EditPost } from "./EditPost/EditPost";
 export { default as WorkoutGrid } from './WorkoutGird/WorkoutGrid'
 export { default as UserComments } from './UserComments/UserComments'
+export { default as EditWorkout } from './EditWorkout/EditWorkout'
 
