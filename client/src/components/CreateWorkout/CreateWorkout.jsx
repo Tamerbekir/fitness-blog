@@ -8,7 +8,9 @@ import FormControl from '@mui/material/FormControl';
 import Autocomplete from '@mui/material/Autocomplete';
 import AutosuggestHighlightMatch from "autosuggest-highlight/match";
 import AutosuggestHighlightParse from "autosuggest-highlight/parse";
-import { IconButton } from '@mui/material';
+import { Button } from '@mui/material';
+import { ToastContainer, toast, Bounce } from 'react-toastify'
+
 import './assets/CreateWorkout.css'
 import WorkoutGird from '../../components/WorkoutGird/WorkoutGrid'
 
@@ -20,8 +22,6 @@ const CreateWorkout = () => {
     refetch
   } = useQuery(QUERY_EXERCISE);
 
-
-
   const [addWorkout] = useMutation(ADD_WORKOUT, {
     onCompleted: () => {
       refetch(); // Refetch the data after the mutation is completed
@@ -29,6 +29,8 @@ const CreateWorkout = () => {
   });
 
   const [addWorkoutForm, setAddWorkoutForm] = useState();
+  // adds 1 and starting at 1
+  const [counter, setCounter] = useState(1)
 
   const profileRedirect = () => {
     window.location.href = "./profile";
@@ -37,13 +39,12 @@ const CreateWorkout = () => {
   const [addWorkoutInfo, setAddWorkoutInfo] = useState({
     weight: '',
     reps: '',
-    sets: '',
+    sets: counter, // using the counter useState
     miles: '',
     pace: '',
     notes: '',
     exercise: '',
   });
-
 
   const handleAddWorkoutChange = (event) => {
     const { name, value } = event.target;
@@ -57,28 +58,52 @@ const CreateWorkout = () => {
     try {
       await addWorkout({
         variables: {
+          //adding parseFloat for each variable
           weight: parseFloat(addWorkoutInfo.weight),
           reps: parseFloat(addWorkoutInfo.reps),
-          sets: parseFloat(addWorkoutInfo.sets),
+          sets: counter, // Use counter for sets using useState
           miles: parseFloat(addWorkoutInfo.miles),
           pace: parseFloat(addWorkoutInfo.pace),
           notes: addWorkoutInfo.notes,
           exercise: addWorkoutInfo.exercise,
-        },
+        }
+      })
+      //general success message
+      toast.success('Workout Added!', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
+      // Add 1 to the counter after logging the workout
+      //using useState for adding workout, using information fro the addWorkoutInfo, clearing out the fields necessary and keeping the fields for users when wanting to continue a workout with the same exercise
+      // using arrow function to ensure react it always using the most up to date state value / counter
+      setCounter(countWorkout => countWorkout + 1)
+      setAddWorkoutInfo({
+        ...addWorkoutInfo,
+        sets: counter + 1,
+        miles: '',
+        pace: '',
+        notes: '',
       });
-      // resetting the form after mutation for adding a workout
-      // setAddWorkoutInfo({
-      //   weight: '',
-      //   reps: '',
-      //   miles: '',
-      //   pace: '',
-      //   notes: '',
-      //   exercise: '',
-      // })
       setAddWorkoutForm(true);
-      console.log("addWorkoutInfo", sets);
     } catch (error) {
-      // console.log(addWorkoutInfo.weight, addWorkoutInfo.reps, addWorkoutInfo.exercise);
+      toast.error('Workout not added. Please check your fields and try again', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+        transition: Bounce,
+      })
       console.error("there was an error creating a workout", error);
     }
   };
@@ -86,36 +111,26 @@ const CreateWorkout = () => {
   if (loadingExercise) return <p>Loading workout creation...</p>;
   if (errorExercise) return <p>Error: {errorExercise.message}</p>;
   if (!dataExercise) return <p>Workout data not found</p>;
-  // const workouts = data.me.workouts;
-  // console.log(errorExercise)
-
 
   return (
     <div>
       <div>
         <Autocomplete
           className="exercise-select"
-          //for the autocomplete field- mapping over exercise and getting exercise names
           options={dataExercise.exercises.map((exercise) => exercise.exerciseName)}
           getOptionLabel={(option) => option}
-          //boilerplate from template
           renderInput={(params) => (
             <TextField {...params} 
             variant='filled'
             label="Pick an Activity" 
             margin="normal" />
           )}
-          //the value field will consist of the addWorkoutInto.exercise data
           value={addWorkoutInfo.exercise}
-          //Runs when an option is selected. Gets the new value selected.  Updates the usestate. Keeps all old values, but changes exercise to the new value
           onChange={(event, newValue) => setAddWorkoutInfo({ ...addWorkoutInfo, exercise: newValue })}
-           //boiler plate template
           renderOption={(props, option, { inputValue }) => {
             const { key, ...optionProps } = props;
             const matches = AutosuggestHighlightMatch(option, inputValue, { insideWords: true });
             const parts = AutosuggestHighlightParse(option, matches);
-
-            //boiler plate template
             return (
               <li key={key} {...optionProps}>
                 <div>
@@ -142,7 +157,7 @@ const CreateWorkout = () => {
           className="userSets"
           label='Sets'
           variant="filled"
-          type="text"
+          type="number"
           id="sets"
           name="sets"
           value={addWorkoutInfo.sets}
@@ -154,7 +169,7 @@ const CreateWorkout = () => {
           className="userWeight"
           label='Weight'
           variant="filled"
-          type="text"
+          type="number"
           id="weight"
           name="weight"
           value={addWorkoutInfo.weight}
@@ -166,7 +181,7 @@ const CreateWorkout = () => {
           className="userReps"
           label='Reps'
           variant="filled"
-          type="text"
+          type="number"
           name="reps"
           id="reps"
           value={addWorkoutInfo.reps}
@@ -178,7 +193,7 @@ const CreateWorkout = () => {
           className="userMiles"
           label='Miles'
           variant="filled"
-          type="text"
+          type="number"
           name="miles"
           id="miles"
           value={addWorkoutInfo.miles}
@@ -190,7 +205,7 @@ const CreateWorkout = () => {
           className="userPace"
           label='Pace'
           variant="filled"
-          type="text"
+          type="number"
           name="pace"
           id="pace"
           value={addWorkoutInfo.pace}
@@ -209,13 +224,14 @@ const CreateWorkout = () => {
           onChange={handleAddWorkoutChange}
         />
       </div>
-      <IconButton className="logWorkoutBtn" refetch={refetch} onClick={handleAddWorkout}>Log</IconButton>
+      <Button className="logWorkoutBtn" refetch={refetch} onClick={handleAddWorkout}>Log</Button>
       {addWorkoutForm && (
-        <IconButton className="vieworkoutBtn" onClick={profileRedirect}>View Complete Workout</IconButton>
+        <Button className="vieworkoutBtn" onClick={profileRedirect}>View Complete Workout</Button>
       )}
+      <ToastContainer />
       <WorkoutGird />
     </div>
-  )
+  );
 }
 
-export default CreateWorkout
+export default CreateWorkout;

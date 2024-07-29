@@ -1,13 +1,17 @@
-.exercise-select {
+/* .exercise-select {
   width: 50%;
-}
+} */
 
 .userWeight,
 .userReps,
 .userNotes,
 .userMiles,
 .userPace,
-.userSets {
+.userSets,
+.exercise-select {
+  width: 100%;
   background-color: white;
+  margin: 0.1%;
+  margin-top: 5%;
 }
 

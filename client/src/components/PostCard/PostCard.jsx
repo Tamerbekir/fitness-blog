@@ -25,7 +25,7 @@ import EditPost from "../EditPost/EditPost";
 import { Box } from "@mui/material";
 
 import { useQuery } from "@apollo/client";
-import { QUERY_PROFILES } from "../../../utils/queries";
+import { QUERY_ME, QUERY_PROFILES } from "../../../utils/queries";
 
 import AddComment from '../AddComment/AddComment'
 import UserComments from '../UserComments/UserComments'
@@ -62,11 +62,15 @@ const PostCard = ({
 }) => {
 
   const { loading, error, data } = useQuery(QUERY_PROFILES)
+  // const { 
+  //   loading: loadingComments, 
+  //   error: errorComments, 
+  //   data: dataComments 
+  // } = useQuery(QUERY_COMMENTS)
 
   const [expanded, setExpanded] = useState();
   const [showEmojis, setShowEmojis] = useState()
   const [userLeaveComment, setUserLeaveComment] = useState()
-
   const [userAccount, setUserAccount] = useState({
     _id: ''
   })
@@ -97,6 +101,10 @@ const PostCard = ({
   // const viewUserProfile = () => {
   //   window.location.href = '/useraccount/{userAccount._id}'
   // }
+
+  // if (loading || loadingComments) return <p>Loading...</p>
+  // if (error || errorComments) return <p>{error}</p>
+  // if (!data || !dataComments) return <p>No profile found..</p>
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>{error}</p>
@@ -180,7 +188,10 @@ const PostCard = ({
         </ExpandMore>
 
         {showDeletePostBtn && (
-          <DeletePost postId={postId} refetch={refetch} />
+          <DeletePost 
+            postId={postId} 
+            refetch={refetch}
+          />
         )}
 
         <ToastContainer />
@@ -188,17 +199,29 @@ const PostCard = ({
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {showEditBtn && (
-            <EditPost postId={postId} refetch={refetch} />
+            <EditPost 
+              postId={postId} 
+              refetch={refetch}
+            />
           )}
         </CardContent>
       </Collapse>
 
       {/* <Paper> */}
-        <AddComment postId={postId}  refetch={refetch} /> 
+        <AddComment 
+          postId={postId}  
+          refetch={refetch} 
+          /> 
         <Box >
-        <UserComments postComments={postComments} refetch={refetch} />
+        <UserComments 
+          postComments={postComments} 
+          refetch={refetch} 
+        />
         {showDeleteCommentBtn && (
-          <DeleteComment commentId={commentId} refetch={refetch}/>
+          <DeleteComment 
+            commentId={commentId} 
+            refetch={refetch}
+          />
         )}
         </Box>  
       {/* </Paper> */}

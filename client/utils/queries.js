@@ -34,6 +34,7 @@ query Query {
       comments {
       _id
       content
+      createdAt
     }
     }
     favoritePost {
@@ -138,6 +139,7 @@ export const QUERY_COMMENTS = gql`
     comments {
       _id
       content
+      createdAt
     }
   }
 `
