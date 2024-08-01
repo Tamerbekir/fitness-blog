@@ -11,10 +11,10 @@ const Home = () => {
   const loggedIn = Auth.loggedIn();
 
 
-  const { 
-    loading: loadingPosts, 
-    error: errorPosts, 
-    data: dataPosts, 
+  const {
+    loading: loadingPosts,
+    error: errorPosts,
+    data: dataPosts,
     refetch } = useQuery(QUERY_POSTS);
 
   const {
@@ -23,7 +23,7 @@ const Home = () => {
     data: dataMe,
   } = useQuery(QUERY_ME)
 
- 
+
   const usernameInitial = (str) => {
     return str.toUpperCase();
   };
@@ -37,12 +37,12 @@ const Home = () => {
   };
 
 
-  if (loadingPosts || loadingMe)   
+  if (loadingPosts || loadingMe)
     return (
-    <Box sx={{ display: 'flex' }}>
-      <CircularProgress />
-    </Box>
-  );
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    );
   if (errorPosts || errorMe) return <p>Error: {errorPosts.message}</p>;
   if (!dataPosts || !dataMe) return <p>No posts found</p>;
 
@@ -51,7 +51,7 @@ const Home = () => {
       <div>
         {loggedIn && !loadingMe && !errorMe && dataMe && (
           <>
-          {/* <div>
+            {/* <div>
             {showPopup && <Popup onClose={() => setShowPopup(false)} />}
           </div> */}
             <h1 className="welcomeHomeText">
@@ -62,14 +62,15 @@ const Home = () => {
                 className="postCardHome"
                 key={post._id}
                 postId={post._id}
-                postComments={post.comments}                
+                postComments={post.comments}
                 title={post.title}
-                showYouForPost={dataMe.me._id === post.profile._id}
                 username={usernameInitial(post.profile.username)}
                 content={post.content}
                 createdAt={post.createdAt}
                 topicName={post.topic.map((topic) => topic.topicName)}
+                showYouForPost={dataMe.me._id === post.profile._id}
                 showDeletePostBtn={dataMe.me._id === post.profile._id}
+                //!not working for delete button
                 showDeleteCommentBtn={dataMe.me._id === post.comments._id}
                 showEditBtn={dataMe.me._id === post.profile._id}
                 refetch={refetch}
@@ -85,8 +86,8 @@ const Home = () => {
             <h1>Welcome to the Fitness Blog!</h1>
             <p>Not already a member?</p>
             <p>
-              Be sure to <Button onClick={login}> Login </Button> 
-              or 
+              Be sure to <Button onClick={login}> Login </Button>
+              or
               <Button onClick={signUp}> sign up </Button> here.
             </p>
             {dataPosts.posts.map((post) => (
@@ -94,7 +95,7 @@ const Home = () => {
                 className="PostCard"
                 key={post._id}
                 title={post.title}
-                postComments={post.comments}                
+                postComments={post.comments}
                 username={usernameInitial(post.profile.username)}
                 content={post.content}
                 createdAt={post.createdAt}

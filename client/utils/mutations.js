@@ -137,7 +137,7 @@ mutation Mutation($commentId: ID!, $content: String!) {
 `
 
 export const REMOVE_COMMENT = gql`
-mutation Mutation($id: ID!) {
+mutation removeComment($id: ID!) {
   removeComment(_id: $id) {
     _id
   }

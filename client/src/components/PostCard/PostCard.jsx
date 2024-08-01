@@ -25,7 +25,7 @@ import EditPost from "../EditPost/EditPost";
 import { Box } from "@mui/material";
 
 import { useQuery } from "@apollo/client";
-import { QUERY_ME, QUERY_PROFILES } from "../../../utils/queries";
+import { QUERY_ME, QUERY_PROFILES, QUERY_COMMENTS } from "../../../utils/queries";
 
 import AddComment from '../AddComment/AddComment'
 import UserComments from '../UserComments/UserComments'
@@ -38,7 +38,7 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand  ? "rotate(0deg)" : "rotate(180deg)",
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
@@ -47,7 +47,6 @@ const ExpandMore = styled((props) => {
 
 const PostCard = ({
   postId,
-  commentId,
   postComments,
   showYouForPost,
   username,
@@ -62,11 +61,11 @@ const PostCard = ({
 }) => {
 
   const { loading, error, data } = useQuery(QUERY_PROFILES)
-  // const { 
-  //   loading: loadingComments, 
-  //   error: errorComments, 
-  //   data: dataComments 
-  // } = useQuery(QUERY_COMMENTS)
+
+  const { loading: loadingComments, error: errorComments, data: dataComments } = useQuery(QUERY_COMMENTS)
+
+  const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME)
+
 
   const [expanded, setExpanded] = useState();
   const [showEmojis, setShowEmojis] = useState()
@@ -83,7 +82,7 @@ const PostCard = ({
       })
     }
   }, [data])
-  
+
 
 
   const handleCommentClick = () => {
@@ -102,19 +101,20 @@ const PostCard = ({
   //   window.location.href = '/useraccount/{userAccount._id}'
   // }
 
+
   // if (loading || loadingComments) return <p>Loading...</p>
   // if (error || errorComments) return <p>{error}</p>
   // if (!data || !dataComments) return <p>No profile found..</p>
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>{error}</p>
-  if (!data) return <p>No profile found..</p>
+  if (loading || loadingMe || loadingComments) return <p>Loading...</p>
+  if (error || errorMe || errorComments) return <p>{error}</p>
+  if (!data || !dataMe || !dataComments) return <p>No profile found..</p>
 
   return (
     <Card sx={{ maxWidth: 10000, margin: 2 }}>
       <CardHeader
         avatar={
-          <Avatar 
+          <Avatar
             // onClick={viewUserProfile}
             // key={userAccount._id}
             sx={{ bgcolor: '#44074d' }} aria-label="recipe">
@@ -158,13 +158,13 @@ const PostCard = ({
 
 
         {/* Adding and seeing reactions */}
-          <IconButton onClick={handleReactionClick} aria-expanded={showEmojis} aria-label="show emojis">
-            <AddReactionIcon postId={postId} refetch={refetch} />
-          </IconButton>
+        <IconButton onClick={handleReactionClick} aria-expanded={showEmojis} aria-label="show emojis">
+          <AddReactionIcon postId={postId} refetch={refetch} />
+        </IconButton>
 
-          {/* Adding and seeing comments */}
-          {/* <Collapse in={userLeaveComment} timeout='auto' unmountOnExit> */}
-          {/* <Paper>
+        {/* Adding and seeing comments */}
+        {/* <Collapse in={userLeaveComment} timeout='auto' unmountOnExit> */}
+        {/* <Paper>
             <AddComment postId={postId}  refetch={refetch} /> 
             <Box name="" id="">
               <UserComments />
@@ -177,7 +177,7 @@ const PostCard = ({
             <AddReaction />
           </Paper>
         </Collapse>
-        
+
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
@@ -188,8 +188,8 @@ const PostCard = ({
         </ExpandMore>
 
         {showDeletePostBtn && (
-          <DeletePost 
-            postId={postId} 
+          <DeletePost
+            postId={postId}
             refetch={refetch}
           />
         )}
@@ -199,8 +199,8 @@ const PostCard = ({
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {showEditBtn && (
-            <EditPost 
-              postId={postId} 
+            <EditPost
+              postId={postId}
               refetch={refetch}
             />
           )}
@@ -208,24 +208,28 @@ const PostCard = ({
       </Collapse>
 
       {/* <Paper> */}
-        <AddComment 
-          postId={postId}  
-          refetch={refetch} 
-          /> 
-        <Box >
-        <UserComments 
-          postComments={postComments} 
-          refetch={refetch} 
+      <AddComment
+        postId={postId}
+        refetch={refetch}
+      />
+      <Box >
+        <UserComments
+          postComments={postComments}
+          refetch={refetch}
         />
-        {showDeleteCommentBtn && (
-          <DeleteComment 
-            commentId={commentId} 
-            refetch={refetch}
-          />
-        )}
-        </Box>  
-      {/* </Paper> */}
-
+      </Box>
+      <Box>
+        {/* deleting and adding showing but all users getting delete option */}
+        {postComments.map(comment => (
+          <div key={comment._id}>
+            <Box>{comment.content}</Box>
+            <DeleteComment
+              commentId={comment._id}
+              refetch={refetch}
+            />
+          </div>
+        ))}
+      </Box>
     </Card>
   );
 };

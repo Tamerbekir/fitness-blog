@@ -474,7 +474,7 @@ const resolvers = {
           })
 
           if (!addComment) {
-            console.error('there was an issue creating you comment', error.message)
+            console.log('there was an issue creating you comment', error.message)
           }
 
           // finding the post by its id and pushing the argument for comments from the Post query via typeDefs and letting that comment be the addedComment along with its new Id
@@ -534,7 +534,7 @@ const resolvers = {
           )
 
           if (!removeComment) {
-            console.error('That comment was not found', error.message)
+            console.log('That comment was not found')
           }
           // finding the post its under by its id and removing it from the post / updating the post to reflect the new changes
           // 'comments' from the post schema associated with Comment model

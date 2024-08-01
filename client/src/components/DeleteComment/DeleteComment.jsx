@@ -4,18 +4,18 @@ import { QUERY_ME } from "../../../utils/queries";
 import { REMOVE_COMMENT } from "../../../utils/mutations";
 import { Button } from "@mui/material";
 
-const DeleteComment = ({ commentId }) => {
+const DeleteComment = ({ commentId, refetch }) => {
 
-  const { 
-    loading: loadingMe, 
-    data: dataMe, 
-    error: errorMe, 
-    refetch } = useQuery(QUERY_ME, {
+  // const { 
+  //   loading: loadingMe, 
+  //   data: dataMe, 
+  //   error: errorMe, 
+  //   refetch } = useQuery(QUERY_ME)
+
+  const [removeComment] = useMutation(REMOVE_COMMENT, {
     onCompleted: () => refetch(),
-    // onError:() => console.error('there was an error')
+    onError: (error) => console.error('error removing comments', error)
   })
-
-  const [removeComment] = useMutation(REMOVE_COMMENT)
 
   // const [removeCommentInfo, setRemoveCommentInfo] = useState()
 
@@ -26,6 +26,7 @@ const DeleteComment = ({ commentId }) => {
           id: commentId
         }
       })
+      console.log('comment deleted', commentId)
     } catch (error) {
       console.error('There was an error deleting your comment', error)
     }
