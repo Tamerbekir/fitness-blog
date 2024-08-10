@@ -3,26 +3,33 @@ header {
 }
 
 .header {
-  background-color: #44074d; /* Change background color to dark */
-  color: #9a29b0; /* Change text color to white */
+  background-color: #44074d;
+  /* Change background color to dark */
+  color: #9a29b0;
+  /* Change text color to white */
 }
 
 .header .MuiTypography-root {
-  color: rgb(255, 114, 6); /* Ensure the typography is white */
+  color: rgb(255, 114, 6);
+  /* Ensure the typography is white */
 }
 
 .header .MuiButton-root {
-  margin: 0 10px; /* Add margin to buttons */
+  margin: 0 10px;
+  /* Add margin to buttons */
 }
 
 .header .MuiButton-root .MuiTypography-root {
-  color: rgb(213, 117, 66); /* Ensure the button text is white */
+  color: rgb(213, 117, 66);
+  /* Ensure the button text is white */
 }
 
 .header .MuiIconButton-root {
-  color: rgb(197, 99, 13); /* Ensure the icon buttons are white */
+  color: rgb(197, 99, 13);
+  /* Ensure the icon buttons are white */
 }
 
 .header .MuiAvatar-root {
-  border: 2px solid rgb(172, 78, 27); /* Add a border to the avatar */
+  border: 2px solid rgb(172, 78, 27);
+  /* Add a border to the avatar */
 }

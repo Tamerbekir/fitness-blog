@@ -18,7 +18,7 @@ const WorkoutGrid = () => {
   if (!data) return <p>No workout data found</p>;
 
   //created a variable to help deal with the query ME data handling
-  const workouts = data.me.workouts;
+  const workouts = data.me.workouts
 
   //we make groupedWorkouts an empty object so we can push our workouts into it
   const groupedWorkouts = {}
@@ -59,7 +59,7 @@ const WorkoutGrid = () => {
             aria-controls={`panel-${date}-content`}
             id={`panel-${date}-header`}
             sx={{
-              backgroundColor: '#4caf50',
+              backgroundColor: 'orange',
               color: '#fff',
             }}
           >

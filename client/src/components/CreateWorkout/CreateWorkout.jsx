@@ -13,6 +13,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify'
 
 import './assets/CreateWorkout.css'
 import WorkoutGrid from '../../components/WorkoutGird/WorkoutGrid';
+import { useEffect } from "react";
 
 
 
@@ -32,9 +33,31 @@ const CreateWorkout = () => {
   // adds 1 and starting at 1
   const [counter, setCounter] = useState(1)
 
+
   const profileRedirect = () => {
     window.location.href = "./profile";
   };
+
+  const completeSet = () => {
+    window.location.href = './log-workout'
+    localStorage.removeItem('workoutHistory')
+  }
+
+  //creating a useState to grab the information from the workout so we can add it to local storage
+  const [newItemAdded, setNewItemAdded] = useState(() => {
+    const storedWorkout = localStorage.getItem('workoutHistory')
+
+    if (storedWorkout) {
+      return JSON.parse(storedWorkout)
+    } else {
+      return []
+    }
+  })
+
+  //useEffect to put the new item we added to local storage
+  useEffect(() => {
+    localStorage.setItem('workoutHistory', JSON.stringify(newItemAdded))
+  }, [newItemAdded])
 
   const [addWorkoutInfo, setAddWorkoutInfo] = useState({
     weight: '',
@@ -92,6 +115,12 @@ const CreateWorkout = () => {
         notes: '',
       });
       setAddWorkoutForm(true);
+
+      //using a variable to define the newly added item as well as the workout info
+      const updatedWorkoutList = [...newItemAdded, addWorkoutInfo]
+      //we then send the updated workout list to local storage using the useState
+      setNewItemAdded(updatedWorkoutList)
+
     } catch (error) {
       toast.error('Workout not added. Please check your fields and try again', {
         position: 'bottom-right',
@@ -226,12 +255,45 @@ const CreateWorkout = () => {
         />
       </div>
       <Button className="logWorkoutBtn" refetch={refetch} onClick={handleAddWorkout}>Log</Button>
+      <Button onClick={completeSet}>Complete Set</Button>
       {addWorkoutForm && (
-        <Button className="vieworkoutBtn" onClick={profileRedirect}>View Complete Workout</Button>
+        <div>
+          <Button className="vieworkoutBtn" onClick={profileRedirect}>View All Workouts</Button>
+        </div>
       )}
+      <div>
+        <div className="workoutTextDiv">
+          <h2 className="workoutExerciseText">Current Exercise</h2>
+          {addWorkoutInfo.exercise}
+          <p className="workoutSetText">Set</p>
+          {addWorkoutInfo.sets}
+          <p className="workoutWightText">Weight</p>
+          {addWorkoutInfo.weight}
+          <p className="workoutRepText">Reps</p>
+          {addWorkoutInfo.reps}
+          <p className="workoutMilesText">Miles</p>
+          {addWorkoutInfo.miles}
+          <p className="workoutPaceText">Pace</p>
+          {addWorkoutInfo.pace}
+          <p className="workoutNotesText">Notes</p>
+          {addWorkoutInfo.notes}
+          <h2 className="workoutExerciseText">Last Sets</h2>
+          {newItemAdded.map((workout, index) => (
+            <div key={index} style={{ marginBottom: '10px' }}>
+              <p><strong>Exercise:</strong> {workout.exercise}</p>
+              <p><strong>Sets:</strong> {workout.sets}</p>
+              <p><strong>Weight:</strong> {workout.weight}</p>
+              <p><strong>Reps:</strong> {workout.reps}</p>
+              <p><strong>Miles:</strong> {workout.miles}</p>
+              <p><strong>Pace:</strong> {workout.pace}</p>
+              <p><strong>Notes:</strong> {workout.notes}</p>
+            </div>
+          ))}
+        </div>
+      </div>
       <ToastContainer />
       <WorkoutGrid />
-    </div>
+    </div >
   );
 }
 

@@ -32,7 +32,7 @@ const NavBar = () => {
   //using useState to determine if user is logged in or not
   // const [loggedIn, setIsLoggedIn] = useState()
 
-    // useEffect for logging user in 
+  // useEffect for logging user in 
   // this is ALSO used to determine if user is logged in
   // setting useState to users login auth/token
 
@@ -61,12 +61,12 @@ const NavBar = () => {
           ...userInitial,
           username: dataMe.me.username
         })
-      }  
+      }
     }, [dataMe])
   } else {
   }
 
-  
+
   //converting the username to capital and passing it through into the avatar
   const uppercaseUserName = userInitial.username.toUpperCase()
 
@@ -119,6 +119,7 @@ const NavBar = () => {
   };
 
   const handleCloseUserMenu = () => {
+    rgb
     setAnchorElUser(null);
   };
 

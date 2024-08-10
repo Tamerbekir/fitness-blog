@@ -32,9 +32,9 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <NavBar/>
+      <NavBar />
       <style>{'body { background-color: #303134; }'}</style>
-        <Outlet />
+      <Outlet />
     </ApolloProvider>
   );
 }
