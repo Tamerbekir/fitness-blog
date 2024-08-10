@@ -12,7 +12,9 @@ import { Button } from '@mui/material';
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 
 import './assets/CreateWorkout.css'
-import WorkoutGird from '../../components/WorkoutGird/WorkoutGrid'
+import WorkoutGrid from '../../components/WorkoutGird/WorkoutGrid';
+
+
 
 const CreateWorkout = () => {
   const {
@@ -23,9 +25,7 @@ const CreateWorkout = () => {
   } = useQuery(QUERY_EXERCISE);
 
   const [addWorkout] = useMutation(ADD_WORKOUT, {
-    onCompleted: () => {
-      refetch(); // Refetch the data after the mutation is completed
-    },
+    onCompleted: () => refetch()
   });
 
   const [addWorkoutForm, setAddWorkoutForm] = useState();
@@ -120,10 +120,11 @@ const CreateWorkout = () => {
           options={dataExercise.exercises.map((exercise) => exercise.exerciseName)}
           getOptionLabel={(option) => option}
           renderInput={(params) => (
-            <TextField {...params} 
-            variant='filled'
-            label="Pick an Activity" 
-            margin="normal" />
+            <TextField {...params}
+              variant='filled'
+              label="Pick an Activity"
+              margin="normal"
+            />
           )}
           value={addWorkoutInfo.exercise}
           onChange={(event, newValue) => setAddWorkoutInfo({ ...addWorkoutInfo, exercise: newValue })}
@@ -229,7 +230,7 @@ const CreateWorkout = () => {
         <Button className="vieworkoutBtn" onClick={profileRedirect}>View Complete Workout</Button>
       )}
       <ToastContainer />
-      <WorkoutGird />
+      <WorkoutGrid />
     </div>
   );
 }

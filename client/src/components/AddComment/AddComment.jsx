@@ -61,7 +61,7 @@ const AddComment = ({ postId }) => {
         rows={4}
         variant="filled"
         fullWidth
-        refetch={refetch}
+      // refetch={refetch}
       />
       <Button onClick={handleAddComment} refetch={refetch} >Submit</Button>
     </div>

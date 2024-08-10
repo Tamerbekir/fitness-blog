@@ -30,7 +30,7 @@ const CreatePost = () => {
   const {
     loading: loadingTopics,
     error: errorTopics,
-    data: dataTopics, 
+    data: dataTopics,
     refetch } = useQuery(QUERY_TOPICS)
 
   // adding mutation to add a post
@@ -75,7 +75,7 @@ const CreatePost = () => {
         }
       });
       // console.log('Post added');
-       // once posted,show success
+      // once posted,show success
       toast.success('Posted!', {
         position: 'bottom-right',
         autoClose: 2000,

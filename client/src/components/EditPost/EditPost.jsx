@@ -17,11 +17,11 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Accordion from '@mui/material/Accordion';
 
 
-const EditPost = ({ postId, refetch }) => {
+const EditPost = ({ postId }) => {
   const {
     loading: loadingTopics,
     error: errorTopics,
-    data: dataTopics } = useQuery(QUERY_TOPICS)
+    data: dataTopics, refetch } = useQuery(QUERY_TOPICS)
 
   const {
     loading,
@@ -45,13 +45,13 @@ const EditPost = ({ postId, refetch }) => {
   useEffect(() => {
     if (data) {
       const post = data.me.posts.find((post) => post._id === postId);
-      const postTopic = post.topic.map((topic) => topic.topicName)
+      // const postTopic = post.topic.map((topic) => topic.topicName)
       if (post) {
         setEditPostInfo({
           id: postId,
           title: post.title,
           content: post.content,
-          topic: postTopic
+          // topic: postTopic
         });
       }
     }
@@ -146,7 +146,7 @@ const EditPost = ({ postId, refetch }) => {
               </Select>
               <FormHelperText>Select a topic for your post</FormHelperText>
             </FormControl>
-            <button type='button' onClick={handleEditPostChange}>Add Post</button>
+            <button type='button' onClick={handleEditPostChange} refetch={refetch} >Add Post</button>
           </div>
           <div>
 

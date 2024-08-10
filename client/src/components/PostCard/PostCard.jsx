@@ -227,6 +227,7 @@ const PostCard = ({
               commentId={comment._id}
               refetch={refetch}
             />
+            {/* <p>{comment.profile.username}</p> */}
           </div>
         ))}
       </Box>

@@ -1,0 +1,90 @@
+/* Container for the grid */
+.workoutGrid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto,
+}
+
+/* Header styling */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* DataGrid custom styles */
+.MuiDataGrid-root {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+/* Header cells */
+.MuiDataGrid-columnHeader {
+  background-color: #4caf50;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Cells */
+.MuiDataGrid-cell {
+  padding: 8px;
+  text-align: center;
+  color: #333;
+}
+
+/* Custom scrollbar */
+.MuiDataGrid-virtualScroller::-webkit-scrollbar {
+  width: 6px;
+}
+
+.MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
+  background-color: #4caf50;
+  border-radius: 10px;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .MuiDataGrid-root {
+    font-size: 0.8rem;
+  }
+
+  .MuiDataGrid-columnHeader {
+    font-size: 0.9rem;
+  }
+
+  .MuiDataGrid-cell {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .MuiDataGrid-root {
+    font-size: 0.75rem;
+  }
+
+  .MuiDataGrid-columnHeader {
+    font-size: 0.85rem;
+  }
+
+  .MuiDataGrid-cell {
+    padding: 4px;
+    font-size: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+}
