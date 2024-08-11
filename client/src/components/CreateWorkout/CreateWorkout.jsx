@@ -14,16 +14,27 @@ import { ToastContainer, toast, Bounce } from 'react-toastify'
 import './assets/CreateWorkout.css'
 import WorkoutGrid from '../../components/WorkoutGird/WorkoutGrid';
 import { useEffect } from "react";
+import Auth from "../../../utils/auth";
+import { QUERY_ME } from "../../../utils/queries";
 
 
 
 const CreateWorkout = () => {
+
+  // const loggedIn = Auth.loggedIn()
+
   const {
     loading: loadingExercise,
     error: errorExercise,
     data: dataExercise,
     refetch
   } = useQuery(QUERY_EXERCISE);
+
+  const {
+    loading: loadingMe,
+    error: errorMe,
+    data: dataMe,
+  } = useQuery(QUERY_ME);
 
   const [addWorkout] = useMutation(ADD_WORKOUT, {
     onCompleted: () => refetch()
@@ -137,22 +148,64 @@ const CreateWorkout = () => {
     }
   };
 
-  if (loadingExercise) return <p>Loading workout creation...</p>;
-  if (errorExercise) return <p>Error: {errorExercise.message}</p>;
+  if (loadingExercise || loadingMe) return <p>Loading workout creation...</p>;
+  if (errorExercise || errorMe) return <p>Error: {errorExercise.message}</p>;
   if (!dataExercise) return <p>Workout data not found</p>;
+
+  const login = () => {
+    window.location.href = './login'
+  }
+  const signup = () => {
+    window.location.href = './signup'
+  }
+
+  if (!dataMe.me) {
+    return (
+      <div className="signinOrSignupDiv">
+        <p>Want to log a workout?</p>
+        <p>
+          Be sure to <Button onClick={login}> Login </Button>
+          or
+          <Button onClick={signup}> sign up </Button> here.
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div>
-      <div>
+      <div className="exercise">
         <Autocomplete
+          style={{ backgroundColor: "transparent" }}
           className="exercise-select"
           options={dataExercise.exercises.map((exercise) => exercise.exerciseName)}
           getOptionLabel={(option) => option}
           renderInput={(params) => (
             <TextField {...params}
               variant='filled'
-              label="Pick an Activity"
+              label="Search an Activity"
               margin="normal"
+              InputProps={{
+                style: {
+                  color: 'white',  // Text color
+                },
+              }}
+              InputLabelProps={{
+                style: {
+                  color: '#00796b',  // Label color
+                },
+              }}
+              sx={{
+                '& .MuiFilledInput-underline:before': {
+                  borderBottomColor: '#00796b',  // Default border color
+                },
+                '& .MuiFilledInput-underline:hover:before': {
+                  borderBottomColor: '#00796b',  // Hovered border color
+                },
+                '& .MuiFilledInput-underline:after': {
+                  borderBottomColor: '#00796b',  // Focused border color
+                },
+              }}
             />
           )}
           value={addWorkoutInfo.exercise}
@@ -162,7 +215,8 @@ const CreateWorkout = () => {
             const matches = AutosuggestHighlightMatch(option, inputValue, { insideWords: true });
             const parts = AutosuggestHighlightParse(option, matches);
             return (
-              <li key={key} {...optionProps}>
+              <li key={key} {...optionProps}
+              >
                 <div>
                   {parts.map((part, index) => (
                     <span
@@ -192,6 +246,27 @@ const CreateWorkout = () => {
           name="sets"
           value={addWorkoutInfo.sets}
           onChange={handleAddWorkoutChange}
+          InputProps={{
+            style: {
+              color: 'white',  // Text color
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#00796b',  // Label color
+            },
+          }}
+          sx={{
+            '& .MuiFilledInput-underline:before': {
+              borderBottomColor: '#21122d',  // Default border color
+            },
+            '& .MuiFilledInput-underline:hover:before': {
+              borderBottomColor: '#00796b',  // Hovered border color
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottomColor: '#00796b',  // Focused border color
+            },
+          }}
         />
       </div>
       <div>
@@ -204,6 +279,27 @@ const CreateWorkout = () => {
           name="weight"
           value={addWorkoutInfo.weight}
           onChange={handleAddWorkoutChange}
+          InputProps={{
+            style: {
+              color: 'white',  // Text color
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#00796b',  // Label color
+            },
+          }}
+          sx={{
+            '& .MuiFilledInput-underline:before': {
+              borderBottomColor: '#21122d',  // Default border color
+            },
+            '& .MuiFilledInput-underline:hover:before': {
+              borderBottomColor: '#00796b',  // Hovered border color
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottomColor: '#00796b',  // Focused border color
+            },
+          }}
         />
       </div>
       <div>
@@ -216,6 +312,27 @@ const CreateWorkout = () => {
           id="reps"
           value={addWorkoutInfo.reps}
           onChange={handleAddWorkoutChange}
+          InputProps={{
+            style: {
+              color: 'white',  // Text color
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#00796b',  // Label color
+            },
+          }}
+          sx={{
+            '& .MuiFilledInput-underline:before': {
+              borderBottomColor: '#21122d',  // Default border color
+            },
+            '& .MuiFilledInput-underline:hover:before': {
+              borderBottomColor: '#00796b',  // Hovered border color
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottomColor: '#00796b',  // Focused border color
+            },
+          }}
         />
       </div>
       <div>
@@ -228,6 +345,27 @@ const CreateWorkout = () => {
           id="miles"
           value={addWorkoutInfo.miles}
           onChange={handleAddWorkoutChange}
+          InputProps={{
+            style: {
+              color: 'white',  // Text color
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#00796b',  // Label color
+            },
+          }}
+          sx={{
+            '& .MuiFilledInput-underline:before': {
+              borderBottomColor: '#21122d',  // Default border color
+            },
+            '& .MuiFilledInput-underline:hover:before': {
+              borderBottomColor: '#00796b',  // Hovered border color
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottomColor: '#00796b',  // Focused border color
+            },
+          }}
         />
       </div>
       <div>
@@ -240,6 +378,27 @@ const CreateWorkout = () => {
           id="pace"
           value={addWorkoutInfo.pace}
           onChange={handleAddWorkoutChange}
+          InputProps={{
+            style: {
+              color: 'white',  // Text color
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#00796b',  // Label color
+            },
+          }}
+          sx={{
+            '& .MuiFilledInput-underline:before': {
+              borderBottomColor: '#21122d',  // Default border color
+            },
+            '& .MuiFilledInput-underline:hover:before': {
+              borderBottomColor: '#00796b',  // Hovered border color
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottomColor: '#00796b',  // Focused border color
+            },
+          }}
         />
       </div>
       <div>
@@ -252,6 +411,27 @@ const CreateWorkout = () => {
           id="notes"
           value={addWorkoutInfo.notes}
           onChange={handleAddWorkoutChange}
+          InputProps={{
+            style: {
+              color: 'white',  // Text color
+            },
+          }}
+          InputLabelProps={{
+            style: {
+              color: '#00796b',  // Label color
+            },
+          }}
+          sx={{
+            '& .MuiFilledInput-underline:before': {
+              borderBottomColor: '#21122d',  // Default border color
+            },
+            '& .MuiFilledInput-underline:hover:before': {
+              borderBottomColor: '#00796b',  // Hovered border color
+            },
+            '& .MuiFilledInput-underline:after': {
+              borderBottomColor: '#00796b',  // Focused border color
+            },
+          }}
         />
       </div>
       <Button className="logWorkoutBtn" refetch={refetch} onClick={handleAddWorkout}>Log</Button>

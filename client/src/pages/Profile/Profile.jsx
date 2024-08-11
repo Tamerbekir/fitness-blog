@@ -8,6 +8,7 @@ import "./assets/profile.css";
 import PostCard from "../../components/PostCard/PostCard";
 import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid"
 import EditWorkout from '../../components/EditWorkout/EditWorkout'
+import { Button } from "@mui/material";
 
 // export for profile
 const Profile = () => {
@@ -27,18 +28,9 @@ const Profile = () => {
     window.location.href = "./signup";
   };
 
+
   if (loading) return <p>Loading your profile...please wait.</p>;
-  if (error)
-    return (
-      <div>
-        <p>Whoops! You need to be signed in to do that.</p>
-        <p>Not already a member?</p>
-        <p>
-          Be sure to <button onClick={login}>Login</button> or{" "}
-          <button onClick={signUp}>sign up</button> here.
-        </p>
-      </div>
-    );
+  if (error) <p>{error}</p>
   if (!data) return <p>Profile not found</p>;
 
   //making handling data easier, but will not use for now
@@ -55,33 +47,44 @@ const Profile = () => {
 
   return (
     <div>
-      <div>
-        <h1>
-          Hey there, {data.me.username}, here are all of your posts and
-          workouts!
-        </h1>
-        {data.me.posts.map((post) => (
-          <PostCard
-            className="PostCard"
-            key={post._id}
-            postId={post._id}
-            postComments={post.comments.map((comment) => comment)}
-            title={post.title}
-            username={usernameInitial(data.me.username)}
-            content={post.content}
-            createdAt={data.me.createdAt}
-            topicName={post.topic.map((topic) => topic.topicName)}
-            showDeletePostBtn={data.me._id}
-            showEditBtn={loggedIn}
-            refetch={refetch}
-          >
-          </PostCard>
-        ))}
-        <WorkoutGrid />
-      </div>
+      {loggedIn ? (
+        <div>
+          <h1 className="welcomeHeader">
+            Hey there, {data.me.username}, here are all of your posts and
+            workouts!
+          </h1>
+          {data.me.posts.map((post) => (
+            <PostCard
+              className="PostCard"
+              key={post._id}
+              postId={post._id}
+              postComments={post.comments.map((comment) => comment)}
+              title={post.title}
+              username={usernameInitial(data.me.username)}
+              content={post.content}
+              createdAt={data.me.createdAt}
+              topicName={post.topic.map((topic) => topic.topicName)}
+              showDeletePostBtn={data.me._id}
+              showEditBtn={loggedIn}
+              refetch={refetch}
+            >
+            </PostCard>
+          ))}
+          <WorkoutGrid />
+        </div>
+      ) : (
+        <div className="signInOrSignupDiv">
+          <p>Not already a member?</p>
+          <p>
+            Be sure to <Button onClick={login}> Login </Button>
+            or
+            <Button onClick={signUp}> sign up </Button> here.
+          </p>
+        </div>
+      )}
       <ToastContainer />
     </div>
   );
-};
+}
 
 export default Profile;

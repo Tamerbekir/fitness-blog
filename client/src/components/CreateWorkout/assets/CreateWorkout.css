@@ -9,11 +9,13 @@
 .userPace,
 .userSets,
 .exercise-select {
+  border-radius: 10px;
   width: 100%;
-  background-color: white;
-  margin: 0.1%;
+  background-color: rgba(0, 0, 0, 0.221);
+  margin: 0.7% !important;
   margin-top: 5%;
 }
+
 
 .workoutTextDiv {
   padding: 20px;
@@ -28,7 +30,7 @@
 .workoutTextDiv p {
   margin: 10px 0;
   font-weight: bold;
-  color: #333;
+  color: white;
   font-size: 1.1rem;
 }
 
@@ -53,4 +55,13 @@
 .workoutTextDiv span {
   color: #555;
   font-weight: normal;
+}
+
+.signinOrSignupDiv {
+  text-align: center;
+}
+
+.signinOrSignupDiv p {
+  font: white;
+  font-size: 30px;
 }

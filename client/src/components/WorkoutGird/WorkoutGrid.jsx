@@ -45,6 +45,39 @@ const WorkoutGrid = () => {
     groupedWorkouts[formattedDate].push(workouts[i])
   }
 
+  //! Without a for loop, getting exerciseNames using map
+  // const groupExercisesByName = workouts.map(workout => {
+  //   return workout.exercise.map(index => index.exerciseName)
+  // })
+
+  const groupExercisesByName = (workouts) => {
+    //creating empty object to put exercise names in as a group
+    const groupedExercises = {}
+
+    // Loop through each workout
+    for (let i = 0; i < workouts.length; i++) {
+      const workout = workouts[i];
+
+      // Loop through each exercise in the current workout
+      for (let j = 0; j < workout.exercise.length; j++) {
+        const value = workout.exercise[j];
+
+        // If the exercise name doesn't exist in groupedExercises, create an empty array for it
+        if (!groupedExercises[value.exerciseName]) {
+          groupedExercises[value.exerciseName] = []
+        }
+
+        // Push the current workout into the array for this exercise name
+        groupedExercises[value.exerciseName].push(workout)
+      }
+    }
+
+    // console.log(groupExercisesByName)
+
+
+    return groupedExercises;
+  };
+
   return (
     <Box className="workout-container"
     >
@@ -52,47 +85,64 @@ const WorkoutGrid = () => {
         Workout History
       </Typography>
 
-      {Object.keys(groupedWorkouts).map((date) => (
-        <Accordion key={date} sx={{ width: '100%', marginBottom: 2 }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-${date}-content`}
-            id={`panel-${date}-header`}
-            sx={{
-              backgroundColor: 'orange',
-              color: '#fff',
-            }}
-          >
-            <Typography variant="h6">{date}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {groupedWorkouts[date].map((workout, index) => (
-              <Card
-                key={index}
-                sx={{
-                  width: '100%',
-                  marginBottom: 2,
-                  backgroundColor: '#f9f9f9',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                <CardContent>
-                  <Typography variant="h6" sx={{ marginBottom: 1 }}>
-                    Workout #{index + 1}
-                  </Typography>
-                  <Typography variant="body2"><strong>Exercises:</strong> {workout.exercise.map(ex => ex.exerciseName).join(", ")}</Typography>
-                  <Typography variant="body2"><strong>Sets:</strong> {workout.sets}</Typography>
-                  <Typography variant="body2"><strong>Weight:</strong> {workout.weight}</Typography>
-                  <Typography variant="body2"><strong>Reps:</strong> {workout.reps}</Typography>
-                  <Typography variant="body2"><strong>Miles:</strong> {workout.miles}</Typography>
-                  <Typography variant="body2"><strong>Pace:</strong> {workout.pace}</Typography>
-                  <Typography variant="body2"><strong>Notes:</strong> {workout.notes}</Typography>
-                </CardContent>
-              </Card>
-            ))}
-          </AccordionDetails>
-        </Accordion>
-      ))}
+      {Object.keys(groupedWorkouts).map((date) => {
+        const exercisesGroupedByDate = groupExercisesByName(groupedWorkouts[date]);
+
+        return (
+          <Accordion key={date} sx={{ width: '100%', marginBottom: 2 }}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls={`panel-${date}-content`}
+              id={`panel-${date}-header`}
+              sx={{
+                backgroundColor: '#00796b',
+                color: '#fff',
+              }}
+            >
+              <Typography variant="h6">{date}</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ backgroundColor: "#21122d" }}>
+              {Object.keys(exercisesGroupedByDate).map((exerciseName) => (
+                <Accordion key={exerciseName} sx={{ width: '100%', marginBottom: 2, backgroundColor: '#21122d' }}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`exercise-panel-${exerciseName}-content`}
+                    id={`exercise-panel-${exerciseName}-header`}
+                    sx={{
+                      backgroundColor: '#21122d',
+                      color: 'white',
+                    }}
+                  >
+                    <Typography variant="h6">{exerciseName}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {exercisesGroupedByDate[exerciseName].map((workout, index) => (
+                      <Card
+                        key={index}
+                        sx={{
+                          width: '100%',
+                          marginBottom: 2,
+                          backgroundColor: '#f9f9f9',
+                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                        }}
+                      >
+                        <CardContent>
+                          <Typography variant="body2"><strong>Sets:</strong> {workout.sets}</Typography>
+                          <Typography variant="body2"><strong>Weight:</strong> {workout.weight}</Typography>
+                          <Typography variant="body2"><strong>Reps:</strong> {workout.reps}</Typography>
+                          <Typography variant="body2"><strong>Miles:</strong> {workout.miles}</Typography>
+                          <Typography variant="body2"><strong>Pace:</strong> {workout.pace}</Typography>
+                          <Typography variant="body2"><strong>Notes:</strong> {workout.notes}</Typography>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
     </Box>
   );
 };

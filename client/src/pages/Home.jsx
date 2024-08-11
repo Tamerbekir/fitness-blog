@@ -1,28 +1,28 @@
 import { useQuery } from "@apollo/client";
-import { QUERY_POSTS, QUERY_ME, QUERY_COMMENTS } from "../../utils/queries";
+import { QUERY_POSTS, QUERY_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
 import PostCard from "../components/PostCard/PostCard";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { Button } from "@mui/material";
-// import Popper from '@mui/material/Popper';
+import { ToastContainer } from "react-toastify";
+
 
 const Home = () => {
   const loggedIn = Auth.loggedIn();
-
 
   const {
     loading: loadingPosts,
     error: errorPosts,
     data: dataPosts,
-    refetch } = useQuery(QUERY_POSTS);
+    refetch
+  } = useQuery(QUERY_POSTS);
 
   const {
     loading: loadingMe,
     error: errorMe,
-    data: dataMe,
-  } = useQuery(QUERY_ME)
-
+    data: dataMe
+  } = useQuery(QUERY_ME);
 
   const usernameInitial = (str) => {
     return str.toUpperCase();
@@ -30,30 +30,38 @@ const Home = () => {
 
   const login = () => {
     window.location.href = "./login";
-  }
+  };
 
   const signUp = () => {
     window.location.href = "./signup";
   };
 
-
-  if (loadingPosts || loadingMe)
+  if (loadingPosts || loadingMe) {
     return (
       <Box sx={{ display: 'flex' }}>
         <CircularProgress />
       </Box>
     );
-  if (errorPosts || errorMe) return <p>Error: {errorPosts.message}</p>;
-  if (!dataPosts || !dataMe) return <p>No posts found</p>;
+  }
+
+  if (errorPosts || errorMe) {
+    return <p>Error: {errorPosts.message}</p>;
+  }
+
+  if (!dataPosts || !dataMe) {
+    return <p>No posts found</p>;
+  }
+
+  const handleShowDeleteCommentBtn = (commentId) => {
+    return Array.isArray(dataMe.me.comments) &&
+      dataMe.me.comments.some(comment => comment._id === commentId);
+  };
 
   return (
     <div>
       <div>
-        {loggedIn && !loadingMe && !errorMe && dataMe && (
+        {loggedIn && dataMe && (
           <>
-            {/* <div>
-            {showPopup && <Popup onClose={() => setShowPopup(false)} />}
-          </div> */}
             <h1 className="welcomeHomeText">
               Hey there, {dataMe.me.username}, check out the latest posts!
             </h1>
@@ -66,12 +74,11 @@ const Home = () => {
                 title={post.title}
                 username={usernameInitial(post.profile.username)}
                 content={post.content}
-                createdAt={post.createdAt}
+                createdAt={new Date(parseInt(post.createdAt)).toLocaleDateString()}
                 topicName={post.topic.map((topic) => topic.topicName)}
                 showYouForPost={dataMe.me._id === post.profile._id}
                 showDeletePostBtn={dataMe.me._id === post.profile._id}
-                //!not working for delete button
-                showDeleteCommentBtn={dataMe.me._id === post.comments._id}
+                showDeleteCommentBtn={(commentId) => handleShowDeleteCommentBtn(commentId)}
                 showEditBtn={dataMe.me._id === post.profile._id}
                 refetch={refetch}
               >
@@ -83,13 +90,15 @@ const Home = () => {
       <div>
         {!loggedIn && (
           <div>
-            <h1>Welcome to the Fitness Blog!</h1>
-            <p>Not already a member?</p>
-            <p>
-              Be sure to <Button onClick={login}> Login </Button>
-              or
-              <Button onClick={signUp}> sign up </Button> here.
-            </p>
+            <h1 className="welcomeHomeText">Welcome to the Fitness Blog!</h1>
+            <div className="signInOrSignupDiv">
+              <p>Not already a member?</p>
+              <p>
+                Be sure to <Button onClick={login}> Login </Button>
+                or
+                <Button onClick={signUp}> sign up </Button> here.
+              </p>
+            </div>
             {dataPosts.posts.map((post) => (
               <PostCard
                 className="PostCard"
@@ -98,15 +107,17 @@ const Home = () => {
                 postComments={post.comments}
                 username={usernameInitial(post.profile.username)}
                 content={post.content}
-                createdAt={post.createdAt}
+                createdAt={new Date(parseInt(post.createdAt)).toLocaleDateString()}
                 topicName={post.topic.map((topic) => topic.topicName)}
               >
               </PostCard>
             ))}
           </div>
         )}
+        <ToastContainer />
+
       </div>
-    </div>
+    </div >
   );
 };
 

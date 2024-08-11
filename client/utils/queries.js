@@ -85,6 +85,7 @@ query Posts {
     comments {
       _id
       content
+      createdAt
     }
     topic {
       topicName

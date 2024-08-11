@@ -10,7 +10,8 @@ import {
   Select,
   FormHelperText,
   ToastContainer, toast, Bounce,
-  Auth
+  Auth,
+  Button
 } from './createPost'
 
 import './assets/createPost.css'
@@ -106,22 +107,35 @@ const CreatePost = () => {
   }
 
   // function for going to login page
-  const loginPage = () => {
+  const login = () => {
     window.location.href = './login'
+  }
+
+  const signup = () => {
+    window.location.href = '/signup'
   }
 
   // handling all loading for query Me and query topics
   if (loadingMe || loadingTopics) return <p>Loading your post creation...</p>
   if (errorMe || errorTopics) return <div> <p>Whoops! You need to be logged in to do that.</p></div>
-  if (!dataMe || !dataTopics) return <p>Profile not found to create post</p>
+  if (!dataTopics) return <p>Profile not found to create post</p>
+
+  if (!dataMe.me) {
+    return (
+      <div className="signInOrSignupDiv">
+        <p>Want to leave a post?</p>
+        <p>
+          Be sure to <Button onClick={login}> Login </Button>
+          or
+          <Button onClick={signup}> sign up </Button> here.
+        </p>
+      </div>
+    )
+  }
 
 
   return (
     <div>
-      {!loggedIn && (
-        <button onClick={loginPage}>Login</button>
-      )}
-
       <form>
         <div className="userTitleDiv">
           <TextField

@@ -19,7 +19,6 @@ import Person2Icon from '@mui/icons-material/Person2';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import Paper from '@mui/material/Paper';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from "react-toastify";
 import AddReaction from '../AddReaction/AddReaction'
 import EditPost from "../EditPost/EditPost";
 import { Box } from "@mui/material";
@@ -194,7 +193,7 @@ const PostCard = ({
           />
         )}
 
-        <ToastContainer />
+        {/* <ToastContainer /> */}
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -221,8 +220,10 @@ const PostCard = ({
       <Box>
         {/* deleting and adding showing but all users getting delete option */}
         {postComments.map(comment => (
-          <div key={comment._id}>
+          <div key={comment._id} >
             <Box>{comment.content}</Box>
+            <Box>{new Date(parseInt(comment.createdAt)).toLocaleDateString()}
+            </Box>
             <DeleteComment
               commentId={comment._id}
               refetch={refetch}
@@ -231,7 +232,7 @@ const PostCard = ({
           </div>
         ))}
       </Box>
-    </Card>
+    </Card >
   );
 };
 

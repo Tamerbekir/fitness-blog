@@ -119,7 +119,6 @@ const NavBar = () => {
   };
 
   const handleCloseUserMenu = () => {
-    rgb
     setAnchorElUser(null);
   };
 
