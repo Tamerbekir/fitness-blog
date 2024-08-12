@@ -45,6 +45,7 @@ const Profile = () => {
     return str.toUpperCase();
   };
 
+
   return (
     <div>
       {loggedIn ? (

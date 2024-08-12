@@ -195,44 +195,44 @@ const resolvers = {
     // taking in addPost mutations
     addPost: async (parent, { title, topic, content }, context) => {
       try {
-      if (context.user) {
-        // because where are preassigned topics, we use the type Topic query and use the topicName as the topic and look that up 
-        const topicChoice = await Topic.findOne({ topicName: topic })
+        if (context.user) {
+          // because where are preassigned topics, we use the type Topic query and use the topicName as the topic and look that up 
+          const topicChoice = await Topic.findOne({ topicName: topic })
 
-        if (!topicChoice) {
-          throw new Error('No topic found')
+          if (!topicChoice) {
+            throw new Error('No topic found')
+          }
+
+          // when creating a new post
+          const newPost = await Post.create({
+            // profile is going to the be context.user (who is looked in)and the _id is ensuring the post is assigned to said user
+            profile: context.user._id,
+            // a new post requires a title, content and the topic (topic will have an ID because it is preassigned from an array, not made by the user)
+            title,
+            content,
+            topic: topicChoice._id,
+            // adding a date to when the post is made
+            createdAt: new Date()
+          })
+
+          // finding the profile who is creating this post by their id and updating the profile. 
+          await Profile.findByIdAndUpdate(
+            // looking user up by the context.user (whos logged in)
+            context.user._id,
+            // adding the post, specifically the new posts ID which was just made and adding it to the profile
+            { $addToSet: { posts: newPost._id } },
+            // running validations 
+            { new: true, runValidators: true }
+          )
+          // returning the new post and updating the profile and topic
+          return Post.findById(newPost._id).populate('profile topic')
         }
-
-        // when creating a new post
-        const newPost = await Post.create({
-          // profile is going to the be context.user (who is looked in)and the _id is ensuring the post is assigned to said user
-          profile: context.user._id,
-          // a new post requires a title, content and the topic (topic will have an ID because it is preassigned from an array, not made by the user)
-          title,
-          content,
-          topic: topicChoice._id,
-          // adding a date to when the post is made
-          createdAt: new Date()
-        })
-
-        // finding the profile who is creating this post by their id and updating the profile. 
-        await Profile.findByIdAndUpdate(
-          // looking user up by the context.user (whos logged in)
-          context.user._id,
-          // adding the post, specifically the new posts ID which was just made and adding it to the profile
-          { $addToSet: { posts: newPost._id } },
-          // running validations 
-          { new: true, runValidators: true }
-        )
-        // returning the new post and updating the profile and topic
-        return Post.findById(newPost._id).populate('profile topic')
-      }
 
       } catch (error) {
         console.error('error')
         throw new AuthenticationError
       }
-  },
+    },
 
     addWorkout: async (parent, { exercise, weight, reps, sets, notes, miles, pace }, context) => {
       try {
@@ -251,7 +251,7 @@ const resolvers = {
             reps,
             sets,
             notes,
-            miles, 
+            miles,
             pace,
             createdAt: new Date()
           })
@@ -270,7 +270,7 @@ const resolvers = {
       }
     },
 
-    updateWorkout: async (parent, { _id, exercise, reps, weight, miles, pace, notes }, context) => {
+    updateWorkout: async (parent, { _id, exercise, reps, weight, miles, sets, pace, notes }, context) => {
       try {
         if (context.user) {
           // variable for finding an exercise

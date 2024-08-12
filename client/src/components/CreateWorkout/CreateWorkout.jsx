@@ -20,8 +20,6 @@ import { QUERY_ME } from "../../../utils/queries";
 
 const CreateWorkout = () => {
 
-  // const loggedIn = Auth.loggedIn()
-
   const {
     loading: loadingExercise,
     error: errorExercise,
@@ -42,7 +40,6 @@ const CreateWorkout = () => {
   const [addWorkoutForm, setAddWorkoutForm] = useState();
   // adds 1 and starting at 1
   const [counter, setCounter] = useState(1)
-
 
   const profileRedirect = () => {
     window.location.href = "./profile";
@@ -86,6 +83,18 @@ const CreateWorkout = () => {
       [name]: value,
     });
   };
+
+  // const clearField = () => {
+  //   setAddWorkoutForm({
+  //     weight: '',
+  //     reps: '',
+  //     sets: '',
+  //     miles: '',
+  //     pace: '',
+  //     notes: '',
+  //     exercise: '',
+  //   })
+  // }
 
   const handleAddWorkout = async () => {
     try {
@@ -180,11 +189,13 @@ const CreateWorkout = () => {
           options={dataExercise.exercises.map((exercise) => exercise.exerciseName)}
           getOptionLabel={(option) => option}
           renderInput={(params) => (
-            <TextField {...params}
+            <TextField
+              {...params}
               variant='filled'
               label="Search an Activity"
               margin="normal"
               InputProps={{
+                ...params.InputProps,
                 style: {
                   color: 'white',  // Text color
                 },
@@ -196,7 +207,7 @@ const CreateWorkout = () => {
               }}
               sx={{
                 '& .MuiFilledInput-underline:before': {
-                  borderBottomColor: '#00796b',  // Default border color
+                  borderBottomColor: '#21122d',  // Default border color
                 },
                 '& .MuiFilledInput-underline:hover:before': {
                   borderBottomColor: '#00796b',  // Hovered border color
@@ -424,7 +435,7 @@ const CreateWorkout = () => {
             '& .MuiFilledInput-underline:before': {
               borderBottomColor: '#21122d',  // Default border color
             },
-            '& .MuiFilledInput-underline:hover:before': {
+            '& .MuiFill edInput-underline:hover:before': {
               borderBottomColor: '#00796b',  // Hovered border color
             },
             '& .MuiFilledInput-underline:after': {
@@ -434,10 +445,11 @@ const CreateWorkout = () => {
         />
       </div>
       <Button className="logWorkoutBtn" refetch={refetch} onClick={handleAddWorkout}>Log</Button>
-      <Button onClick={completeSet}>Complete Set</Button>
+      <Button className="completeSetBtn" onClick={completeSet}>Complete Set</Button>
+      {/* <Button onClick={clearField}>Clear</Button> */}
       {addWorkoutForm && (
         <div>
-          <Button className="vieworkoutBtn" onClick={profileRedirect}>View All Workouts</Button>
+          <Button className="viewWorkoutBtn" onClick={profileRedirect}>View All Workouts</Button>
         </div>
       )}
       <div>

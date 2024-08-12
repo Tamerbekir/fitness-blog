@@ -1,34 +1,22 @@
-import { useQuery } from "@apollo/client";
-import { useMutation } from "@apollo/client";
-import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
-import { UPDATE_WORKOUT }from '../../../utils/mutations'
+import { useQuery, useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { IconButton } from "@mui/material";
-import WorkoutGrid from '../WorkoutGird/WorkoutGrid'
+import { IconButton, Button, TextField, FormControl, Autocomplete } from "@mui/material";
+import AutosuggestHighlightMatch from "autosuggest-highlight/match";
+import AutosuggestHighlightParse from "autosuggest-highlight/parse";
+import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
+import { UPDATE_WORKOUT } from '../../../utils/mutations';
+import WorkoutGrid from '../../components/WorkoutGird/WorkoutGrid';
 
-const EditWorkout = ({ workoutId }) => {
-
-  const {
-    loading, 
-    error, 
-    data, 
-    refetch
-  } = useQuery(QUERY_ME)
-
-  const {
-    loading: loadingExercise,
-    error: errorExercise,
-    data: dataExercise
-  } = useQuery(QUERY_EXERCISE)
+const EditWorkout = () => {
+  const { loading, error, data, refetch } = useQuery(QUERY_ME);
+  const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
 
   const [editWorkout] = useMutation(UPDATE_WORKOUT, {
-    onCompleted:() => refetch(),
+    onCompleted: () => refetch(),
     onError: (error) => console.error('error editing workout')
-  })
+  });
 
-  // const [editWorkoutFormBtn, setEditWorkoutFormBtn ] = useState(false)
-  
-  const [editWorkoutInfo, setEditWorkoutInfo ] = useState({
+  const [editWorkoutInfo, setEditWorkoutInfo] = useState({
     exercise: '',
     reps: '',
     weight: '',
@@ -36,197 +24,212 @@ const EditWorkout = ({ workoutId }) => {
     sets: '',
     miles: '',
     notes: ''
-  })
+  });
 
-  if (loading || loadingExercise) return <p>Loading your workout...</p>
-  if (error || errorExercise) return <div> <p>{error}</p></div>
-  if (!data || !dataExercise) return <p>Profile or exercise not found to edit workout</p>
-
+  const [selectedWorkoutId, setSelectedWorkoutId] = useState(null); // To track which workout is being edited
 
   useEffect(() => {
-    if(data) {
-      //finding the workout data under query ME and displaying the workout info for the user
-      const workoutData = data.me.workouts.find((workout) = workout._id === workoutId)
-      //mapping over the exercises in the ME query under workouts to get the exercise name from exercise array
-      const workoutExercise = data.me.workouts.map((exercise) => exercise.exerciseName)
+    if (data && selectedWorkoutId) {
+      const workoutData = data.me.workouts.find((workout) => workout._id === selectedWorkoutId);
       setEditWorkoutInfo({
-        id: workoutId,
-        exercise: workoutExercise,
+        id: selectedWorkoutId,
+        exercise: workoutData.exercise,
         reps: workoutData.reps,
         weight: workoutData.weight,
         pace: workoutData.pace,
         sets: workoutData.sets,
         miles: workoutData.miles,
         notes: workoutData.notes,
-      })
+      });
     }
-  }, [data, workoutId])
+  }, [data, selectedWorkoutId]);
 
-  //taking in the new text the user provides in the fields to change the workout info
-  const handleWorkoutChange =(event) => {
-    const {name, value} = event.target
+  const handleWorkoutChange = (event) => {
+    const { name, value } = event.target;
     setEditWorkoutInfo({
       ...editWorkoutInfo,
       [name]: value
-    })
-  }
+    });
+  };
 
-
-  const handleEditWorkoutChange = async () => {
+  const handleEditWorkout = async () => {
     try {
-      const { data: userEditWorkout } = await editWorkout({
+      console.log("Variables sent to mutation:", {
+        ...editWorkoutInfo,
+        exercise: editWorkoutInfo.exercise,
+        reps: editWorkoutInfo.reps,
+        weight: editWorkoutInfo.weight,
+        pace: editWorkoutInfo.pace,
+        sets: editWorkoutInfo.sets,
+        miles: editWorkoutInfo.miles,
+        notes: editWorkoutInfo.notes,
+      });
+
+      await editWorkout({
         variables: {
           ...editWorkoutInfo,
           exercise: editWorkoutInfo.exercise,
-          reps: editWorkoutInfo.reps,
-          weight: editWorkoutInfo.weight,
-          pace: editWorkoutInfo.pace,
-          sets: editWorkoutInfo.sets,
-          miles: editWorkoutInfo.miles,
+          reps: parseFloat(editWorkoutInfo.reps),   // Ensure these are numbers
+          weight: parseFloat(editWorkoutInfo.weight),
+          pace: parseFloat(editWorkoutInfo.pace),
+          sets: parseFloat(editWorkoutInfo.sets),
+          miles: parseFloat(editWorkoutInfo.miles),
           notes: editWorkoutInfo.notes,
         }
-      })
+      });
+
+      console.log('Workout edited successfully');
+      setSelectedWorkoutId(null); // Close the edit form after submission
     } catch (error) {
-      console.error('there was an error editing this workout', error)
+      console.error('Error editing workout:', error.message);
     }
-    console.log( 
-      'exercise', editWorkoutInfo.exercise, 
-      'reps:',editWorkoutInfo.reps, 
-      'weight:', editWorkoutInfo.weight,
-      'pace:', editWorkoutInfo.pace,
-      'sets:', editWorkoutInfo.sets,
-      'miles:', editWorkoutInfo.miles,
-      'notes:', editWorkoutInfo.notes, )
-  }
+  };
 
 
+  const handleEditButtonClick = (workoutId) => {
+    setSelectedWorkoutId(workoutId);
+  };
+
+  if (loading || loadingExercise) return <p>Loading your workout...</p>;
+  if (error || errorExercise) return <p>Error: {error?.message || errorExercise?.message}</p>;
+  if (!data || !dataExercise) return <p>Profile or exercise not found to edit workout</p>;
 
   return (
     <div>
-      <div>
-        <Autocomplete
-          className="exercise-select"
-          //for the autocomplete field- mapping over exercise and getting exercise names
-          options={dataExercise.exercises.map((exercise) => exercise.exerciseName)}
-          getOptionLabel={(option) => option}
-          //boilerplate from template
-          renderInput={(params) => (
-            <TextField {...params} 
-            variant='filled'
-            label="Pick an Activity" 
-            margin="normal" />
+      <h2 className="workoutExerciseText">Last Sets</h2>
+      {data.me.workouts.map((workout, index) => (
+        <div key={index} style={{ marginBottom: '10px' }}>
+          <p><strong>Exercise:</strong>
+            {/* Check if workout.exercise is an array and map over it */}
+            {Array.isArray(workout.exercise) ?
+              workout.exercise.map((ex, idx) => <span key={idx}>{ex.exerciseName}</span>) :
+              workout.exercise.exerciseName
+            }
+          </p>
+          <p><strong>Sets:</strong> {workout.sets}</p>
+          <p><strong>Weight:</strong> {workout.weight}</p>
+          <p><strong>Reps:</strong> {workout.reps}</p>
+          <p><strong>Miles:</strong> {workout.miles}</p>
+          <p><strong>Pace:</strong> {workout.pace}</p>
+          <p><strong>Notes:</strong> {workout.notes}</p>
+          <Button onClick={() => handleEditButtonClick(workout._id)}>Edit</Button>
+
+          {selectedWorkoutId === workout._id && (
+            <div>
+              <Autocomplete
+                className="exercise-select"
+                options={dataExercise.exercises.map((exercise) => exercise.exerciseName)}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => (
+                  <TextField {...params} variant='filled' label="Pick an Activity" margin="normal" />
+                )}
+                value={editWorkoutInfo.exercise}
+                onChange={(event, newValue) => setEditWorkoutInfo({ ...editWorkoutInfo, exercise: newValue })}
+                renderOption={(props, option, { inputValue }) => {
+                  const { key, ...optionProps } = props;
+                  const matches = AutosuggestHighlightMatch(option, inputValue, { insideWords: true });
+                  const parts = AutosuggestHighlightParse(option, matches);
+
+                  return (
+                    <li key={key} {...optionProps}>
+                      <div>
+                        {parts.map((part, index) => (
+                          <span
+                            variant="filled"
+                            key={index}
+                            style={{
+                              fontWeight: part.highlight ? 700 : 400,
+                            }}
+                          >
+                            {part.text}
+                          </span>
+                        ))}
+                      </div>
+                    </li>
+                  );
+                }}
+              />
+              <FormControl />
+              <div>
+                <TextField
+                  className="userSets"
+                  label='Sets'
+                  variant="filled"
+                  type="text"
+                  id="sets"
+                  name="sets"
+                  value={editWorkoutInfo.sets}
+                  onChange={handleWorkoutChange}
+                />
+              </div>
+              <div>
+                <TextField
+                  className="userWeight"
+                  label='Weight'
+                  variant="filled"
+                  type="text"
+                  id="weight"
+                  name="weight"
+                  value={editWorkoutInfo.weight}
+                  onChange={handleWorkoutChange}
+                />
+              </div>
+              <div>
+                <TextField
+                  className="userReps"
+                  label='Reps'
+                  variant="filled"
+                  type="text"
+                  name="reps"
+                  id="reps"
+                  value={editWorkoutInfo.reps}
+                  onChange={handleWorkoutChange}
+                />
+              </div>
+              <div>
+                <TextField
+                  className="userMiles"
+                  label='Miles'
+                  variant="filled"
+                  type="text"
+                  name="miles"
+                  id="miles"
+                  value={editWorkoutInfo.miles}
+                  onChange={handleWorkoutChange}
+                />
+              </div>
+              <div>
+                <TextField
+                  className="userPace"
+                  label='Pace'
+                  variant="filled"
+                  type="text"
+                  name="pace"
+                  id="pace"
+                  value={editWorkoutInfo.pace}
+                  onChange={handleWorkoutChange}
+                />
+              </div>
+              <div>
+                <TextField
+                  className="userNotes"
+                  label='Notes'
+                  variant="filled"
+                  type="text"
+                  name="notes"
+                  id="notes"
+                  value={editWorkoutInfo.notes}
+                  onChange={handleWorkoutChange}
+                />
+              </div>
+              <IconButton onClick={handleEditWorkout}>Submit Edit</IconButton>
+            </div>
           )}
-          //the value field will consist of the addWorkoutInto.exercise data
-          value={editWorkoutInfo.exercise}
-          //Runs when an option is selected. Gets the new value selected.  Updates the usestate. Keeps all old values, but changes exercise to the new value
-          onChange={(event, newValue) => setEditWorkoutInfo({ ...editWorkoutInfo, exercise: newValue })}
-           //boiler plate template
-          renderOption={(props, option, { inputValue }) => {
-            const { key, ...optionProps } = props;
-            const matches = AutosuggestHighlightMatch(option, inputValue, { insideWords: true });
-            const parts = AutosuggestHighlightParse(option, matches);
-
-            //boiler plate template
-            return (
-              <li key={key} {...optionProps}>
-                <div>
-                  {parts.map((part, index) => (
-                    <span
-                      variant="filled"
-                      key={index}
-                      style={{
-                        fontWeight: part.highlight ? 700 : 400,
-                      }}
-                    >
-                      {part.text}
-                    </span>
-                  ))}
-                </div>
-              </li>
-            );
-          }}
-        />
-        <FormControl />
-      </div>
-      <div>
-        <TextField
-          className="userSets"
-          label='Sets'
-          variant="filled"
-          type="text"
-          id="sets"
-          name="sets"
-          value={editWorkoutInfo.sets}
-          onChange={handleAddWorkoutChange}
-        />
-      </div>
-      <div>
-        <TextField
-          className="userWeight"
-          label='Weight'
-          variant="filled"
-          type="text"
-          id="weight"
-          name="weight"
-          value={editWorkoutInfo.weight}
-          onChange={handleAddWorkoutChange}
-        />
-      </div>
-      <div>
-        <TextField
-          className="userReps"
-          label='Reps'
-          variant="filled"
-          type="text"
-          name="reps"
-          id="reps"
-          value={editWorkoutInfo.reps}
-          onChange={handleAddWorkoutChange}
-        />
-      </div>
-      <div>
-        <TextField
-          className="userMiles"
-          label='Miles'
-          variant="filled"
-          type="text"
-          name="miles"
-          id="miles"
-          value={editWorkoutInfo.miles}
-          onChange={handleAddWorkoutChange}
-        />
-      </div>
-      <div>
-        <TextField
-          className="userPace"
-          label='Pace'
-          variant="filled"
-          type="text"
-          name="pace"
-          id="pace"
-          value={editWorkoutInfo.pace}
-          onChange={handleAddWorkoutChange}
-        />
-      </div>
-      <div>
-        <TextField
-          className="userNotes"
-          label='Notes'
-          variant="filled"
-          type="text"
-          name="notes"
-          id="notes"
-          value={editWorkoutInfo.notes}
-          onChange={handleAddWorkoutChange}
-        />
-      </div>
-      <IconButton className="editWorkoutBtn" refetch={refetch} onClick={handleWorkoutChange}>Edit</IconButton>
-
-      <IconButton onClick={handleEditWorkoutChange}>Submit Edit</IconButton>
-
-      <WorkoutGird />
+        </div>
+      ))}
+      <WorkoutGrid />
     </div>
-  )
-}
+  );
+};
 
-export default EditWorkout
+export default EditWorkout;

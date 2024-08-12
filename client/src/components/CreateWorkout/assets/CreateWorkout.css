@@ -11,11 +11,14 @@
 .exercise-select {
   border-radius: 10px;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.221);
+  background-color: #21122d !important;
   margin: 0.7% !important;
   margin-top: 5%;
 }
 
+.exercise-select {
+  font-size: 30px !important;
+}
 
 .workoutTextDiv {
   padding: 20px;
@@ -69,4 +72,12 @@
 .signupBtn {
   color: purple !important;
   background-color: orange !important;
+}
+
+.logWorkoutBtn,
+.completeSetBtn,
+.viewWorkoutBtn {
+  background-color: #00796b !important;
+  color: white !important;
+  margin: 2% !important;
 }

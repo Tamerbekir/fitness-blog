@@ -35,6 +35,10 @@ query Query {
       _id
       content
       createdAt
+      profile {
+        _id
+        username
+      }
     }
     }
     favoritePost {

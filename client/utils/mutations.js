@@ -79,7 +79,7 @@ mutation Mutation($id: ID!, $title: String!, $content: String!, $topic: String!)
 }
 `
 
-export const REMOVE_POST = gql `
+export const REMOVE_POST = gql`
 mutation removePost($id: ID!) {
   removePost(_id: $id) {
     _id
@@ -102,7 +102,7 @@ mutation updateWorkout($id: ID!, $exercise: String!, $reps: Float!, $weight: Flo
     _id
     reps
     pace
-    weights
+    weight
     reps
     sets
     notes
