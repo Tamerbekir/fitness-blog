@@ -4,28 +4,30 @@ import { QUERY_ME, QUERY_COMMENTS } from "../../../utils/queries";
 import { REMOVE_COMMENT } from "../../../utils/mutations";
 import { Button } from "@mui/material";
 import { toast, Bounce } from 'react-toastify'
+import { useState } from "react";
+import './assets/deleteComment.css'
 
 
 const DeleteComment = ({ commentId, refetch }) => {
 
-  const {
-    loading: loadingMe,
-    data: dataMe,
-    error: errorMe
-  } = useQuery(QUERY_ME)
+  // const {
+  //   loading: loadingMe,
+  //   data: dataMe,
+  //   error: errorMe
+  // } = useQuery(QUERY_ME)
 
-  const {
-    loading: loadingComments,
-    data: dataComments,
-    error: errorComments
-  } = useQuery(QUERY_ME)
+  // const {
+  //   loading: loadingComments,
+  //   data: dataComments,
+  //   error: errorComments
+  // } = useQuery(QUERY_ME)
 
   const [removeComment] = useMutation(REMOVE_COMMENT, {
     onCompleted: () => refetch(),
     onError: (error) => console.error('error removing comments', error)
   })
 
-  // const [removeCommentInfo, setRemoveCommentInfo] = useState()
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
 
 
@@ -53,7 +55,17 @@ const DeleteComment = ({ commentId, refetch }) => {
   }
   return (
     <div>
-      <Button type='button' onClick={handleDeleteComment}>Delete</Button>
+      <div>
+        {!confirmDelete ? (
+          <Button className="deleteCommentBtn" type='button' onClick={() => setConfirmDelete(true)}>Delete</Button>
+        ) : (
+          <>
+            <p>Are you sure you want to delete your comment?</p>
+            <Button className="confirmDeleteBtn" type="button" onClick={handleDeleteComment}>Confirm Delete</Button>
+            <Button className="closeConfirmDeleteBtn" type="button" onClick={() => setConfirmDelete(false)}>Cancel</Button>
+          </>
+        )}
+      </div>
     </div >
   )
 }

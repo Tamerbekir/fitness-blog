@@ -60,15 +60,15 @@ const WorkoutGrid = () => {
 
       // Loop through each exercise in the current workout
       for (let j = 0; j < workout.exercise.length; j++) {
-        const value = workout.exercise[j];
+        const workoutExercise = workout.exercise[j];
 
         // If the exercise name doesn't exist in groupedExercises, create an empty array for it
-        if (!groupedExercises[value.exerciseName]) {
-          groupedExercises[value.exerciseName] = []
+        if (!groupedExercises[workoutExercise.exerciseName]) {
+          groupedExercises[workoutExercise.exerciseName] = []
         }
 
         // Push the current workout into the array for this exercise name
-        groupedExercises[value.exerciseName].push(workout)
+        groupedExercises[workoutExercise.exerciseName].push(workout)
       }
     }
 

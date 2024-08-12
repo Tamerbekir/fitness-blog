@@ -10,7 +10,7 @@ const AddReaction = ({ postId }) => {
     loading,
     error,
     data
-} = useQuery(QUERY_ME)
+  } = useQuery(QUERY_ME)
 
   const [AddOrRemoveReactionPost] = useMutation(ADD_OR_REMOVE_REACTION_POST)
 
@@ -32,6 +32,7 @@ const AddReaction = ({ postId }) => {
 
   return (
     <div>
+      <p>Reactions coming soon!</p>
       <IconButton onClick={handleAddReaction}>🤨</IconButton>
       <IconButton onClick={handleAddReaction}>😀</IconButton>
       <IconButton onClick={handleAddReaction}>🤨</IconButton>

@@ -86,6 +86,10 @@ query Posts {
       _id
       content
       createdAt
+      profile {
+      _id
+      username
+      }
     }
     topic {
       topicName

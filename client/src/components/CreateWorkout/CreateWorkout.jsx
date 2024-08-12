@@ -14,7 +14,6 @@ import { ToastContainer, toast, Bounce } from 'react-toastify'
 import './assets/CreateWorkout.css'
 import WorkoutGrid from '../../components/WorkoutGird/WorkoutGrid';
 import { useEffect } from "react";
-import Auth from "../../../utils/auth";
 import { QUERY_ME } from "../../../utils/queries";
 
 
@@ -164,9 +163,9 @@ const CreateWorkout = () => {
       <div className="signinOrSignupDiv">
         <p>Want to log a workout?</p>
         <p>
-          Be sure to <Button onClick={login}> Login </Button>
+          Be sure to <Button className='loginBtn' onClick={login}> Login </Button>
           or
-          <Button onClick={signup}> sign up </Button> here.
+          <Button className='signupBtn' onClick={signup}> sign up </Button> here.
         </p>
       </div>
     )

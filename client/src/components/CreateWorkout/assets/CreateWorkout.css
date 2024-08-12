@@ -57,11 +57,16 @@
   font-weight: normal;
 }
 
-.signinOrSignupDiv {
-  text-align: center;
-}
+
 
 .signinOrSignupDiv p {
+  text-align: center;
   font: white;
   font-size: 30px;
+}
+
+.loginBtn,
+.signupBtn {
+  color: purple !important;
+  background-color: orange !important;
 }

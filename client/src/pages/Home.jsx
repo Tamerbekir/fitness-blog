@@ -52,10 +52,7 @@ const Home = () => {
     return <p>No posts found</p>;
   }
 
-  const handleShowDeleteCommentBtn = (commentId) => {
-    return Array.isArray(dataMe.me.comments) &&
-      dataMe.me.comments.some(comment => comment._id === commentId);
-  };
+
 
   return (
     <div>
@@ -78,7 +75,6 @@ const Home = () => {
                 topicName={post.topic.map((topic) => topic.topicName)}
                 showYouForPost={dataMe.me._id === post.profile._id}
                 showDeletePostBtn={dataMe.me._id === post.profile._id}
-                showDeleteCommentBtn={(commentId) => handleShowDeleteCommentBtn(commentId)}
                 showEditBtn={dataMe.me._id === post.profile._id}
                 refetch={refetch}
               >

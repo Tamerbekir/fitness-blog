@@ -218,19 +218,6 @@ const PostCard = ({
         />
       </Box>
       <Box>
-        {/* deleting and adding showing but all users getting delete option */}
-        {postComments.map(comment => (
-          <div key={comment._id} >
-            <Box>{comment.content}</Box>
-            <Box>{new Date(parseInt(comment.createdAt)).toLocaleDateString()}
-            </Box>
-            <DeleteComment
-              commentId={comment._id}
-              refetch={refetch}
-            />
-            {/* <p>{comment.profile.username}</p> */}
-          </div>
-        ))}
       </Box>
     </Card >
   );
