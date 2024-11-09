@@ -3,14 +3,16 @@ import { Card, Button, Collapse, OverlayTrigger, Tooltip, ListGroup } from 'reac
 import Avatar from 'react-avatar';
 import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_PROFILES, QUERY_COMMENTS } from "../../../utils/queries";
-import DeletePost from "../DeletePost/DeletePost";
+import DeletePost from "../DeletePost/DeletePost.jsx";
 import AddReaction from '../AddReaction/AddReaction';
-import EditPost from "../EditPost/EditPost";
-import AddComment from '../AddComment/AddComment';
-import UserComments from '../UserComments/UserComments';
+import EditPost from "../EditPost/EditPost.jsx";
+import AddComment from '../AddComment/AddComment.jsx';
+import UserComments from '../UserComments/UserComments.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/postCard.css'
+
+
 const PostCard = ({
   postId,
   postComments,

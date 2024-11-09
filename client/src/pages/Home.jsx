@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { QUERY_POSTS, QUERY_ME } from "../../utils/queries";
 import Auth from "../../utils/auth";
-import PostCard from "../components/PostCard/PostCard";
+import PostCard from "../components/PostCard/PostCard.jsx";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { Button } from "@mui/material";

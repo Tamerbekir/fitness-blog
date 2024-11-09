@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../../../utils/queries";
 import { QUERY_COMMENTS } from "../../../utils/queries";
-import DeleteComment from "../DeleteComment/DeleteComment";
+import DeleteComment from "../DeleteComment/DeleteComment.jsx";
 import './assets/userComments.css'
 import { Box } from "@mui/material";
 import Auth from "../../../utils/auth";

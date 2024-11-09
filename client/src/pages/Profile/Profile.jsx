@@ -5,8 +5,8 @@ import { ToastContainer } from "react-toastify";
 // import Box from "@mui/material/Box";
 // import { DataGrid } from "@mui/x-data-grid";
 import "./assets/profile.css";
-import PostCard from "../../components/PostCard/PostCard";
-import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid"
+import PostCard from "../../components/PostCard/PostCard.jsx";
+import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid.jsx"
 // import EditWorkout from '../../components/EditWorkout/EditWorkout'
 import { Button } from "@mui/material";
 
