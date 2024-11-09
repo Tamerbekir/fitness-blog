@@ -1,44 +1,38 @@
-
-/* .workout-container {
-  width: 50%;
-} */
-
 .title {
   color: white;
 }
 
-/* from bootstrap boilerplate component. Using important to override all bootstrap built in css */
-.main .accordion-item {
+.main, .accordion-item {
   background-color: #333 !important;
   color: #fff !important;
   border: none !important;
 }
 
-.main .accordion-header {
+.main, .accordion-header {
   border-radius: 10px !important;
   background-color: #f9c000 !important; 
   color: #333 !important; 
 }
 
-.main .accordion-button {
+.main, .accordion-button {
   background-color: #f9c000 !important;
   color: #333 !important; 
   border: none !important; 
 }
 
-.main .accordion-button:not(.collapsed) {
+.main, .accordion-button:not(.collapsed) {
   background-color: #f9c000 !important;
   color: #333 !important;
   border: none !important;
 }
 
-.main .accordion-body {
+.main, .accordion-body {
   background-color: #333 !important;
   color: #fff !important; 
   border: none !important; 
 }
 
-.main .card {
+.main, .card {
   background-color: #333 !important;
   color: #fff !important; 
   border: none !important;
@@ -54,32 +48,32 @@
   border-radius: 10px;
 }
 
-.main .btn-primary {
+.main, .btn-primary {
   background-color: #f9c000 !important; 
   border-color: #f9c000 !important;
 }
 
-.main .btn-primary:hover {
+.main, .btn-primary:hover {
   background-color: #e6b800 !important; 
   border-color: #e6b800 !important;
 }
 
-.main .btn-success {
+.main, .btn-success {
   background-color: #f9c000 !important;
   border-color: #f9c000 !important;
 }
 
-.main .btn-success:hover {
+.main, .btn-success:hover {
   background-color: #e6b800 !important;
   border-color: #e6b800 !important;
 }
 
-.main .btn-secondary {
+.main, .btn-secondary {
   background-color: #555 !important;
   border-color: #555 !important;
 }
 
-.main .btn-secondary:hover {
+.main, .btn-secondary:hover {
   background-color: #444 !important;
   border-color: #444 !important;
 }

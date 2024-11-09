@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Accordion, Card, Button, Form, Container } from 'react-bootstrap';
 import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 import { UPDATE_WORKOUT } from "../../../utils/mutations";
-import "./assets/workoutGrid.css";
+import './assets/workoutGrid.css'
+
 // import Auth from '../../../utils/auth'
 
 const WorkoutGrid = () => {
@@ -12,7 +13,6 @@ const WorkoutGrid = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
 
-  // console.log(dataExercise);
 
   const [editingWorkoutId, setEditingWorkoutId] = useState(null);
 
@@ -129,13 +129,6 @@ const WorkoutGrid = () => {
   };
 
 
-  const weightExerciseOnly = dataExercise.exercises.map(exercise => exercise.exerciseName).filter(name => name.includes('chest'))
-
-  console.log(weightExerciseOnly);
-
-
-  console.log(weightExerciseOnly);
-
   if (loading || loadingExercise) return <p>Loading workouts...</p>;
   if (error || errorExercise) return <p>{error.message || errorExercise.message}</p>;
   if (!dataExercise) return <p>No workout data found</p>;
@@ -229,9 +222,9 @@ const WorkoutGrid = () => {
                               </Form>
                             ) : (
                               <div className="workoutStats" onClick={() => handleEditClick(workout)}>
-                                <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName)}</p>
+                                <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
                                 <p>Sets: {workout.sets}</p>
-                                <p>Weight: {workout.weight} lb</p>
+                                <p>Weight: {workout.weight}</p>
                                 <p>Reps: {workout.reps}</p>
                                 <><p>Miles: {workout.miles}</p>
                                   <p>Pace: {workout.pace}</p></>

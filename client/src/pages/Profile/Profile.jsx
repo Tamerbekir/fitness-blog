@@ -1,29 +1,23 @@
 import Auth from "../../../utils/auth";
 import { useQuery } from "@apollo/client";
-import { QUERY_ME } from "../../../utils/queries";
+import { QUERY_ME, QUERY_POSTS } from "../../../utils/queries";
 import { ToastContainer } from "react-toastify";
-// import Box from "@mui/material/Box";
-// import { DataGrid } from "@mui/x-data-grid";
 import "./assets/profile.css";
 import PostCard from "../../components/PostCard/PostCard.jsx";
 import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid.jsx"
-// import EditWorkout from '../../components/EditWorkout/EditWorkout'
-import { Button } from "@mui/material";
 import AccessPrompt from '../../components/AccessPrompt/AccessPrompt.jsx'
-import { Form, FormFloating } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import DateFormatPost from '../../components/DateFormat/DateFormatPost.jsx'
 // export for profile
 const Profile = () => {
 
   const loggedIn = Auth.loggedIn();
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
 
-  // const { 
-  //   loading: loadingComments, 
-  //   error: errorComments,
-  //    data: dataComments 
-  //   } = useQuery(QUERY_COMMENTS)
-
-
+  // const {
+  //   loading: loadingPosts,
+  //   error: errorPosts,
+  //   data: dataPosts } = useQuery(QUERY_POSTS);
 
   //making handling data easier, but will not use for now
   // const posts = data.me.posts;
@@ -48,6 +42,12 @@ const Profile = () => {
     );
   }
 
+  const formattedDate = new Date(parseInt(data.me.createdAt)).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+  });
+
 
   return (
     <div>
@@ -65,7 +65,7 @@ const Profile = () => {
             title={post.title}
             username={usernameInitial(data.me.username)}
             content={post.content}
-            createdAt={data.me.createdAt}
+            createdAt={formattedDate}
             topicName={post.topic.map((topic) => topic.topicName)}
             showDeletePostBtn={data.me._id}
             showEditBtn={loggedIn}
