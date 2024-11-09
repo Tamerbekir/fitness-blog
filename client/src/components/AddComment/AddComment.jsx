@@ -83,23 +83,30 @@ const AddComment = ({ postId, refetch }) => {
   };
 
 
+
+
   return (
     <div>
-      <TextField
-        name="content"
-        label="Add a comment"
-        value={addCommentInfo.content}
-        type="text"
-        onChange={handleAddCommentChange}
-        multiline
-        rows={4}
-        variant="filled"
-        fullWidth
-        refetch={refetch}
-      />
-      <Button onClick={handleAddComment} refetch={refetch} >Submit</Button>
+      {!dataMe.me ? <div><a href="/login">Login</a> or  <a href="/signup">sign up</a> to leave a comment</div> :
+        <div>
+          <TextField
+            name="content"
+            label="Add a comment"
+            value={addCommentInfo.content}
+            type="text"
+            onChange={handleAddCommentChange}
+            multiline
+            rows={4}
+            variant="filled"
+            fullWidth
+            refetch={refetch}
+          />
+          <Button onClick={handleAddComment} refetch={refetch} >Submit</Button>
+        </div>}
     </div>
   );
 };
+
+
 
 export default AddComment;

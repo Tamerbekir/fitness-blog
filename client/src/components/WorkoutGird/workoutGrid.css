@@ -1,90 +1,80 @@
-/* Container for the grid */
-.workoutGrid-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto,
+.workoutStats {
 }
 
-/* Header styling */
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #333;
+/* .workout-container {
+  width: 50%;
+} */
+
+.title {
+  color: white;
 }
 
-/* DataGrid custom styles */
-.MuiDataGrid-root {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-size: 0.9rem;
+/* from bootstrap boilerplate component. Using important to override all bootstrap built in css */
+.main .accordion-item {
+  background-color: #333 !important;
+  color: #fff !important;
+  border: none !important;
 }
 
-/* Header cells */
-.MuiDataGrid-columnHeader {
-  background-color: #4caf50;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
+.main .accordion-header {
+  background-color: #f9c000 !important; 
+  color: #333 !important; 
 }
 
-/* Cells */
-.MuiDataGrid-cell {
-  padding: 8px;
-  text-align: center;
-  color: #333;
+.main .accordion-button {
+  background-color: #f9c000 !important;
+  color: #333 !important; 
+  border: none !important; 
 }
 
-/* Custom scrollbar */
-.MuiDataGrid-virtualScroller::-webkit-scrollbar {
-  width: 6px;
+.main .accordion-button:not(.collapsed) {
+  background-color: #f9c000 !important;
+  color: #333 !important;
+  border: none !important;
 }
 
-.MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
-  background-color: #4caf50;
-  border-radius: 10px;
+.main .accordion-body {
+  background-color: #333 !important;
+  color: #fff !important; 
+  border: none !important; 
 }
 
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-  .MuiDataGrid-root {
-    font-size: 0.8rem;
-  }
-
-  .MuiDataGrid-columnHeader {
-    font-size: 0.9rem;
-  }
-
-  .MuiDataGrid-cell {
-    padding: 6px;
-    font-size: 0.8rem;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
+.main .card {
+  background-color: #333 !important;
+  color: #fff !important; 
+  border: none !important;
 }
 
-@media (max-width: 480px) {
-  .MuiDataGrid-root {
-    font-size: 0.75rem;
-  }
+.workoutStats p {
+  color: #f9c000 !important;
+}
 
-  .MuiDataGrid-columnHeader {
-    font-size: 0.85rem;
-  }
+.main .btn-primary {
+  background-color: #f9c000 !important; 
+  border-color: #f9c000 !important;
+}
 
-  .MuiDataGrid-cell {
-    padding: 4px;
-    font-size: 0.75rem;
-  }
+.main .btn-primary:hover {
+  background-color: #e6b800 !important; 
+  border-color: #e6b800 !important;
+}
 
-  h1 {
-    font-size: 1.6rem;
-  }
+.main .btn-success {
+  background-color: #f9c000 !important;
+  border-color: #f9c000 !important;
+}
+
+.main .btn-success:hover {
+  background-color: #e6b800 !important;
+  border-color: #e6b800 !important;
+}
+
+.main .btn-secondary {
+  background-color: #555 !important;
+  border-color: #555 !important;
+}
+
+.main .btn-secondary:hover {
+  background-color: #444 !important;
+  border-color: #444 !important;
 }

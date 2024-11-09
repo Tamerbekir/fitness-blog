@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "./assets/profile.css";
 import PostCard from "../../components/PostCard/PostCard";
 import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid"
-import EditWorkout from '../../components/EditWorkout/EditWorkout'
+// import EditWorkout from '../../components/EditWorkout/EditWorkout'
 import { Button } from "@mui/material";
 
 // export for profile
@@ -29,9 +29,6 @@ const Profile = () => {
   };
 
 
-  if (loading) return <p>Loading your profile...please wait.</p>;
-  if (error) <p>{error}</p>
-  if (!data) return <p>Profile not found</p>;
 
   //making handling data easier, but will not use for now
   // const posts = data.me.posts;
@@ -44,6 +41,10 @@ const Profile = () => {
   const usernameInitial = (str) => {
     return str.toUpperCase();
   };
+
+  if (loading) return <p>Loading your profile...please wait.</p>;
+  if (error) <p>{error}</p>
+  if (!data) return <p>Profile not found</p>;
 
 
   return (

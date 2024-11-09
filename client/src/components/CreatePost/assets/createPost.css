@@ -27,3 +27,13 @@
 .userTopicForm {
   margin: 1%;
 }
+
+.addPostBtn, .viewPostBtn {
+  background-color: #f9c000;
+  color: black;
+  border: none;
+}
+
+.addPostBtn:hover, .viewPostBtn:hover {
+  background-color: #f9bf0074;
+}

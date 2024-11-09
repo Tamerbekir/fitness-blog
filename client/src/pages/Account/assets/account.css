@@ -29,6 +29,9 @@
   margin: 1%;
 }
 
+.dateFormat {
+  color: grey
+}
 .test {
   border-radius: 40%;
 }
@@ -39,9 +42,32 @@
 }
 
 .deleteAcctBtn {
-  color: red;
+  color: white;
 }
 
 .confirmDeleteText {
   color: red
+}
+
+
+.user-info-container {
+
+  padding: 1rem;
+  /* background-color: #f8f9fa; */
+  border-radius: 8px;
+  border: 1px solid black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-item, .form-label {
+  font-size: 20px;
+  justify-content: space-between;
+  align-items: center;
+  color: #f9c000
+}
+
+.user-info-item p {
+  margin: 0;
+  font-size: 1rem;
+  color: #495057;
 }

@@ -1,0 +1,10 @@
+.updatePostBtn, .cancelEditBtn {
+  background-color: #f9c000;
+  color: black;
+  border: none;
+  margin: 2%;
+}
+
+.updatePostBtn:hover, .updatePostBtn:hover {
+  background-color: #f9bf0074;
+}

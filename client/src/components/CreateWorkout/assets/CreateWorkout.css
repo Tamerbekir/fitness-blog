@@ -1,64 +1,3 @@
-/* .exercise-select {
-  width: 50%;
-} */
-
-.userWeight,
-.userReps,
-.userNotes,
-.userMiles,
-.userPace,
-.userSets,
-.exercise-select {
-  border-radius: 10px;
-  width: 100%;
-  background-color: #21122d !important;
-  margin: 0.7% !important;
-  margin-top: 5%;
-}
-
-.exercise-select {
-  font-size: 30px !important;
-}
-
-.workoutTextDiv {
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
-  background-color: #21122d;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-}
-
-.workoutTextDiv p {
-  margin: 10px 0;
-  font-weight: bold;
-  color: white;
-  font-size: 1.1rem;
-}
-
-.workoutTextDiv p::after {
-  content: ": ";
-  font-weight: normal;
-}
-
-.workoutTextDiv .workoutExerciseText {
-  color: #4caf50;
-}
-
-.workoutTextDiv .workoutSetText,
-.workoutTextDiv .workoutWightText,
-.workoutTextDiv .workoutRepText,
-.workoutTextDiv .workoutMilesText,
-.workoutTextDiv .workoutPaceText,
-.workoutTextDiv .workoutNotesText {
-  color: #00796b;
-}
-
-.workoutTextDiv span {
-  color: #555;
-  font-weight: normal;
-}
 
 
 
@@ -70,14 +9,29 @@
 
 .loginBtn,
 .signupBtn {
-  color: purple !important;
-  background-color: orange !important;
+  color: rgb(255, 255, 255) !important;
+  background-color: #f9c000 !important;
 }
 
-.logWorkoutBtn,
-.completeSetBtn,
-.viewWorkoutBtn {
-  background-color: #00796b !important;
-  color: white !important;
-  margin: 2% !important;
+.addSetBtn, .saveSetBtn, .logWorkoutBtn {
+  background-color: #f9c000;
+  color: black;
+  border: none;
+  margin: 2%;
+}
+
+
+.addSetBtn:hover, .saveSetBtn:hover,
+.logWorkoutBtn:hover {
+  background-color: #f9bf0074;
+}
+
+.removeSetBtn {
+  background-color: #f9000043;
+  border: none;
+}
+
+.removeSetBtn:hover {
+  background-color: #f900002d;
+  border: none;
 }

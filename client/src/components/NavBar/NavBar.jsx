@@ -1,269 +1,118 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import { QUERY_ME } from '../../../utils/queries';
+import { Navbar, Nav, NavDropdown, Container, Button, Tooltip, OverlayTrigger, Dropdown } from 'react-bootstrap';
 import { useQuery } from '@apollo/client';
-
-import Auth from '../../../utils/auth'
-
 import { useEffect, useState } from 'react';
-
-import './assets/navBar.css'
+import { QUERY_ME } from '../../../utils/queries';
+import Auth from '../../../utils/auth';
+import './assets/navBar.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const NavBar = () => {
+  const loggedIn = Auth.loggedIn();
 
-  //using a variable to determine if user is logged in
-  const loggedIn = Auth.loggedIn()
-
-
+  const { loading: loadingMe, data: dataMe, error: errorMe } = useQuery(QUERY_ME);
 
 
-  //using useState to determine if user is logged in or not
-  // const [loggedIn, setIsLoggedIn] = useState()
+  const [userInitial, setUserInitial] = useState({ username: '' });
 
-  // useEffect for logging user in 
-  // this is ALSO used to determine if user is logged in
-  // setting useState to users login auth/token
+  useEffect(() => {
+    if (loggedIn && dataMe) {
+      setUserInitial({
+        ...userInitial,
+        username: dataMe.me.username,
+      });
+    }
+  }, [dataMe, loggedIn]);
 
-  // useEffect(() => {
-  //   const loggedIn = Auth.loggedIn()
-  //   setIsLoggedIn(loggedIn)
-  // }, [])
+  const uppercaseUserName = userInitial.username.toUpperCase();
 
-  const {
-    loading: loadingMe,
-    data: dataMe,
-    error: errorMe } = useQuery(QUERY_ME)
-
-  //adding the username only to make it capital so user can see their initial in the avatar
-  const [userInitial, setUserInitial] = useState({
-    username: '',
-  })
-
-  // If user is logged in, begin to use useEffect,
-  //then check if there is data,
-  // if there is dataMe (data ME query) using useState to use initial for users Avatar
-  if (loggedIn) {
-    useEffect(() => {
-      if (dataMe) {
-        setUserInitial({
-          ...userInitial,
-          username: dataMe.me.username
-        })
-      }
-    }, [dataMe])
-  } else {
-  }
-
-
-  //converting the username to capital and passing it through into the avatar
-  const uppercaseUserName = userInitial.username.toUpperCase()
-
-
-  // handling logout by user using logout method
   const handleLogout = () => {
-    Auth.logout()
-  }
+    Auth.logout();
+  };
 
-  // handling user login, redirecting to login window
   const handleLoginPage = () => {
-    window.location.href = './login'
-  }
+    window.location.href = './login';
+  };
 
   const handleProfilePage = () => {
-    window.location.href = './profile'
-  }
+    window.location.href = './profile';
+  };
 
   const handleAccountPage = () => {
-    window.location.href = './account'
-  }
+    window.location.href = './account';
+  };
 
   const handleCreatePostPage = () => {
-    window.location.href = './create-post'
-  }
+    window.location.href = './create-post';
+  };
+
   const handleLogWorkoutPage = () => {
-    window.location.href = './log-workout'
-  }
+    window.location.href = './log-workout';
+  };
+
   const handleHomePage = () => {
-    window.location.href = './'
-  }
-
-
-
-
-  //! Boiler plate navBar from Material MUI
-  //! Adjustments were made to meet criteria
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    window.location.href = './';
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  if (loadingMe) return <p>Loading...please wait</p>
+  if (loadingMe) return <p>Loading...please wait</p>;
   if (errorMe) return <p>{errorMe.message}</p>;
-  if (!dataMe) return <p>No user data found</p>
+  if (!dataMe) return <p>No user data found</p>;
+
 
   return (
-    <AppBar position="static" sx={{ bgcolor: '#44074d' }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters className='header'>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Fitness Blog
-          </Typography>
+    <Navbar bg="dark" expand="lg" variant="dark" className="header">
+      <Container>
+        <Navbar.Brand href="/" className="font-weight-bold text-uppercase" style={{ fontFamily: 'times new roman' }}>
+          Live Fit
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto navBarLink">
+            <Nav.Link className="navBarLink" onClick={handleHomePage}>Community</Nav.Link>
+            <Nav.Link className="navBarLink" onClick={handleCreatePostPage}>Create Post</Nav.Link>
+            <Nav.Link className="navBarLink" onClick={handleLogWorkoutPage}>Log Workout</Nav.Link>
+          </Nav>
+          <Nav>
+            <OverlayTrigger overlay={<Tooltip>Open settings</Tooltip>}>
+              <Dropdown align="end">
+                <Dropdown.Toggle className="p-0" style={{ backgroundColor: '#f9c000', color: 'white', border: 'none', width: '110%', height: '120%' }}>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              <MenuItem onClick={handleHomePage}>
-                <Typography>Home</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCreatePostPage}>
-                <Typography>CreatePost</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogWorkoutPage}>
-                <Typography>Log Workout</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Fitness
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              sx={{ my: 2, color: 'white' }}
-            >
-              <MenuItem onClick={handleHomePage}>
-                <Typography>Home</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCreatePostPage}>
-                <Typography>Create Post</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogWorkoutPage}>
-                <Typography>Log Workout</Typography>
-              </MenuItem>
-            </Button>
-          </Box>
+                  {!loggedIn ? 'Member Access' : uppercaseUserName}
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {loggedIn && (
-                  <Avatar alt={uppercaseUserName} src="/static/images/avatar/2.jpg" />
-                )}
-                {!loggedIn && (
-                  <Avatar src="/static/images/avatar/2.jpg" />
-                )}
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {/* {settings.map((setting) => ( */}
-              <MenuItem>
-                {!loggedIn && <IconButton className='loginBtn' onClick={handleLoginPage}>Login</IconButton>}
-                <IconButton onClick={handleProfilePage}>Profile</IconButton>
-                <IconButton onClick={handleAccountPage}>Account</IconButton>
-                {loggedIn && <IconButton className='logoutBtn' onClick={handleLogout}>Logout</IconButton>}
-                <Typography textAlign="center">{ }</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
+                  {/* {loggedIn ? (
+                    <img
+                      src="/static/images/avatar/2.jpg"
+                      alt={uppercaseUserName}
+                      className="rounded-circle"
+                      style={{ width: '40px', height: '40px' }}
+                    />
+                  ) : (
+                    <img
+                      src="/static/images/avatar/2.jpg"
+                      className="rounded-circle"
+                      style={{ width: '40px', height: '40px' }}
+                      alt="Avatar"
+                    />
+                  )} */}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {!loggedIn && <Dropdown.Item onClick={handleLoginPage}>Login</Dropdown.Item>}
+                  {loggedIn &&
+                    <>
+                      <Dropdown.Item onClick={handleProfilePage}>Profile</Dropdown.Item>
+                      <Dropdown.Item onClick={handleAccountPage}>Account</Dropdown.Item>
+                      <Dropdown.Item onClick={handleLogout} className="logoutBtn">Logout</Dropdown.Item>
+                    </>
+                  }
+                </Dropdown.Menu>
+              </Dropdown>
+            </OverlayTrigger>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
-    </AppBar>
+    </Navbar>
   );
-}
+};
 
-export default NavBar
+export default NavBar;

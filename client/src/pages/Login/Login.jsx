@@ -13,15 +13,15 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../../utils/mutations';
 import Auth from '../../../utils/auth';
 import { useState } from 'react';
-import { ToastContainer, Bounce ,toast } from 'react-toastify';
+import { ToastContainer, Bounce, toast } from 'react-toastify';
 
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="/">
-        Fitness Blog
+      <Link color="inherit" href="http://www.tamerbekir.com">
+        Tamer Bekir
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -151,77 +151,74 @@ const Login = () => {
             }}
           >
 
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
-          <Box component="form" sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  variant='filled'
-                  fullWidth
-                  id="email"
-                  className='userEmailInput'
-                  label="Email Address"
-                  autoComplete="email"
-                  type="email"
-                  name="email"
-                  value={userLogin.email}
-                  onChange={handleUserChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="Password"
-                  variant='filled'
-                  required
-                  fullWidth
-                  className='userPasswordInput'
-                  type="password"
-                  name="password"
-                  value={userLogin.password}
-                  onChange={handleUserChange}
-                />
-              </Grid>
+            <Typography component="h1" variant="h5">
+              <p style={{ fontFamily: 'times new roman' }}>Welcome Back</p>
+            </Typography>
+            <Box component="form" sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    variant='filled'
+                    fullWidth
+                    id="email"
+                    className='userEmailInput'
+                    label="Email Address"
+                    autoComplete="email"
+                    type="email"
+                    name="email"
+                    value={userLogin.email}
+                    onChange={handleUserChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Password"
+                    variant='filled'
+                    required
+                    fullWidth
+                    className='userPasswordInput'
+                    type="password"
+                    name="password"
+                    value={userLogin.password}
+                    onChange={handleUserChange}
+                  />
+                </Grid>
 
-              <Grid item xs={12}>
+                <Grid item xs={12}>
+                </Grid>
               </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Login
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="./signup" variant="body2">
-                  Dont have an account? Signup
-                </Link>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Login
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href="./signup" variant="body2">
+                    Dont have an account? Signup
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-        <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
       </Box>
     </ThemeProvider>
   );
