@@ -6,7 +6,7 @@ import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
-import './assets/createWorkout.css'
+// import './assets/createWorkout.css'
 
 const CreateWorkout = () => {
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
