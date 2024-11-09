@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Accordion, Card, Button, Form, Container } from 'react-bootstrap';
 import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 import { UPDATE_WORKOUT } from "../../../utils/mutations";
-import "./workoutGrid.css";
+import "./assets/workoutGrid.css";
 // import Auth from '../../../utils/auth'
 
 const WorkoutGrid = () => {
