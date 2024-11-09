@@ -7,10 +7,30 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Auth from '../../../utils/auth'
 import 'react-toastify/dist/ReactToastify.css';
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
-import './assets/createWorkout.css'
+// import './createWorkout.css'
 import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
 
+
 const CreateWorkout = () => {
+
+  const [isHovered, setIsHovered] = useState(false)
+
+  const style = {
+    button: {
+      backgroundColor: '#f9c000',
+      color: 'black',
+      border: 'none',
+      margin: '2%'
+    },
+    removeButton: {
+      backgroundColor: '#f9000043',
+      border: 'none',
+    }
+  }
+
+
+
+
   const loggedIn = Auth.loggedIn()
 
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
@@ -246,9 +266,24 @@ const CreateWorkout = () => {
       ))}
 
       <div className="btnDiv">
-        <Button onClick={() => { handleAddSet(), handleAddWorkoutToLocalStorage() }} className="me-2 addSetBtn">Add Set</Button>
-        <Button className="removeSetBtn" onClick={handleRemoveSet}>Remove Set</Button>
-        <Button className="logWorkoutBtn" onClick={handleLogWorkout}>Log Workout</Button>
+        <Button
+          onClick={() => {
+            handleAddSet(),
+              handleAddWorkoutToLocalStorage()
+          }}
+          style={style.button}
+          className="me-2 addSetBtn">Add Set</Button>
+
+        <Button
+          className="removeSetBtn"
+          onClick={handleRemoveSet}
+          style={style.removeButton}
+        >Remove Set</Button>
+        <Button
+          className="logWorkoutBtn"
+          onClick={handleLogWorkout}
+          style={style.button}
+        >Log Workout</Button>
 
       </div>
       {/* 
