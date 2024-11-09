@@ -1,5 +1,3 @@
-.workoutStats {
-}
 
 /* .workout-container {
   width: 50%;
@@ -17,6 +15,7 @@
 }
 
 .main .accordion-header {
+  border-radius: 10px !important;
   background-color: #f9c000 !important; 
   color: #333 !important; 
 }
@@ -47,6 +46,12 @@
 
 .workoutStats p {
   color: #f9c000 !important;
+  margin: 1%;
+}
+
+.workoutStats {
+  border: 1px solid rgba(255, 255, 255, 0.482);
+  border-radius: 10px;
 }
 
 .main .btn-primary {

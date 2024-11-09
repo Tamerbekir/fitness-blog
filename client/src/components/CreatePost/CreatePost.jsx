@@ -5,7 +5,8 @@ import {
   ADD_POST,
   ToastContainer, toast, Bounce,
   Auth,
-  Button
+  Button,
+  AccessPrompt
 } from './createPost';
 import { Form, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -14,6 +15,8 @@ import './assets/createPost.css';
 const CreatePost = () => {
   // used for testing purposes
   const loggedIn = Auth.loggedIn();
+
+
 
   // Bringing in QUERY ME. Used property values to define bringing in data from 'me' query so it does not conflict with other queries. For example, in most cases it would be loading, error and data.
   const {
@@ -29,15 +32,6 @@ const CreatePost = () => {
     data: dataTopics,
     refetch
   } = useQuery(QUERY_TOPICS);
-
-  // function for going to login page
-  const login = () => {
-    window.location.href = './login';
-  };
-
-  const signup = () => {
-    window.location.href = '/signup';
-  };
 
   // adding mutation to add a post
   const [addPost] = useMutation(ADD_POST);
@@ -116,17 +110,13 @@ const CreatePost = () => {
   if (errorMe || errorTopics) return <div><p>Whoops! You need to be logged in to do that.</p></div>;
   if (!dataTopics) return <p>Profile not found to create post</p>;
 
-  if (!dataMe.me) {
+  if (!loggedIn) {
     return (
-      <div className="signInOrSignupDiv">
-        <p>Want to leave a post?</p>
-        <p>
-          Be sure to <Button onClick={login}>Login</Button>
-          or
-          <Button onClick={signup}>sign up</Button> here.
-        </p>
+      <div>
+        <Form.Label>Member Access Only</Form.Label>
+        <AccessPrompt />
       </div>
-    );
+    )
   }
 
   return (

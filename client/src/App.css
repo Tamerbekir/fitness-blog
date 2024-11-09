@@ -1,15 +1,6 @@
 .welcomeHomeText,
 .welcomeHeader {
   color: white;
-}
-
-.signInOrSignupDiv {
-  color: white;
   text-align: center;
-  font-size: 30px;
 }
 
-.signInOrSignupDiv button {
-  color: purple;
-  background-color: orange;
-}

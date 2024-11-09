@@ -11,7 +11,7 @@ import Select from '@mui/material/Select';
 import FormHelperText from '@mui/material/FormHelperText';
 import Auth from '../../../utils/auth'
 import Button from 'react-bootstrap/Button'
-
+import AccessPrompt from '../AccessPrompt/AccessPrompt.jsx';
 
 
 export {
@@ -27,5 +27,6 @@ export {
   ToastContainer, toast, Bounce,
   FormHelperText,
   Auth,
-  Button
+  Button,
+  AccessPrompt
 }

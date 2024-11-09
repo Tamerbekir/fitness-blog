@@ -28,8 +28,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="/">
-        Fitness Blog
+      <Link color="inherit" href="https://www.tamerbekir.com">
+        Tamer Bekir
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -253,8 +253,8 @@ const Signup = () => {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="./login" variant="body2">
-                    Already have an account? Login
+                  <Link style={{ color: '#f9bf00c5', textDecoration: 'none' }} to="/login" variant="body2">
+                    Already a member? Login here.
                   </Link>
                 </Grid>
               </Grid>

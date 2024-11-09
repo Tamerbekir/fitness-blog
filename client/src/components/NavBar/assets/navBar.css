@@ -1,0 +1,20 @@
+.navBarLinkCommunity, 
+.navBarLinkCreatePost, 
+.navBarLinkLogWorkout, 
+.navBarLinkAbout {
+  color: #f9bf00c5;
+  text-decoration: none;
+  padding: 5px;
+}
+
+
+.navBarLinkCommunity:hover, 
+.navBarLinkCreatePost:hover, 
+.navBarLinkLogWorkout:hover,
+.navBarLinkAbout:hover {
+  color: #b2b2b288;
+  text-decoration: none;
+  padding: 5px;
+  font-size: 17px;
+  transition: 0.3s;
+}

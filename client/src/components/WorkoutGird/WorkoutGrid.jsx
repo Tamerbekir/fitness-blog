@@ -12,7 +12,7 @@ const WorkoutGrid = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
 
-  console.log(dataExercise);
+  // console.log(dataExercise);
 
   const [editingWorkoutId, setEditingWorkoutId] = useState(null);
 
@@ -128,6 +128,14 @@ const WorkoutGrid = () => {
     }
   };
 
+
+  const weightExerciseOnly = dataExercise.exercises.map(exercise => exercise.exerciseName).filter(name => name.includes('chest'))
+
+  console.log(weightExerciseOnly);
+
+
+  console.log(weightExerciseOnly);
+
   if (loading || loadingExercise) return <p>Loading workouts...</p>;
   if (error || errorExercise) return <p>{error.message || errorExercise.message}</p>;
   if (!dataExercise) return <p>No workout data found</p>;
@@ -148,6 +156,7 @@ const WorkoutGrid = () => {
                     <Accordion.Body>
                       {groupedWorkouts[date][exerciseName].map((workout, index) => (
                         <Card className="mb-3" key={index}>
+
                           <Card.Body>
                             {editingWorkoutId === workout._id ? (
                               <Form>
@@ -219,20 +228,21 @@ const WorkoutGrid = () => {
                                 <Button variant="secondary" onClick={() => setEditingWorkoutId(null)}>Cancel</Button>
                               </Form>
                             ) : (
-                              <div className="workoutStats">
-                                <p><strong>Exercise:</strong> {workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
-                                <p><strong>Sets:</strong> {workout.sets}</p>
-                                <p><strong>Weight:</strong> {workout.weight}</p>
-                                <p><strong>Reps:</strong> {workout.reps}</p>
-                                <p><strong>Miles:</strong> {workout.miles}</p>
-                                <p><strong>Pace:</strong> {workout.pace}</p>
-                                <p><strong>Notes:</strong> {workout.notes}</p>
-                                <Button variant="primary" onClick={() => handleEditClick(workout)} className="mt-2">
+                              <div className="workoutStats" onClick={() => handleEditClick(workout)}>
+                                <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName)}</p>
+                                <p>Sets: {workout.sets}</p>
+                                <p>Weight: {workout.weight} lb</p>
+                                <p>Reps: {workout.reps}</p>
+                                <><p>Miles: {workout.miles}</p>
+                                  <p>Pace: {workout.pace}</p></>
+                                <p>Notes: {workout.notes}</p>
+                                {/* <Button variant="primary" onClick={() => handleEditClick(workout)} className="mt-2">
                                   Edit Workout
-                                </Button>
+                                </Button> */}
                               </div>
                             )}
                           </Card.Body>
+
                         </Card>
                       ))}
                     </Accordion.Body>
@@ -242,8 +252,9 @@ const WorkoutGrid = () => {
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
-      ))}
-    </Container>
+      ))
+      }
+    </Container >
   );
 };
 

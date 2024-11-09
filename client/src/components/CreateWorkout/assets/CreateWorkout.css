@@ -1,6 +1,6 @@
 
 
-
+/* 
 .signinOrSignupDiv p {
   text-align: center;
   font: white;
@@ -11,7 +11,7 @@
 .signupBtn {
   color: rgb(255, 255, 255) !important;
   background-color: #f9c000 !important;
-}
+} */
 
 .addSetBtn, .saveSetBtn, .logWorkoutBtn {
   background-color: #f9c000;

@@ -1,6 +1,7 @@
 import { Navbar, Nav, NavDropdown, Container, Button, Tooltip, OverlayTrigger, Dropdown } from 'react-bootstrap';
 import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'
 import { QUERY_ME } from '../../../utils/queries';
 import Auth from '../../../utils/auth';
 import './assets/navBar.css';
@@ -15,6 +16,7 @@ const NavBar = () => {
 
   const [userInitial, setUserInitial] = useState({ username: '' });
 
+
   useEffect(() => {
     if (loggedIn && dataMe) {
       setUserInitial({
@@ -23,6 +25,7 @@ const NavBar = () => {
       });
     }
   }, [dataMe, loggedIn]);
+
 
   const uppercaseUserName = userInitial.username.toUpperCase();
 
@@ -42,17 +45,17 @@ const NavBar = () => {
     window.location.href = './account';
   };
 
-  const handleCreatePostPage = () => {
-    window.location.href = './create-post';
-  };
+  // const handleCreatePostPage = () => {
+  //   window.location.href = './create-post';
+  // };
 
-  const handleLogWorkoutPage = () => {
-    window.location.href = './log-workout';
-  };
+  // const handleLogWorkoutPage = () => {
+  //   window.location.href = './log-workout';
+  // };
 
-  const handleHomePage = () => {
-    window.location.href = './';
-  };
+  // const handleHomePage = () => {
+  //   window.location.href = './';
+  // };
 
 
   if (loadingMe) return <p>Loading...please wait</p>;
@@ -69,49 +72,35 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto navBarLink">
-            <Nav.Link className="navBarLink" onClick={handleHomePage}>Community</Nav.Link>
-            <Nav.Link className="navBarLink" onClick={handleCreatePostPage}>Create Post</Nav.Link>
-            <Nav.Link className="navBarLink" onClick={handleLogWorkoutPage}>Log Workout</Nav.Link>
+            <Link className="navBarLinkAbout" to='/about'>About</Link>
+            <Link className="navBarLinkCommunity" to='/'>Community</Link>
+            <Link className="navBarLinkCreatePost" to='/create-post'>Create Post</Link>
+            <Link className="navBarLinkLogWorkout" to='/log-workout'>Log Workout</Link>
           </Nav>
           <Nav>
-            <OverlayTrigger overlay={<Tooltip>Open settings</Tooltip>}>
-              <Dropdown align="end">
-                <Dropdown.Toggle className="p-0" style={{ backgroundColor: '#f9c000', color: 'white', border: 'none', width: '110%', height: '120%' }}>
-
-                  {!loggedIn ? 'Member Access' : uppercaseUserName}
-
-                  {/* {loggedIn ? (
-                    <img
-                      src="/static/images/avatar/2.jpg"
-                      alt={uppercaseUserName}
-                      className="rounded-circle"
-                      style={{ width: '40px', height: '40px' }}
-                    />
-                  ) : (
-                    <img
-                      src="/static/images/avatar/2.jpg"
-                      className="rounded-circle"
-                      style={{ width: '40px', height: '40px' }}
-                      alt="Avatar"
-                    />
-                  )} */}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {!loggedIn && <Dropdown.Item onClick={handleLoginPage}>Login</Dropdown.Item>}
-                  {loggedIn &&
-                    <>
-                      <Dropdown.Item onClick={handleProfilePage}>Profile</Dropdown.Item>
-                      <Dropdown.Item onClick={handleAccountPage}>Account</Dropdown.Item>
-                      <Dropdown.Item onClick={handleLogout} className="logoutBtn">Logout</Dropdown.Item>
-                    </>
-                  }
-                </Dropdown.Menu>
-              </Dropdown>
-            </OverlayTrigger>
+            {/* <OverlayTrigger overlay={<Tooltip>Open settings</Tooltip>}> */}
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                className="p-0"
+                style={{ backgroundColor: '#f9bf00c5', color: 'white', border: 'none', width: '110%', height: '120%' }}>
+                {!loggedIn ? 'Member Access' : uppercaseUserName}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {!loggedIn && <Dropdown.Item onClick={handleLoginPage}>Login</Dropdown.Item>}
+                {loggedIn &&
+                  <>
+                    <Dropdown.Item onClick={handleProfilePage}>Profile</Dropdown.Item>
+                    <Dropdown.Item onClick={handleAccountPage}>Account</Dropdown.Item>
+                    <Dropdown.Item onClick={handleLogout} className="logoutBtn">Logout</Dropdown.Item>
+                  </>
+                }
+              </Dropdown.Menu>
+            </Dropdown>
+            {/* </OverlayTrigger> */}
           </Nav>
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </Navbar >
   );
 };
 

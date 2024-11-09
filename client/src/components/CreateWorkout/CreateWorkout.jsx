@@ -4,11 +4,15 @@ import { QUERY_EXERCISE, QUERY_ME } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
 import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
+import Auth from '../../../utils/auth'
 import 'react-toastify/dist/ReactToastify.css';
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
-// import './assets/createWorkout.css'
+import './assets/createWorkout.css'
+import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
 
 const CreateWorkout = () => {
+  const loggedIn = Auth.loggedIn()
+
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
   const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
 
@@ -119,22 +123,13 @@ const CreateWorkout = () => {
   if (loadingExercise || loadingMe) return <p>Loading...</p>;
   if (errorExercise || errorMe) return <p>Error loading data</p>;
 
-  const login = () => {
-    window.location = './login'
-  }
 
-  const signUp = () => {
-    window.location = './signup'
-  }
-
-  if (!dataMe.me) {
+  if (!loggedIn) {
     return (
-      <Container className="signInOrSignupDiv">
-        <p>Want to log a workout?</p>
-        <p>
-          Be sure to <Button onClick={login}>Login</Button> or <Button onClick={signUp}>Sign up</Button> here.
-        </p>
-      </Container>
+      <div>
+        <Form.Label>Member Access Only</Form.Label>
+        <AccessPrompt />
+      </div>
     );
   }
 

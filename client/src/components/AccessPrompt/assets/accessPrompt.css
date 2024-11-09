@@ -1,0 +1,21 @@
+.signInOrSignupDiv {
+  margin: 6%;
+  text-align: center;
+  font-size: 19px;
+  color: #ffffff;
+}
+
+/* .notAMemberHeader{
+  font-size: 17px;
+} */
+
+.signInOrSignupDiv button {
+  font-size: 14px;
+  color: #ffffff;
+  border: none;
+  background-color: #f9c000
+}
+
+.loginBtn:hover, .signUpBtn:hover  {
+  background-color: #f9bf007b;
+}

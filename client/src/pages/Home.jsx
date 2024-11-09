@@ -4,7 +4,7 @@ import Auth from "../../utils/auth";
 import PostCard from "../components/PostCard/PostCard.jsx";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { Button } from "@mui/material";
+import AccessPrompt from "../components/AccessPrompt/AccessPrompt.jsx";
 import { ToastContainer } from "react-toastify";
 
 
@@ -28,13 +28,13 @@ const Home = () => {
     return str.toUpperCase();
   };
 
-  const login = () => {
-    window.location.href = "./login";
-  };
+  // const login = () => {
+  //   window.location.href = "./login";
+  // };
 
-  const signUp = () => {
-    window.location.href = "./signup";
-  };
+  // const signUp = () => {
+  //   window.location.href = "./signup";
+  // };
 
   if (loadingPosts || loadingMe) {
     return (
@@ -87,14 +87,7 @@ const Home = () => {
         {!loggedIn && (
           <div>
             <h1 className="welcomeHomeText">Welcome to the Fitness Blog!</h1>
-            <div className="signInOrSignupDiv">
-              <p>Not already a member?</p>
-              <p>
-                Be sure to <Button onClick={login}> Login </Button>
-                or
-                <Button onClick={signUp}> sign up </Button> here.
-              </p>
-            </div>
+            <AccessPrompt />
             {dataPosts.posts.map((post) => (
               <PostCard
                 className="PostCard"

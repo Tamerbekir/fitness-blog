@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import AccessPrompt from '../../components/AccessPrompt/AccessPrompt'
 
 
 export {
@@ -31,5 +32,6 @@ export {
   InputLabel,
   MenuItem,
   FormControl,
-  Select
+  Select,
+  AccessPrompt
 }

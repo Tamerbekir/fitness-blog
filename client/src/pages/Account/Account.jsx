@@ -11,6 +11,7 @@ import {
   toast,
   Bounce,
   DateFormat,
+  AccessPrompt
 } from './account';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/account.css';
@@ -19,7 +20,7 @@ import { Form, Button, Container, Row, Col, InputGroup, FormControl as RBFormCon
 
 const Account = () => {
   // Used to ensure user is logged in during development purposes only
-  // const loggedIn = Auth.loggedIn();
+  const loggedIn = Auth.loggedIn();
   // setting up loading, error, and data variables when querying the user "me" details 
   const { loading, error, data } = useQuery(QUERY_ME);
   // using the UPDATE PROFILE mutation to update users info
@@ -46,9 +47,9 @@ const Account = () => {
   });
 
   // Redirect to login if user is not logged in
-  const loginPage = () => {
-    window.location.href = './login';
-  };
+  // const loginPage = () => {
+  //   window.location.href = './login';
+  // };
 
   // useEffect for populating userInfo with data when it exists
   useEffect(() => {
@@ -201,25 +202,22 @@ const Account = () => {
     }
   };
 
-  const login = () => {
-    window.location.href = "./login";
-  };
+  // const login = () => {
+  //   window.location.href = "./login";
+  // };
 
-  const signUp = () => {
-    window.location.href = "./signup";
-  };
+  // const signUp = () => {
+  //   window.location.href = "./signup";
+  // };
 
   // Return early if data is loading, an error occurred, or `data.me` is not defined
   if (loading) return <p>Loading your profile.</p>;
-  if (error) return <div><p>Whoops! You need to be logged in to do that.</p><button onClick={loginPage}>Login</button></div>;
-
-  if (!data || !data.me) {
+  if (error) return <p>{error}</p>
+  if (!loggedIn) {
     return (
-      <div className="signInOrSignupDiv">
-        <p>Only members can view their account!</p>
-        <p>
-          Be sure to <Button onClick={login}>Login</Button> or <Button onClick={signUp}>sign up</Button> here.
-        </p>
+      <div>
+        <Form.Label>Member Access Only</Form.Label>
+        <AccessPrompt />
       </div>
     );
   }
