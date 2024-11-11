@@ -222,7 +222,6 @@ const WorkoutGrid = ({ workoutId }) => {
                               </Form>
                             ) : (
                               <div className="workoutStats" onClick={() => handleEditClick(workout)}>
-                                <DeleteWorkout refetch={refetch} workoutId={workout._id} />
                                 <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
                                 <p>Sets: {workout.sets}</p>
                                 <p>Weight: {workout.weight}</p>
@@ -235,6 +234,9 @@ const WorkoutGrid = ({ workoutId }) => {
                                 </Button> */}
                               </div>
                             )}
+                            <div>
+                              <DeleteWorkout refetch={refetch} workoutId={workout._id} />
+                            </div>
                           </Card.Body>
 
                         </Card>

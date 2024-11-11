@@ -17,10 +17,10 @@ const DeleteWorkout = ({ workoutId, refetch }) => {
     try {
       await removeWorkout({
         variables: {
-          _id: workoutId
+          id: workoutId
         }
       })
-      console.log('workoutid', workoutId)
+      console.log('workout id', workoutId)
     } catch (error) {
       console.error('There was an error deleting workout.', error)
     }

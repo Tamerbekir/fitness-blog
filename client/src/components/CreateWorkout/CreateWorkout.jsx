@@ -10,23 +10,7 @@ import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
 
 
-const CreateWorkout = () => {
-
-
-  // const style = {
-  //   button: {
-  //     backgroundColor: '#f9c000',
-  //     color: 'black',
-  //     border: 'none',
-  //     margin: '2%'
-  //   },
-  //   removeButton: {
-  //     backgroundColor: '#f9000043',
-  //     border: 'none',
-  //   }
-  // }
-
-
+const CreateWorkout = ({ refetch }) => {
 
 
   const loggedIn = Auth.loggedIn()
@@ -277,6 +261,7 @@ const CreateWorkout = () => {
         <Button
           className="logWorkoutBtn"
           onClick={handleLogWorkout}
+          refetch={refetch}
         // style={style.button}
         >Log Workout</Button>
 
