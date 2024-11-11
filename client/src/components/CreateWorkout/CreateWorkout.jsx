@@ -136,6 +136,10 @@ const CreateWorkout = ({ refetch }) => {
 
   const isWalkingExercise = addWorkoutInfo.exercise.toLowerCase().includes("walk");
 
+  // const isCurls = addWorkoutInfo.exercise.toLowerCase().includes('dumbbell bicep curl (biceps)');
+
+  // <img src="https://app-media.fitbod.me/v2/102/images/landscape/0_960x540.jpg" alt="" />
+
 
   return (
     <Container>
@@ -147,20 +151,42 @@ const CreateWorkout = ({ refetch }) => {
           onChange={handleExerciseChange}
           placeholder="Type to search for an activity"
         />
+
+
         {showExerciseList && (
           <ListGroup>
-            {filteredExercises.map((exercise) => (
-              <ListGroup.Item
-                key={exercise._id}
-                action
-                onClick={() => handleSelectExercise(exercise.exerciseName)}
-              >
-                {exercise.exerciseName}
-              </ListGroup.Item>
-            ))}
+            {filteredExercises.map((exercise) => {
+              const isCurls = exercise.exerciseName.toLowerCase().includes('dumbbell bicep curl (biceps)');
+              return (
+                <ListGroup.Item
+                  key={exercise._id}
+                  action
+                  onClick={() => handleSelectExercise(exercise.exerciseName)}
+                >
+                  {isCurls ? (
+                    <>
+                      <img style={{ width: '316px' }}
+                        src="https://app-media.fitbod.me/v2/102/images/landscape/0_960x540.jpg"
+                        alt="Exercise"
+                      />
+                      <>
+                        <p>Dumbbell Bicep Curls</p>
+                      </>
+                    </>
+                  ) : (
+                    <>
+                      <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="Exercise" />
+                      {exercise.exerciseName}
+                    </>
+                  )}
+                </ListGroup.Item>
+              );
+            })}
           </ListGroup>
         )}
       </Form.Group>
+
+
 
       {workoutForm.map((set, index) => (
         <Row key={index} className="mb-3">
