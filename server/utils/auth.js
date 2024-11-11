@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const secret = process.env.JWT_SECRET || 'defaultSecret';
-const expiration = process.env.JWT_EXPIRATION || '10d';
+const expiration = process.env.JWT_EXPIRATION || '1hr';
 
 module.exports = {
   AuthenticationError: new GraphQLError('Could not authenticate user.', {
