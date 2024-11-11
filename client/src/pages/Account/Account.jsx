@@ -7,7 +7,6 @@ import {
   UPDATE_PROFILE,
   REMOVE_PROFILE,
   QUERY_ME,
-  ToastContainer,
   toast,
   Bounce,
   DateFormat,
@@ -345,7 +344,6 @@ const Account = () => {
           <Button type='button' onClick={handleCloseAll} className="mt-3">Done</Button>
         </Form>
       )}
-      <ToastContainer />
       {!removeAcctForm && !showPasswordForm && !showUserForm && (
         <Button className='deleteAcctBtn' onClick={handleDeleteForm} variant="danger">Delete Account</Button>
       )}

@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ME, QUERY_COMMENTS } from "../../../utils/queries";
 import { REMOVE_COMMENT } from "../../../utils/mutations";
 import { Button } from "@mui/material";
-import { toast, Bounce } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useState } from "react";
 import './assets/deleteComment.css'
 
@@ -38,18 +38,9 @@ const DeleteComment = ({ commentId, refetch }) => {
           id: commentId
         }
       })
-      toast.success('Comment Deleted', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      })
+      toast.success('Comment Deleted')
     } catch (error) {
+      toast.error('Error Deleting Comment')
       console.error('There was an error deleting your comment', error)
     }
   }

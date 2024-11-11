@@ -13,7 +13,7 @@ import { useMutation } from '@apollo/client';
 import { ADD_PROFILE } from '../../../utils/mutations';
 import Auth from '../../../utils/auth';
 import { useState } from 'react';
-import { ToastContainer, Bounce ,toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export {
   Avatar,
@@ -24,7 +24,6 @@ export {
   Box,
   LockOutlinedIcon,
   Typography,
-  ToastContainer,
   Container,
   createTheme,
   ThemeProvider,
@@ -33,6 +32,5 @@ export {
   Auth,
   useState,
   toast,
-  Bounce,
   Link
 }

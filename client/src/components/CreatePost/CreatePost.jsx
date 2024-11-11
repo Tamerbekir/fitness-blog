@@ -3,14 +3,17 @@ import {
   useQuery, useMutation,
   QUERY_ME, QUERY_TOPICS,
   ADD_POST,
-  ToastContainer, toast, Bounce,
   Auth,
   Button,
-  AccessPrompt
+  AccessPrompt,
+  ReactQuill
 } from './createPost';
 import { Form, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'react-quill/dist/quill.snow.css'
 import './assets/createPost.css';
+import { toast } from 'react-toastify';
+
 
 const CreatePost = () => {
   // used for testing purposes
@@ -55,6 +58,7 @@ const CreatePost = () => {
     window.location.href = './profile';
   };
 
+
   // function for handling the change when a post is made, taking in useState name and values
   const handleAddPostChange = (event) => {
     const { name, value } = event.target;
@@ -63,6 +67,14 @@ const CreatePost = () => {
       [name]: value
     });
   };
+
+  //adding for quill as chnage is applied to the users content
+  const handleReactQuillChnage = (value) => {
+    setAddPostInfo({
+      ...addPostInfo,
+      content:value
+    })
+  }
 
   // adding mutation to function to create a post and taking in useState variables
   const handleAddPost = async () => {
@@ -74,33 +86,11 @@ const CreatePost = () => {
           topic: addPostInfo.topic
         }
       });
-      // console.log('Post added');
-      // once posted, show success
-      toast.success('Posted!', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.success('Post created!')
       // show the view post form/button once post is made
       setViewPostForm(true);
     } catch (error) {
-      toast.error('There was an issue creating your post. Please check the fields and try again.', {
-        position: 'bottom-right',
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.error('Error posting')
       console.error('There was an error creating this post:', error);
     }
   };
@@ -134,13 +124,14 @@ const CreatePost = () => {
         </Form.Group>
         <Form.Group className="userPostDiv mb-3">
           <Form.Label>Post</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={15}
-            name="content"
+          <ReactQuill
+            // as="textarea"
+            // rows={15}
+            // name="content"
             value={addPostInfo.content}
-            onChange={handleAddPostChange}
+            onChange={handleReactQuillChnage}
             className="userPost"
+            theme='snow'
           />
         </Form.Group>
         <Form.Group className="userTopicDiv mb-3">
@@ -168,7 +159,6 @@ const CreatePost = () => {
           </Button>
         )}
       </Form>
-      <ToastContainer />
     </Container>
   );
 };

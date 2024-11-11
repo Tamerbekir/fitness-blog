@@ -1,14 +1,20 @@
-import { QUERY_ME } from "../../../utils/queries";
+import { QUERY_ME, QUERY_POSTS } from "../../../utils/queries";
 import { QUERY_TOPICS } from "../../../utils/queries";
 import { UPDATE_POST } from "../../../utils/mutations";
-import EditIcon from '@mui/icons-material/Edit';
-import { IconButton } from '@mui/material';
+import EditIcon from "@mui/icons-material/Edit";
+import { IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { ToastContainer, toast, Bounce } from "react-toastify";
+import { toast } from "react-toastify";
 import { Form, Button, Container } from "react-bootstrap";
 import "react-toastify/dist/ReactToastify.css";
-import './assets/editPost.css'
+import 'react-quill/dist/quill.snow.css'
+import DeletePost from '../DeletePost/DeletePost.jsx'
+import 'react-toastify/dist/ReactToastify.css';
+
+
+import ReactQuill from "react-quill";
+import "./assets/editPost.css";
 
 const EditPost = ({ postId }) => {
   const {
@@ -18,15 +24,23 @@ const EditPost = ({ postId }) => {
     refetch,
   } = useQuery(QUERY_TOPICS);
 
+  const {
+    loading: loadingPosts,
+    error: errorPosts,
+    data: dataPosts
+   } = useQuery(QUERY_POSTS)
+
   const { loading, error, data } = useQuery(QUERY_ME);
+
+  // const postTopics = dataPosts.posts.map(post => post.topic)
+  // console.log(postTopics)
 
   const [editPost] = useMutation(UPDATE_POST, {
     onCompleted: () => refetch(),
     onError: (error) => console.error("Error editing post"),
   });
 
-  const [editPostFormBtn, setEditPostFormBtn] = useState(false);
-  const [viewPostForm, setViewPostForm] = useState(false);
+  const [editPostForm, setEditPostForm] = useState(false);
   const [editPostInfo, setEditPostInfo] = useState({
     title: "",
     content: "",
@@ -41,8 +55,10 @@ const EditPost = ({ postId }) => {
           id: postId,
           title: post.title,
           content: post.content,
+          topic: ''
         });
       }
+      console.log(post.title)
     }
   }, [data, postId]);
 
@@ -51,6 +67,14 @@ const EditPost = ({ postId }) => {
     setEditPostInfo({
       ...editPostInfo,
       [name]: value,
+    });
+  };
+
+  //adding for quill as chnage is applied to the users content
+  const handleReactQuillChnage = (value) => {
+    setEditPostInfo({
+      ...editPostInfo,
+      content: value,
     });
   };
 
@@ -64,8 +88,10 @@ const EditPost = ({ postId }) => {
           topic: editPostInfo.topic,
         },
       });
-      setViewPostForm(true);
+      toast.success('Post updated successfully!')
     } catch (error) {
+      toast.error('Please Check Fields and try again.')
+      // setEditPostForm(true)
       console.error("There was an error editing post:", error);
     }
     console.log(
@@ -78,9 +104,7 @@ const EditPost = ({ postId }) => {
     );
   };
 
-  const handleViewPost = () => {
-    window.location.href = "./profile";
-  };
+
 
   if (loading || loadingTopics) return <p>Loading your post creation...</p>;
   if (error || errorTopics)
@@ -93,7 +117,7 @@ const EditPost = ({ postId }) => {
 
   return (
     <Container>
-      {editPostFormBtn && (
+      {editPostForm && (
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
@@ -106,12 +130,10 @@ const EditPost = ({ postId }) => {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Post</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={5}
-              name="content"
+            <ReactQuill
               value={editPostInfo.content}
-              onChange={handlePostChange}
+              onChange={handleReactQuillChnage}
+              theme="snow"
             />
           </Form.Group>
           <Form.Label>Topic</Form.Label>
@@ -141,24 +163,30 @@ const EditPost = ({ postId }) => {
           </Button>
           <Button
             className="cancelEditBtn"
-            onClick={() => setEditPostFormBtn(false)}
-          >Cancel
+            onClick={() => setEditPostForm(false)}
+          >
+            Cancel
           </Button>
-          {viewPostForm && (
+          <div className="deleteIconDiv">
+          <DeletePost
+            postId={postId}
+            refetch={refetch}
+          />
+          </div>
+          {/* {viewPostForm && (
             <Button type="button" onClick={handleViewPost}>
               View Posts
             </Button>
-          )}
+          )} */}
         </Form>
       )}
-      {!editPostFormBtn && (
+      {!editPostForm && (
         <>
-          <IconButton type="button" onClick={() => setEditPostFormBtn(true)}>
+          <IconButton type="button" onClick={() => setEditPostForm(true)}>
             <EditIcon className="editPostBtn" />
           </IconButton>
         </>
       )}
-      {/* <ToastContainer /> */}
     </Container>
   );
 };

@@ -7,9 +7,7 @@ import {
   Link,
   Grid,
   Box,
-  LockOutlinedIcon,
   Typography,
-  ToastContainer,
   Container,
   createTheme,
   ThemeProvider,
@@ -18,7 +16,6 @@ import {
   Auth,
   useState,
   toast,
-  Bounce,
 } from './signup'
 
 import './assets/signup.css';
@@ -69,33 +66,13 @@ const Signup = () => {
     // trigger setError useState if information does not meet criteria
     //using Toastify for UI aesthetics
     if (!userLogin.username || !userLogin.email || !userLogin.password) {
-      toast.error('Please fill out all fields', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.error('Please fill out all fields')
       return;
     }
 
 
     if (userLogin.password !== userLogin.confirmPassword) {
-      toast.error('Passwords do not match', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.error('Passwords do not match')
       return
     }
 
@@ -114,31 +91,11 @@ const Signup = () => {
       if (data.addProfile.token) {
         Auth.login(data.addProfile.token);
         // This line calls the login method of the Auth object, passing the token obtained from the addProfile mutation. The token is now stored with the logged in user
-        toast.success('Welcome to the Fitness Blog!', {
-          position: 'bottom-right',
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-          transition: Bounce,
-        });
+        toast.success('Welcome to the Fitness Blog!')
       }
     } catch (err) {
       console.error(err);
-      toast.error('There was an error creating your account. Please check your information and try again', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.error('There was an error creating your account')
     }
   };
 
@@ -260,18 +217,6 @@ const Signup = () => {
               </Grid>
             </Box>
           </Box>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
           <Copyright sx={{ mt: 5 }} />
         </Container>
       </Box>

@@ -55,29 +55,9 @@ const AddComment = ({ postId, refetch }) => {
         content: ''
       });
       console.log('comment added->', addCommentInfo.content);
-      toast.success('Comment Posted', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      })
+      toast.success('Comment posted')
     } catch (error) {
-      toast.error('There was an error leaving a comment', {
-        position: 'bottom-right',
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-        transition: Bounce,
-      })
+      toast.error('Error posting comment')
       console.error('There was an issue adding the comment:', error);
     }
   };

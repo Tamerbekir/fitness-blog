@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { REMOVE_POST } from '../../../utils/mutations';
-import { toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import './assets/deletePost.css'
 
 // export function to delete a post, and using postId and refetch as parameters we are going to take in and pass through to the profile page
-const DeletePost = ({ postId, refetch }) => {
+const DeletePost = ({ postId, refetch, editPostForm }) => {
   //remove post mutation, using onComplete to refetch function after a deletion is made in the database. Without this, database will not update. Then, general error handling
   const [removePost] = useMutation(REMOVE_POST, {
     onCompleted: () => refetch(),
@@ -17,6 +18,7 @@ const DeletePost = ({ postId, refetch }) => {
 
   // deleteForm for useState that shows a confirm delete if user clicks on the delete button
   const [deleteForm, setDeleteForm] = useState(false)
+
 
   // function for deleting a post, taking in a single variable which we are passing in the postId as the id for the post. In other words, we can now define post._id as postId
 
@@ -29,28 +31,10 @@ const DeletePost = ({ postId, refetch }) => {
           id: postId
         }
       });
-      toast.success('Post deleted', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.success('Post deleted')
       setDeleteForm(false);
     } catch (error) {
-      toast.error('Error deleting post', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        theme: 'light',
-        transition: Bounce,
-      });
+      toast.error('Error deleting post')
     }
   };
 
@@ -58,7 +42,7 @@ const DeletePost = ({ postId, refetch }) => {
   return (
     <div>
       {/* Do not show the delete confirm form, just show the delete button and setDeleteForm to true on button press- which means when the this button is pressed the deleteForm will show */}
-      {!deleteForm && (
+      {!deleteForm && !editPostForm && (
         <IconButton className='deletePostBtn' type="button" onClick={() => setDeleteForm(true)}>
           <DeleteIcon className='deletePostBtn'/>
         </IconButton>
@@ -67,7 +51,7 @@ const DeletePost = ({ postId, refetch }) => {
       {deleteForm && (
         <>
           {/* <p className='confirmDeletePostText'>Are you sure you want to delete this post? This is irreversible.</p> */}
-          <small>Confirm Delete</small>
+          <small>Confirm Delete Post?</small>
           <IconButton className='deletePostBtn' type="button" onClick={handleDeletePost}>
             <DeleteIcon className='confirmDeletePostBtn'/>
           </IconButton>
@@ -76,7 +60,6 @@ const DeletePost = ({ postId, refetch }) => {
           </IconButton>
         </>
       )}
-      {/* NOT using ToastContainer here since UI for toastify will be called on the Profile jsx, not here */}
     </div>
   )
 }

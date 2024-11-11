@@ -14,7 +14,7 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../../utils/mutations';
 import Auth from '../../../utils/auth';
 import { useState } from 'react';
-import { ToastContainer, Bounce, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 function Copyright(props) {
@@ -73,17 +73,7 @@ const Login = () => {
         email: !userLogin.email ? "Please enter an email" : "",
         password: !userLogin.password ? "Please enter your password" : "",
       });
-      toast.error("Please fill out all fields.", {
-        position: "bottom-left",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.error("Please fill out all fields.")
       return;
     }
 
@@ -100,31 +90,11 @@ const Login = () => {
       if (data.login.token) {
         Auth.login(data.login.token);
         // This line calls the login method of the Auth object, passing the token obtained from the addProfile mutation. The token is now stored with the logged in user
-        toast.success("Welcome back!", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
+        toast.success("Welcome back!")
       }
     } catch (err) {
       console.error(err);
-      toast.error("Incorrect username or password", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.error("Incorrect username or password")
     }
   };
 
@@ -205,18 +175,6 @@ const Login = () => {
               </Grid>
             </Box>
           </Box>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
           <Copyright sx={{ mt: 5 }} />
         </Container>
       </Box>
