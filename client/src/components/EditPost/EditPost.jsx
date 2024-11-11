@@ -37,7 +37,6 @@ const EditPost = ({ postId }) => {
 
   const [editPost] = useMutation(UPDATE_POST, {
     onCompleted: () => refetch(),
-    onError: (error) => console.error("Error editing post"),
   });
 
   const [editPostForm, setEditPostForm] = useState(false);
@@ -55,7 +54,6 @@ const EditPost = ({ postId }) => {
           id: postId,
           title: post.title,
           content: post.content,
-          topic: ''
         });
       }
       console.log(post.title)
@@ -89,9 +87,10 @@ const EditPost = ({ postId }) => {
         },
       });
       toast.success('Post updated successfully!')
+      setEditPostForm(false)
     } catch (error) {
       toast.error('Please Check Fields and try again.')
-      // setEditPostForm(true)
+      setEditPostForm(true)
       console.error("There was an error editing post:", error);
     }
     console.log(

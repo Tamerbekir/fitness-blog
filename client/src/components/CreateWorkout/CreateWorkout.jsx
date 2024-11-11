@@ -12,7 +12,6 @@ import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
 
 const CreateWorkout = () => {
 
-  const [isHovered, setIsHovered] = useState(false)
 
   const style = {
     button: {
@@ -122,7 +121,9 @@ const CreateWorkout = () => {
         });
       }
 
-      toast.success('Workout Logged!', { position: 'bottom-right' })
+      toast.success('Workout Logged!', {
+        position: 'bottom-right',
+      });
 
       localStorage.removeItem('workoutForm');
       localStorage.removeItem('addWorkoutInfo');

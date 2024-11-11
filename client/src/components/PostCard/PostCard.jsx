@@ -85,7 +85,7 @@ const PostCard = ({
         <Button className="faveBtn">Favorite</Button>
         {!userLeaveComment ? (
           <Button className="commentBtn" onClick={handleCommentClick}>
-            View Comments
+            {postComments.length} Comments
           </Button>
         ) : (
           <Button className="commentBtn" onClick={handleCommentClick}>
@@ -95,6 +95,7 @@ const PostCard = ({
         <Button className="shareBtn">Share</Button>
         <Button className="reactBtn">React</Button>
       </div>
+
       {showEditBtn && (
         <div className="postCardIconDiv">
           <EditPost 
