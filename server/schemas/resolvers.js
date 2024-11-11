@@ -255,7 +255,7 @@ const resolvers = {
             pace,
             createdAt: new Date()
           })
-
+          
           await Profile.findByIdAndUpdate(
             context.user._id,
             { $addToSet: { workouts: newWorkout._id } },
@@ -269,6 +269,8 @@ const resolvers = {
         throw new AuthenticationError('There was an error creating workout', error)
       }
     },
+
+    
 
     updateWorkout: async (parent, { _id, exercise, reps, weight, miles, sets, pace, notes }, context) => {
       try {
@@ -306,7 +308,7 @@ const resolvers = {
           const removeWorkout = await Workout.findByIdAndDelete(_id)
 
           if (!removeWorkout) {
-            console.error('cannot locate workout to delete', error)
+            console.log('cannot locate workout to delete')
           }
 
           //find the profile by its id and update the workout associated with it

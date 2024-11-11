@@ -10,4 +10,4 @@ export { default as EditPost } from "./EditPost/EditPost.jsx";
 export { default as WorkoutGrid } from './WorkoutGird/WorkoutGrid.jsx'
 export { default as UserComments } from './UserComments/UserComments.jsx'
 export { default as EditWorkout } from './EditWorkout/EditWorkout.jsx'
-
+export { default as DeleteWorkout } from './DeleteWorkout/DeleteWorkouts.jsx'

@@ -11,3 +11,34 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.welcomeHomeText,
+.welcomeHeader {
+  color: white;
+  text-align: center;
+}
+
+
+.addSetBtn, .saveSetBtn, .logWorkoutBtn {
+  background-color: #f9c000;
+  color: black;
+  border: none;
+  margin: 2%;
+}
+
+
+.addSetBtn:hover, .saveSetBtn:hover,
+.logWorkoutBtn:hover {
+  background-color: #f9bf0074;
+}
+
+.removeSetBtn {
+  background-color: #f9000043;
+  border: none;
+}
+
+.removeSetBtn:hover {
+  background-color: #f900002d;
+  border: none;
+}
+

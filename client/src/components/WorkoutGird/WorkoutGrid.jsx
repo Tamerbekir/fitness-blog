@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Accordion, Card, Button, Form, Container } from 'react-bootstrap';
 import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 import { UPDATE_WORKOUT } from "../../../utils/mutations";
+import DeleteWorkout from '../../components/DeleteWorkout/DeleteWorkouts.jsx'
 import './assets/workoutGrid.css'
 // import Auth from '../../../utils/auth'
 
-const WorkoutGrid = () => {
+const WorkoutGrid = ({ workoutId }) => {
   // const loggedIn = Auth.loggedIn()
 
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
@@ -221,6 +222,7 @@ const WorkoutGrid = () => {
                               </Form>
                             ) : (
                               <div className="workoutStats" onClick={() => handleEditClick(workout)}>
+                                <DeleteWorkout refetch={refetch} workoutId={workout._id} />
                                 <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
                                 <p>Sets: {workout.sets}</p>
                                 <p>Weight: {workout.weight}</p>

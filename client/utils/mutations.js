@@ -114,6 +114,14 @@ mutation updateWorkout($id: ID!, $exercise: String!, $reps: Float!, $weight: Flo
 }
 `
 
+export const REMOVE_WORKOUT = gql`
+  mutation Mutation($id: ID!) {
+  removeWorkout(_id: $id) {
+    _id
+  }
+}
+`
+
 
 
 

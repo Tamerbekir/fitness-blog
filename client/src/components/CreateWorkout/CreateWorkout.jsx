@@ -15,18 +15,18 @@ const CreateWorkout = () => {
 
   const [isHovered, setIsHovered] = useState(false)
 
-  const style = {
-    button: {
-      backgroundColor: '#f9c000',
-      color: 'black',
-      border: 'none',
-      margin: '2%'
-    },
-    removeButton: {
-      backgroundColor: '#f9000043',
-      border: 'none',
-    }
-  }
+  // const style = {
+  //   button: {
+  //     backgroundColor: '#f9c000',
+  //     color: 'black',
+  //     border: 'none',
+  //     margin: '2%'
+  //   },
+  //   removeButton: {
+  //     backgroundColor: '#f9000043',
+  //     border: 'none',
+  //   }
+  // }
 
 
 
@@ -271,18 +271,18 @@ const CreateWorkout = () => {
             handleAddSet(),
               handleAddWorkoutToLocalStorage()
           }}
-          style={style.button}
+          // style={style.button}
           className="me-2 addSetBtn">Add Set</Button>
 
         <Button
           className="removeSetBtn"
           onClick={handleRemoveSet}
-          style={style.removeButton}
+        // style={style.removeButton}
         >Remove Set</Button>
         <Button
           className="logWorkoutBtn"
           onClick={handleLogWorkout}
-          style={style.button}
+        // style={style.button}
         >Log Workout</Button>
 
       </div>

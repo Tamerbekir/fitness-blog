@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import './assets/accessPrompt.css'
 import { useQuery } from '@apollo/client'
 import Auth from '../../../utils/auth'
+import './assets/accessPrompt.css'
 
 export default function AccessPrompt() {
 
