@@ -5,11 +5,12 @@ import PostCard from "../components/PostCard/PostCard.jsx";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import AccessPrompt from "../components/AccessPrompt/AccessPrompt.jsx";
-import { ToastContainer } from "react-toastify";
-
+import { toast } from "react-toastify";
+import { useSearch } from "../components/Search/SearchProvider.jsx";
 
 const Home = () => {
   const loggedIn = Auth.loggedIn();
+  const { searchKeyWord } = useSearch();
 
   const {
     loading: loadingPosts,
@@ -24,17 +25,10 @@ const Home = () => {
     data: dataMe
   } = useQuery(QUERY_ME);
 
+
   const usernameInitial = (str) => {
     return str.toUpperCase();
   };
-
-  // const login = () => {
-  //   window.location.href = "./login";
-  // };
-
-  // const signUp = () => {
-  //   window.location.href = "./signup";
-  // };
 
   if (loadingPosts || loadingMe) {
     return (
@@ -44,25 +38,29 @@ const Home = () => {
     );
   }
 
+
+  const searchPosts = dataPosts.posts.filter(post => post.title.toLowerCase().includes(searchKeyWord.toLowerCase()) || post.content.toLowerCase().includes(searchKeyWord.toLowerCase()) )
+    // console.log('data',dataPosts)
+
   if (errorPosts || errorMe) {
     return <p>Error: {errorPosts.message}</p>;
-  }
+  }  
 
   if (!dataPosts || !dataMe) {
     return <p>No posts found</p>;
-  }
-
-
+  }    
 
   return (
     <div>
+      <div>
+      </div>
       <div>
         {loggedIn && dataMe && (
           <>
             <h1 className="welcomeHomeText">
               Hey there, {dataMe.me.username}, check out the latest posts!
             </h1>
-            {dataPosts.posts.map((post) => (
+            {searchPosts.map((post) => (
               <PostCard
                 className="postCardHome"
                 key={post._id}
@@ -77,8 +75,7 @@ const Home = () => {
                 showDeletePostBtn={dataMe.me._id === post.profile._id}
                 showEditBtn={dataMe.me._id === post.profile._id}
                 refetch={refetch}
-              >
-              </PostCard>
+              />
             ))}
           </>
         )}
@@ -88,7 +85,7 @@ const Home = () => {
           <div>
             <h1 className="welcomeHomeText">Welcome to the Fitness Blog!</h1>
             <AccessPrompt />
-            {dataPosts.posts.map((post) => (
+            {searchPosts.map((post) => (
               <PostCard
                 className="PostCard"
                 key={post._id}
@@ -98,15 +95,12 @@ const Home = () => {
                 content={post.content}
                 createdAt={new Date(parseInt(post.createdAt)).toLocaleDateString()}
                 topicName={post.topic.map((topic) => topic.topicName)}
-              >
-              </PostCard>
+              />
             ))}
           </div>
         )}
-        <ToastContainer />
-
       </div>
-    </div >
+    </div>
   );
 };
 

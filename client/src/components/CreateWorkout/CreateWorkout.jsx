@@ -3,9 +3,8 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_EXERCISE, QUERY_ME } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
 import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Auth from '../../../utils/auth'
-import 'react-toastify/dist/ReactToastify.css';
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 // import './createWorkout.css'
 import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
@@ -13,7 +12,6 @@ import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
 
 const CreateWorkout = () => {
 
-  const [isHovered, setIsHovered] = useState(false)
 
   // const style = {
   //   button: {
@@ -125,9 +123,6 @@ const CreateWorkout = () => {
 
       toast.success('Workout Logged!', {
         position: 'bottom-right',
-        autoClose: 2000,
-        theme: 'light',
-        transition: Bounce,
       });
 
       localStorage.removeItem('workoutForm');
@@ -288,10 +283,6 @@ const CreateWorkout = () => {
       </div>
       {/* 
       <Button onClick={handleAddWorkoutToLocalStorage} className="me-2 saveSetBtn ">Save Progress</Button> */}
-
-
-
-      <ToastContainer />
       <WorkoutGrid />
     </Container>
   );

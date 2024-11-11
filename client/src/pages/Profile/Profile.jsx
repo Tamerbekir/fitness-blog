@@ -1,7 +1,7 @@
 import Auth from "../../../utils/auth";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_POSTS } from "../../../utils/queries";
-import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "./assets/profile.css";
 import PostCard from "../../components/PostCard/PostCard.jsx";
 import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid.jsx"
@@ -75,7 +75,6 @@ const Profile = () => {
         ))}
         <WorkoutGrid />
       </div>
-      <ToastContainer />
     </div>
   );
 }

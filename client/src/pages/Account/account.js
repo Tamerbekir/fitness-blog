@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@apollo/client'
 import { useState, useEffect } from 'react'
 import { UPDATE_PROFILE, REMOVE_PROFILE } from '../../../utils/mutations'
 import { QUERY_ME } from '../../../utils/queries'
-import { ToastContainer, toast, Bounce } from 'react-toastify'
+import { toast, Bounce } from 'react-toastify'
 import TextField from '@mui/material/TextField';
 import { DateFormat } from '../../components/index'
 import Box from '@mui/material/Box';
@@ -23,7 +23,6 @@ export {
   UPDATE_PROFILE,
   REMOVE_PROFILE,
   QUERY_ME,
-  ToastContainer,
   toast,
   Bounce,
   TextField,

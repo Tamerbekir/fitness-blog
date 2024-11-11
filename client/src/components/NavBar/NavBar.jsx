@@ -1,4 +1,4 @@
-import { Navbar, Nav, NavDropdown, Container, Button, Tooltip, OverlayTrigger, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button, Dropdown } from 'react-bootstrap';
 import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
@@ -6,6 +6,8 @@ import { QUERY_ME } from '../../../utils/queries';
 import Auth from '../../../utils/auth';
 import './assets/navBar.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SearchBar from '../SeachBar/SearchBar';
+
 
 
 const NavBar = () => {
@@ -79,6 +81,7 @@ const NavBar = () => {
           </Nav>
           <Nav>
             {/* <OverlayTrigger overlay={<Tooltip>Open settings</Tooltip>}> */}
+              <SearchBar/>
             <Dropdown align="end">
               <Dropdown.Toggle
                 className="p-0"
@@ -96,7 +99,6 @@ const NavBar = () => {
                 }
               </Dropdown.Menu>
             </Dropdown>
-            {/* </OverlayTrigger> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -2,11 +2,12 @@ import './App.css';
 import { Outlet } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
-  NavBar
-} from './components/index.js'
-
-
+  NavBar,
+  SearchProvider,
+} from './components/index.js';
 
 
 const httpLink = createHttpLink({
@@ -31,11 +32,14 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <ApolloProvider client={client}>
-      <NavBar />
-      <style>{'body { background-color: #303134; }'}</style>
-      <Outlet />
-    </ApolloProvider>
+    <SearchProvider>
+      <ApolloProvider client={client}>
+        <NavBar />
+        <style>{'body { background-color: #303134; }'}</style>
+        <ToastContainer />
+        <Outlet />
+      </ApolloProvider>
+    </SearchProvider>
   );
 }
 

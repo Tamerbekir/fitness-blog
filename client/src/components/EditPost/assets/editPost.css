@@ -8,3 +8,8 @@
 .updatePostBtn:hover, .updatePostBtn:hover {
   background-color: #f9bf0074;
 }
+
+.deleteIconDiv {
+  display: flex;
+  float: right;
+}

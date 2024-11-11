@@ -20,7 +20,8 @@ import {
 
 import {
   CreatePost,
-  CreateWorkout
+  CreateWorkout,
+  SearchProvider
 } from './components/index.js'
 
 

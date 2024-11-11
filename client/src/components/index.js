@@ -11,3 +11,9 @@ export { default as WorkoutGrid } from './WorkoutGird/WorkoutGrid.jsx'
 export { default as UserComments } from './UserComments/UserComments.jsx'
 export { default as EditWorkout } from './EditWorkout/EditWorkout.jsx'
 export { default as DeleteWorkout } from './DeleteWorkout/DeleteWorkouts.jsx'
+export { default as SearchBar } from './SeachBar/SearchBar.jsx'
+
+
+
+//export provider
+export { default as SearchProvider } from './Search/SearchProvider.jsx'
