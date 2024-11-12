@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 import Auth from '../../../utils/auth'
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 // import './createWorkout.css'
-import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
-import WorkoutImages from "./assets/WorkoutImages.jsx";
+import AccessPrompt from "../AccessPrompt/AccessPrompt";
+import WorkoutImages from "./assets/WorkoutImages";
 
 
 const CreateWorkout = ({ refetch }) => {
@@ -168,7 +168,7 @@ const CreateWorkout = ({ refetch }) => {
                 >
                   {workoutImages ? <img style={{ width: '320px' }} src={workoutImages} />
                     :
-                    <img style={{ width: '150px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="" />
+                    <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="" />
                   }
                   <p>{exercise.exerciseName}</p>
                 </ListGroup.Item>

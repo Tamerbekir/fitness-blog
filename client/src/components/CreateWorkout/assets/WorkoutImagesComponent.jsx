@@ -1,5 +1,5 @@
-import WorkoutImages from "./WorkoutImages.jsx";
-import CreateWorkout from "../CreateWorkout.jsx";
+import WorkoutImages from "./WorkoutImages";
+import CreateWorkout from "../CreateWorkout";
 
 const WorkoutImagesComponent = () => {
   return <CreateWorkout WorkoutImages={WorkoutImages} />
