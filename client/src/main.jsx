@@ -15,7 +15,7 @@ import {
   Signup,
   Account,
   UserProfile,
-  About
+  About,
 } from './pages/index.js'
 
 import {
@@ -39,7 +39,8 @@ const router = createBrowserRouter([
       { path: 'userAccount', element: <UserProfile /> },
       { path: 'create-post', element: <CreatePost /> },
       { path: 'log-workout', element: <CreateWorkout /> },
-      { path: 'about', element: <About /> }
+      { path: 'about', element: <About /> },
+      { path: 'userprofile/:id', element: <UserProfile /> }
     ],
   },
 ]);

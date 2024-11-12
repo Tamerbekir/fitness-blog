@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import "react-quill/dist/quill.snow.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/postCard.css";
+import { useNavigate } from "react-router-dom";
 
 const PostCard = ({
   postId,
@@ -34,12 +35,18 @@ const PostCard = ({
   showEditBtn,
   refetch,
 }) => {
-  const { loading, error, data } = useQuery(QUERY_PROFILES);
+  const {
+    loading: LoadingProfiles,
+    error: errorProfiles,
+    data: dataProfiles
+  } = useQuery(QUERY_PROFILES);
+
   const {
     loading: loadingComments,
     error: errorComments,
     data: dataComments,
   } = useQuery(QUERY_COMMENTS);
+
   const {
     loading: loadingMe,
     error: errorMe,
@@ -47,31 +54,50 @@ const PostCard = ({
   } = useQuery(QUERY_ME);
 
   const [userLeaveComment, setUserLeaveComment] = useState(false);
-  const [userAccount, setUserAccount] = useState({
-    _id: "",
-  });
 
-  useEffect(() => {
-    if (data) {
-      setUserAccount({
-        ...userAccount,
-        _id: data.profiles._id,
-      });
-    }
-  }, [data]);
+  const navigate = useNavigate()
+
+  // useEffect(() => {
+  //   if (dataProfiles && dataProfiles.profiles.length > 0) {
+  //     console.log('Profiles data:', dataProfiles.profiles);
+  //     setUserAccount({
+  //       ...userAccount,
+  //       _id: dataProfiles.profiles._id, // Check if this _id exists
+  //     });
+  //   }
+  // }, [dataProfiles]);
+
+
+  if (!dataProfiles || !dataMe || !dataComments) return <p>No profile found..</p>;
+
+  if (dataProfiles) {
+    const allPosts = dataProfiles.profiles.map(profile => profile.posts.map(post => ({ ...post, userId: profile._id })))
+    console.log('all posts', allPosts)
+  }
+
+  const userProfile = (userId) => {
+    navigate(`/userprofile/${userId}`)
+    console.log(userId)
+  }
 
   const handleCommentClick = () => {
     setUserLeaveComment(!userLeaveComment);
   };
 
-  if (loading || loadingMe || loadingComments) return <p>Loading...</p>;
-  if (error || errorMe || errorComments) return <p>{error}</p>;
-  if (!data || !dataMe || !dataComments) return <p>No profile found..</p>;
+  if (LoadingProfiles || loadingMe || loadingComments) return <p>Loading...</p>;
+  if (errorProfiles || errorMe || errorComments) return <p>{errorProfiles}</p>;
 
   return (
     <Card className="my-3">
       <Card.Header className="d-flex justify-content-between align-items-center">
-        <Avatar name={username} size="40" round={true} className="me-2" />
+        <Avatar
+          key={postId}
+          onClick={() => userProfile(post.userId)}
+          name={username}
+          style={{ cursor: 'pointer' }}
+          size="40"
+          round={true}
+          className="me-2" />
         <div>{showYouForPost ? <p>You</p> : <p>{username}</p>}</div>
         <small>{createdAt}</small>
       </Card.Header>
@@ -80,7 +106,6 @@ const PostCard = ({
         <div dangerouslySetInnerHTML={{ __html: content }} />
         <Card.Text className="text-muted">{topicName}</Card.Text>
       </Card.Body>
-
       <div className="postIcons">
         <Button className="faveBtn">Favorite</Button>
         {!userLeaveComment ? (
@@ -98,13 +123,12 @@ const PostCard = ({
 
       {showEditBtn && (
         <div className="postCardIconDiv">
-          <EditPost 
-            className="editIcon" 
-            postId={postId} 
+          <EditPost
+            className="editIcon"
+            postId={postId}
             refetch={refetch} />
         </div>
       )}
-
       {userLeaveComment && (
         <>
           <AddComment postId={postId} refetch={refetch} />

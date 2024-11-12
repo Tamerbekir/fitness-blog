@@ -14,6 +14,5 @@ export { default as DeleteWorkout } from './DeleteWorkout/DeleteWorkouts.jsx'
 export { default as SearchBar } from './SeachBar/SearchBar.jsx'
 
 
-
 //export provider
 export { default as SearchProvider } from './Search/SearchProvider.jsx'

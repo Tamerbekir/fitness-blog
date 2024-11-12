@@ -7,8 +7,10 @@ import Box from '@mui/material/Box';
 import AccessPrompt from "../components/AccessPrompt/AccessPrompt.jsx";
 import { toast } from "react-toastify";
 import { useSearch } from "../components/Search/SearchProvider.jsx";
+import { UserProfile } from './index.js'
 
-const Home = () => {
+
+const Home = ({ userIndex }) => {
   const loggedIn = Auth.loggedIn();
   const { searchKeyWord } = useSearch();
 
@@ -16,7 +18,7 @@ const Home = () => {
     loading: loadingPosts,
     error: errorPosts,
     data: dataPosts,
-    refetch
+    // refetch
   } = useQuery(QUERY_POSTS);
 
   const {
@@ -39,20 +41,21 @@ const Home = () => {
   }
 
 
-  const searchPosts = dataPosts.posts.filter(post => post.title.toLowerCase().includes(searchKeyWord.toLowerCase()) || post.content.toLowerCase().includes(searchKeyWord.toLowerCase()) )
-    // console.log('data',dataPosts)
+  const searchPosts = dataPosts.posts.filter(post => post.title.toLowerCase().includes(searchKeyWord.toLowerCase()) || post.content.toLowerCase().includes(searchKeyWord.toLowerCase()))
+  // console.log('data',dataPosts)
 
   if (errorPosts || errorMe) {
     return <p>Error: {errorPosts.message}</p>;
-  }  
+  }
 
   if (!dataPosts || !dataMe) {
     return <p>No posts found</p>;
-  }    
+  }
 
   return (
     <div>
       <div>
+        {/* <UsersProfile userIndex={userIndex} /> */}
       </div>
       <div>
         {loggedIn && dataMe && (
@@ -74,7 +77,7 @@ const Home = () => {
                 showYouForPost={dataMe.me._id === post.profile._id}
                 showDeletePostBtn={dataMe.me._id === post.profile._id}
                 showEditBtn={dataMe.me._id === post.profile._id}
-                refetch={refetch}
+              // refetch={refetch}
               />
             ))}
           </>

@@ -28,7 +28,7 @@ const EditPost = ({ postId }) => {
     loading: loadingPosts,
     error: errorPosts,
     data: dataPosts
-   } = useQuery(QUERY_POSTS)
+  } = useQuery(QUERY_POSTS)
 
   const { loading, error, data } = useQuery(QUERY_ME);
 
@@ -56,7 +56,7 @@ const EditPost = ({ postId }) => {
           content: post.content,
         });
       }
-      console.log(post.title)
+      // console.log(post.title)
     }
   }, [data, postId]);
 
@@ -167,10 +167,10 @@ const EditPost = ({ postId }) => {
             Cancel
           </Button>
           <div className="deleteIconDiv">
-          <DeletePost
-            postId={postId}
-            refetch={refetch}
-          />
+            <DeletePost
+              postId={postId}
+              refetch={refetch}
+            />
           </div>
           {/* {viewPostForm && (
             <Button type="button" onClick={handleViewPost}>

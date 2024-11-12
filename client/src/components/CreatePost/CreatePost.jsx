@@ -13,13 +13,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-quill/dist/quill.snow.css'
 import './assets/createPost.css';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 
 const CreatePost = () => {
   // used for testing purposes
   const loggedIn = Auth.loggedIn();
 
-
+  const navigate = useNavigate()
 
   // Bringing in QUERY ME. Used property values to define bringing in data from 'me' query so it does not conflict with other queries. For example, in most cases it would be loading, error and data.
   const {
@@ -53,9 +54,9 @@ const CreatePost = () => {
 
   const [viewPostForm, setViewPostForm] = useState(false);
 
-  // handling the viewPost button
+  // handling the viewPost button which is not yet implememnted
   const handleViewPost = () => {
-    window.location.href = './profile';
+    navigate('/profile')
   };
 
 
@@ -72,7 +73,7 @@ const CreatePost = () => {
   const handleReactQuillChnage = (value) => {
     setAddPostInfo({
       ...addPostInfo,
-      content:value
+      content: value
     })
   }
 
@@ -87,6 +88,7 @@ const CreatePost = () => {
         }
       });
       toast.success('Post created!')
+      navigate('/')
       // show the view post form/button once post is made
       setViewPostForm(true);
     } catch (error) {

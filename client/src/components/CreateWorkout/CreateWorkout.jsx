@@ -8,6 +8,7 @@ import Auth from '../../../utils/auth'
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 // import './createWorkout.css'
 import AccessPrompt from "../AccessPrompt/AccessPrompt.jsx";
+import WorkoutImages from "./assets/WorkoutImages.jsx";
 
 
 const CreateWorkout = ({ refetch }) => {
@@ -119,6 +120,7 @@ const CreateWorkout = ({ refetch }) => {
     }
   };
 
+
   if (loadingExercise || loadingMe) return <p>Loading...</p>;
   if (errorExercise || errorMe) return <p>Error loading data</p>;
 
@@ -140,6 +142,7 @@ const CreateWorkout = ({ refetch }) => {
 
   // <img src="https://app-media.fitbod.me/v2/102/images/landscape/0_960x540.jpg" alt="" />
 
+  const comingSoonImage = 'https://pitchpodcasts.com/img/image-coming-soon.jpg'
 
   return (
     <Container>
@@ -156,29 +159,18 @@ const CreateWorkout = ({ refetch }) => {
         {showExerciseList && (
           <ListGroup>
             {filteredExercises.map((exercise) => {
-              const isCurls = exercise.exerciseName.toLowerCase().includes('dumbbell bicep curl (biceps)');
+              const workoutImages = WorkoutImages[exercise.exerciseName.toLowerCase()]
               return (
                 <ListGroup.Item
                   key={exercise._id}
                   action
                   onClick={() => handleSelectExercise(exercise.exerciseName)}
                 >
-                  {isCurls ? (
-                    <>
-                      <img style={{ width: '316px' }}
-                        src="https://app-media.fitbod.me/v2/102/images/landscape/0_960x540.jpg"
-                        alt="Exercise"
-                      />
-                      <>
-                        <p>Dumbbell Bicep Curls</p>
-                      </>
-                    </>
-                  ) : (
-                    <>
-                      <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="Exercise" />
-                      {exercise.exerciseName}
-                    </>
-                  )}
+                  {workoutImages ? <img style={{ width: '320px' }} src={workoutImages} />
+                    :
+                    <img style={{ width: '150px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="" />
+                  }
+                  <p>{exercise.exerciseName}</p>
                 </ListGroup.Item>
               );
             })}
