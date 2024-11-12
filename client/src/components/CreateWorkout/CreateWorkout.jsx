@@ -8,7 +8,7 @@ import Auth from '../../../utils/auth'
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 // import './createWorkout.css'
 import AccessPrompt from "../AccessPrompt/AccessPrompt";
-import WorkoutImages from "./assets/WorkoutImages";
+import WorkoutImages from "./WorkoutImages";
 
 
 const CreateWorkout = ({ refetch }) => {
