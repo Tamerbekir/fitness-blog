@@ -47,17 +47,6 @@ const NavBar = () => {
     window.location.href = './account';
   };
 
-  // const handleCreatePostPage = () => {
-  //   window.location.href = './create-post';
-  // };
-
-  // const handleLogWorkoutPage = () => {
-  //   window.location.href = './log-workout';
-  // };
-
-  // const handleHomePage = () => {
-  //   window.location.href = './';
-  // };
 
 
   if (loadingMe) return <p>Loading...please wait</p>;
@@ -68,10 +57,12 @@ const NavBar = () => {
   return (
     <Navbar bg="dark" expand="lg" variant="dark" className="header">
       <Container>
+
         <Navbar.Brand href="/" className="font-weight-bold text-uppercase" style={{ fontFamily: 'times new roman' }}>
           Live Fit
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <SearchBar />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto navBarLink">
             <Link className="navBarLinkAbout" to='/about'>About</Link>
@@ -81,14 +72,13 @@ const NavBar = () => {
           </Nav>
           <Nav>
             {/* <OverlayTrigger overlay={<Tooltip>Open settings</Tooltip>}> */}
-              <SearchBar/>
             <Dropdown align="end">
               <Dropdown.Toggle
                 className="p-0"
-                style={{ backgroundColor: '#f9bf00c5', color: 'white', border: 'none', width: '110%', height: '120%' }}>
+                style={{ backgroundColor: '#f9bf00c5', color: 'white', border: 'none', width: '160px', height: '120%' }}>
                 {!loggedIn ? 'Member Access' : uppercaseUserName}
               </Dropdown.Toggle>
-              <Dropdown.Menu>
+              <Dropdown.Menu style={{ width: '10%' }} >
                 {!loggedIn && <Dropdown.Item onClick={handleLoginPage}>Login</Dropdown.Item>}
                 {loggedIn &&
                   <>
