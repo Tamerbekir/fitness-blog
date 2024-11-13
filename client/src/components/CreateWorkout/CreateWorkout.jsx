@@ -4,17 +4,13 @@ import { QUERY_EXERCISE, QUERY_ME } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
 import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import Auth from '../../../utils/auth'
+import Auth from '../../../utils/auth';
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
-// import './createWorkout.css'
 import AccessPrompt from "../AccessPrompt/AccessPrompt";
 import WorkoutImages from "./WorkoutImages";
 
-
 const CreateWorkout = ({ refetch }) => {
-
-
-  const loggedIn = Auth.loggedIn()
+  const loggedIn = Auth.loggedIn();
 
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
   const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
@@ -33,6 +29,7 @@ const CreateWorkout = ({ refetch }) => {
 
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [showExerciseList, setShowExerciseList] = useState(false);
+  const [countWeight, setCountWeight] = useState(0)
 
   useEffect(() => {
     localStorage.setItem('workoutForm', JSON.stringify(workoutForm));
@@ -41,6 +38,15 @@ const CreateWorkout = ({ refetch }) => {
   useEffect(() => {
     localStorage.setItem('addWorkoutInfo', JSON.stringify(addWorkoutInfo));
   }, [addWorkoutInfo]);
+
+  const calculateTotalWeight = () => {
+    const totalWeight = workoutForm.reduce((total, set) => total + (parseFloat(set.weight) || 0), 0);
+    setCountWeight(totalWeight)
+  };
+
+  useEffect(() => {
+    calculateTotalWeight();
+  }, [workoutForm]);
 
   const handleExerciseChange = (e) => {
     const query = e.target.value;
@@ -120,10 +126,8 @@ const CreateWorkout = ({ refetch }) => {
     }
   };
 
-
   if (loadingExercise || loadingMe) return <p>Loading...</p>;
   if (errorExercise || errorMe) return <p>Error loading data</p>;
-
 
   if (!loggedIn) {
     return (
@@ -135,14 +139,9 @@ const CreateWorkout = ({ refetch }) => {
   }
 
   const isRunningExercise = addWorkoutInfo.exercise.toLowerCase().includes("running");
-
   const isWalkingExercise = addWorkoutInfo.exercise.toLowerCase().includes("walk");
 
-  // const isCurls = addWorkoutInfo.exercise.toLowerCase().includes('dumbbell bicep curl (biceps)');
-
-  // <img src="https://app-media.fitbod.me/v2/102/images/landscape/0_960x540.jpg" alt="" />
-
-  const comingSoonImage = 'https://pitchpodcasts.com/img/image-coming-soon.jpg'
+  // const comingSoonImage = 'https://pitchpodcasts.com/img/image-coming-soon.jpg'
 
   return (
     <Container>
@@ -154,7 +153,6 @@ const CreateWorkout = ({ refetch }) => {
           onChange={handleExerciseChange}
           placeholder="Type to search for an activity"
         />
-
 
         {showExerciseList && (
           <ListGroup>
@@ -178,16 +176,14 @@ const CreateWorkout = ({ refetch }) => {
         )}
       </Form.Group>
 
-
-
       {workoutForm.map((set, index) => (
-        <Row key={index} className="mb-3">
+        <Row key={index} className="mb-3" style={{ padding: '10px' }}>
           {isRunningExercise || isWalkingExercise ? (
             <>
               <Col>
                 <Form.Group controlId={`setSet${index}`}>
-                  <Form.Label>Set</Form.Label>
                   <Form.Control
+                    placeholder="Set"
                     type="number"
                     value={set.set}
                     onChange={(e) => handleSetChange(index, 'set', e.target.value)}
@@ -196,8 +192,8 @@ const CreateWorkout = ({ refetch }) => {
               </Col>
               <Col>
                 <Form.Group controlId={`setReps${index}`}>
-                  <Form.Label>Rep</Form.Label>
                   <Form.Control
+                    placeholder="Reps"
                     type="number"
                     value={set.reps}
                     onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
@@ -206,8 +202,8 @@ const CreateWorkout = ({ refetch }) => {
               </Col>
               <Col>
                 <Form.Group controlId={`setMiles${index}`}>
-                  <Form.Label>Miles</Form.Label>
                   <Form.Control
+                    placeholder="Miles"
                     type="number"
                     value={set.miles}
                     onChange={(e) => handleSetChange(index, 'miles', e.target.value)}
@@ -216,8 +212,8 @@ const CreateWorkout = ({ refetch }) => {
               </Col>
               <Col>
                 <Form.Group controlId={`setPace${index}`}>
-                  <Form.Label>Pace</Form.Label>
                   <Form.Control
+                    placeholder="Pace"
                     type="number"
                     value={set.pace}
                     onChange={(e) => handleSetChange(index, 'pace', e.target.value)}
@@ -229,8 +225,8 @@ const CreateWorkout = ({ refetch }) => {
             <>
               <Col>
                 <Form.Group controlId={`setSet${index}`}>
-                  <Form.Label>Set</Form.Label>
                   <Form.Control
+                    placeholder="Set"
                     type="number"
                     value={set.set}
                     onChange={(e) => handleSetChange(index, 'set', e.target.value)}
@@ -239,8 +235,8 @@ const CreateWorkout = ({ refetch }) => {
               </Col>
               <Col>
                 <Form.Group controlId={`setWeight${index}`}>
-                  <Form.Label>Weight</Form.Label>
                   <Form.Control
+                    placeholder="Weight"
                     type="number"
                     value={set.weight}
                     onChange={(e) => handleSetChange(index, 'weight', e.target.value)}
@@ -249,8 +245,8 @@ const CreateWorkout = ({ refetch }) => {
               </Col>
               <Col>
                 <Form.Group controlId={`setReps${index}`}>
-                  <Form.Label>Reps</Form.Label>
                   <Form.Control
+                    placeholder="Reps"
                     type="number"
                     value={set.reps}
                     onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
@@ -262,30 +258,32 @@ const CreateWorkout = ({ refetch }) => {
         </Row>
       ))}
 
+      <div className="totalWeight">
+        <p style={{ color: 'white', fontSize: '20px' }}>Total Weight {countWeight}</p>
+      </div>
+
       <div className="btnDiv">
         <Button
           onClick={() => {
-            handleAddSet(),
-              handleAddWorkoutToLocalStorage()
+            handleAddSet();
+            handleAddWorkoutToLocalStorage();
           }}
-          // style={style.button}
           className="me-2 addSetBtn">Add Set</Button>
 
         <Button
           className="removeSetBtn"
           onClick={handleRemoveSet}
-        // style={style.removeButton}
-        >Remove Set</Button>
+        >
+          Remove Set
+        </Button>
         <Button
           className="logWorkoutBtn"
           onClick={handleLogWorkout}
           refetch={refetch}
-        // style={style.button}
-        >Log Workout</Button>
-
+        >
+          Log Workout
+        </Button>
       </div>
-      {/* 
-      <Button onClick={handleAddWorkoutToLocalStorage} className="me-2 saveSetBtn ">Save Progress</Button> */}
       <WorkoutGrid />
     </Container>
   );

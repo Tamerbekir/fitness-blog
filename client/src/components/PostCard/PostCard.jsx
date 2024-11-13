@@ -30,8 +30,6 @@ const PostCard = ({
   content,
   topicName,
   createdAt,
-  showDeletePostBtn,
-  // showDeleteCommentBtn,
   showEditBtn,
   refetch,
 }) => {

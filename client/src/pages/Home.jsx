@@ -10,7 +10,7 @@ import { useSearch } from "../components/Search/SearchProvider.jsx";
 import { UserProfile } from './index.js'
 
 
-const Home = ({ userIndex }) => {
+const Home = () => {
   const loggedIn = Auth.loggedIn();
   const { searchKeyWord } = useSearch();
 
@@ -86,7 +86,7 @@ const Home = ({ userIndex }) => {
       <div>
         {!loggedIn && (
           <div>
-            <h1 className="welcomeHomeText">Welcome to the Fitness Blog!</h1>
+            <h1 className="welcomeHomeText">Live Fit</h1>
             <AccessPrompt />
             {searchPosts.map((post) => (
               <PostCard

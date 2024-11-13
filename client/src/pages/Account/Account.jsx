@@ -311,50 +311,67 @@ const Account = () => {
           </Form.Group>
           {!showPasswordForm && (
             <>
-              <Button onClick={handlePasswordInfo} className="mt-3">Change Password</Button>
-              <Button type="button" onClick={handleSaveChange} className="mt-3">Apply</Button>
-              <Button type="button" onClick={() => setShowUserForm(false)} className="mt-3">Done</Button>
+              <Button onClick={handlePasswordInfo} className="mt-3 changePasswordBtn">Change Password</Button>
+
+              <Button type="button" onClick={() => {
+                handleSaveChange(), setShowUserForm(false)
+              }} className="mt-3 applyBtn">Apply</Button>
+
+              {/* <Button type="button" onClick={() => className = "mt-3 doneBtn" > Done</Button> */}
+
             </>
-          )}
-        </Form>
+          )
+          }
+        </Form >
       )}
-      {showPasswordForm && (
-        <Form>
-          <Form.Group className='userPwdDiv mb-3'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              className='userPassword'
-              type='password'
-              name='password'
-              value={userPwdInfo.password}
-              onChange={handlePwdChange}
-            />
-          </Form.Group>
-          <Form.Group className='userConfirmPwdDiv mb-3'>
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              className='userPassword'
-              type='password'
-              name='confirmPassword'
-              value={userPwdInfo.confirmPassword}
-              onChange={handlePwdChange}
-            />
-          </Form.Group>
-          <Button type="button" onClick={handleSaveChange} className="mt-3">Apply</Button>
-          <Button type='button' onClick={handleCloseAll} className="mt-3">Done</Button>
-        </Form>
-      )}
-      {!removeAcctForm && !showPasswordForm && !showUserForm && (
-        <Button className='deleteAcctBtn' onClick={handleDeleteForm} variant="danger">Delete Account</Button>
-      )}
-      {removeAcctForm && !showPasswordForm && !showUserForm && (
-        <div>
-          <p className='confirmDeleteText'>Are you sure you want to delete your account? This is irreversible</p>
-          <Button className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange} variant="danger">Confirm Delete</Button>
-          <Button className='cancelAcctDeleteBtn ms-2' type="button" onClick={() => setRemoveAcctForm(false)}>Cancel</Button>
-        </div>
-      )}
-    </Container>
+      {
+        showPasswordForm && (
+          <Form>
+            <Form.Group className='userPwdDiv mb-3'>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                className='userPassword'
+                type='password'
+                name='password'
+                value={userPwdInfo.password}
+                onChange={handlePwdChange}
+              />
+            </Form.Group>
+            <Form.Group className='userConfirmPwdDiv mb-3'>
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                className='userPassword'
+                type='password'
+                name='confirmPassword'
+                value={userPwdInfo.confirmPassword}
+                onChange={handlePwdChange}
+              />
+            </Form.Group>
+
+            <Button type="button" onClick={handleSaveChange} className="mt-3 applyBtn">Apply</Button>
+
+
+            <Button type='button' onClick={handleCloseAll} className="mt-3 doneBtn">Done</Button>
+
+
+          </Form>
+        )
+      }
+      {
+        !removeAcctForm && !showPasswordForm && !showUserForm && (
+          <Button className='deleteAcctBtn' onClick={handleDeleteForm} variant="danger">Delete Account</Button>
+        )
+      }
+      {
+        removeAcctForm && !showPasswordForm && !showUserForm && (
+          <div>
+            <p className='confirmDeleteText'>Are you sure you want to delete your account? This is irreversible</p>
+            <Button className='deleteAcctBtn' type="button" onClick={handleDeleteAcctChange} variant="danger">Confirm Delete</Button>
+            <Button className='cancelAcctDeleteBtn ms-2' type="button" onClick={() => setRemoveAcctForm(false)}>Cancel</Button>
+          </div>
+        )
+      }
+    </Container >
   );
 }
 export default Account;

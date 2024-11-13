@@ -82,7 +82,7 @@ const NavBar = () => {
                 {!loggedIn && <Dropdown.Item onClick={handleLoginPage}>Login</Dropdown.Item>}
                 {loggedIn &&
                   <>
-                    <Dropdown.Item onClick={handleProfilePage}>Profile</Dropdown.Item>
+                    <Dropdown.Item style={{ display: 'flex', marginRight: '10px' }} onClick={handleProfilePage}>Profile</Dropdown.Item>
                     <Dropdown.Item onClick={handleAccountPage}>Account</Dropdown.Item>
                     <Dropdown.Item onClick={handleLogout} className="logoutBtn">Logout</Dropdown.Item>
                   </>

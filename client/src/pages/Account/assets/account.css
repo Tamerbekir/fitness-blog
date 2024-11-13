@@ -21,12 +21,23 @@
 
 .userEmailDiv, 
 .usernameDiv, 
-.userLocationDiv, 
 .userSocialHandleDiv, 
 .userBioDiv, 
 .userPwdDiv, 
 .userConfirmPwdDiv {
   margin: 1%;
+  width: 250% !important;
+}
+
+.applyBtn, .changePasswordBtn, .doneBtn {
+   background-color: #f9c000 !important;
+  color: white;
+  border: none
+}
+
+.userLocationDiv {
+  margin: 1%;
+  width: 65%;
 }
 
 .dateFormat {
