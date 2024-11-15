@@ -21,13 +21,13 @@ const EditPost = ({ postId }) => {
     loading: loadingTopics,
     error: errorTopics,
     data: dataTopics,
-    refetch,
   } = useQuery(QUERY_TOPICS);
 
   const {
     loading: loadingPosts,
     error: errorPosts,
-    data: dataPosts
+    data: dataPosts,
+    refetch
   } = useQuery(QUERY_POSTS)
 
   const { loading, error, data } = useQuery(QUERY_ME);

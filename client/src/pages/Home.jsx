@@ -18,7 +18,7 @@ const Home = () => {
     loading: loadingPosts,
     error: errorPosts,
     data: dataPosts,
-    // refetch
+    refetch
   } = useQuery(QUERY_POSTS);
 
   const {
@@ -77,7 +77,7 @@ const Home = () => {
                 showYouForPost={dataMe.me._id === post.profile._id}
                 showDeletePostBtn={dataMe.me._id === post.profile._id}
                 showEditBtn={dataMe.me._id === post.profile._id}
-              // refetch={refetch}
+                refetch={refetch}
               />
             ))}
           </>

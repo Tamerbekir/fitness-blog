@@ -21,6 +21,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./assets/postCard.css";
 import { useNavigate } from "react-router-dom";
 
+import { QUERY_POSTS } from "../../../utils/queries";
+
 const PostCard = ({
   postId,
   postComments,
@@ -36,7 +38,7 @@ const PostCard = ({
   const {
     loading: LoadingProfiles,
     error: errorProfiles,
-    data: dataProfiles
+    data: dataProfiles,
   } = useQuery(QUERY_PROFILES);
 
   const {
@@ -51,26 +53,26 @@ const PostCard = ({
     data: dataMe,
   } = useQuery(QUERY_ME);
 
+  const {
+    loading: loadingPosts,
+    error: errorPosts,
+    data: dataPosts,
+  } = useQuery(QUERY_POSTS)
+
   const [userLeaveComment, setUserLeaveComment] = useState(false);
 
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if (dataProfiles && dataProfiles.profiles.length > 0) {
-  //     console.log('Profiles data:', dataProfiles.profiles);
-  //     setUserAccount({
-  //       ...userAccount,
-  //       _id: dataProfiles.profiles._id, // Check if this _id exists
-  //     });
-  //   }
-  // }, [dataProfiles]);
+  if (!dataPosts) {
+    return 'loading'
+  }
 
 
-  if (!dataProfiles || !dataMe || !dataComments) return <p>No profile found..</p>;
+  if (!dataProfiles || !dataMe || !dataComments || !dataPosts) return <p>No profile found..</p>;
 
   if (dataProfiles) {
     const allPosts = dataProfiles.profiles.map(profile => profile.posts.map(post => ({ ...post, userId: profile._id })))
-    console.log('all posts', allPosts)
+    // console.log('all posts', allPosts)
   }
 
   const userProfile = (userId) => {
@@ -82,8 +84,8 @@ const PostCard = ({
     setUserLeaveComment(!userLeaveComment);
   };
 
-  if (LoadingProfiles || loadingMe || loadingComments) return <p>Loading...</p>;
-  if (errorProfiles || errorMe || errorComments) return <p>{errorProfiles}</p>;
+  if (LoadingProfiles || loadingMe || loadingComments || loadingPosts) return <p>Loading...</p>;
+  if (errorProfiles || errorMe || errorComments || errorPosts) return <p>{errorProfiles}</p>;
 
   return (
     <Card className="my-3">

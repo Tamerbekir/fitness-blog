@@ -149,96 +149,92 @@ const WorkoutGrid = ({ workoutId }) => {
                     <Accordion.Body>
                       {groupedWorkouts[date][exerciseName].map((workout, index) => (
                         <Card className="mb-3" key={index}>
-
-                          <Card.Body>
-                            {editingWorkoutId === workout._id ? (
-                              <Form>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Exercise</Form.Label>
-                                  <Form.Control
-                                    type="text"
-                                    value={editWorkoutInfo.exercise}
-                                    onChange={handleWorkoutChange}
-                                    name="exercise"
-                                  />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Sets</Form.Label>
-                                  <Form.Control
-                                    type="number"
-                                    value={editWorkoutInfo.sets}
-                                    onChange={handleWorkoutChange}
-                                    name="sets"
-                                  />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Weight</Form.Label>
-                                  <Form.Control
-                                    type="number"
-                                    value={editWorkoutInfo.weight}
-                                    onChange={handleWorkoutChange}
-                                    name="weight"
-                                  />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Reps</Form.Label>
-                                  <Form.Control
-                                    type="number"
-                                    value={editWorkoutInfo.reps}
-                                    onChange={handleWorkoutChange}
-                                    name="reps"
-                                  />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Miles</Form.Label>
-                                  <Form.Control
-                                    type="number"
-                                    value={editWorkoutInfo.miles}
-                                    onChange={handleWorkoutChange}
-                                    name="miles"
-                                  />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Pace</Form.Label>
-                                  <Form.Control
-                                    type="number"
-                                    value={editWorkoutInfo.pace}
-                                    onChange={handleWorkoutChange}
-                                    name="pace"
-                                  />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                  <Form.Label>Notes</Form.Label>
-                                  <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    value={editWorkoutInfo.notes}
-                                    onChange={handleWorkoutChange}
-                                    name="notes"
-                                  />
-                                </Form.Group>
-                                <Button variant="success" onClick={handleSaveEdit} className="me-2">Save</Button>
-                                <Button variant="secondary" onClick={() => setEditingWorkoutId(null)}>Cancel</Button>
-                              </Form>
-                            ) : (
-                              <div className="workoutStats" onClick={() => handleEditClick(workout)}>
-                                <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
-                                <p>Sets: {workout.sets}</p>
-                                <p>Weight: {workout.weight}</p>
-                                <p>Reps: {workout.reps}</p>
-                                <><p>Miles: {workout.miles}</p>
-                                  <p>Pace: {workout.pace}</p></>
-                                <p>Notes: {workout.notes}</p>
-                                {/* <Button variant="primary" onClick={() => handleEditClick(workout)} className="mt-2">
+                          {editingWorkoutId === workout._id ? (
+                            <Form>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Exercise</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  value={editWorkoutInfo.exercise}
+                                  onChange={handleWorkoutChange}
+                                  name="exercise"
+                                />
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Sets</Form.Label>
+                                <Form.Control
+                                  type="number"
+                                  value={editWorkoutInfo.sets}
+                                  onChange={handleWorkoutChange}
+                                  name="sets"
+                                />
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Weight</Form.Label>
+                                <Form.Control
+                                  type="number"
+                                  value={editWorkoutInfo.weight}
+                                  onChange={handleWorkoutChange}
+                                  name="weight"
+                                />
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Reps</Form.Label>
+                                <Form.Control
+                                  type="number"
+                                  value={editWorkoutInfo.reps}
+                                  onChange={handleWorkoutChange}
+                                  name="reps"
+                                />
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Miles</Form.Label>
+                                <Form.Control
+                                  type="number"
+                                  value={editWorkoutInfo.miles}
+                                  onChange={handleWorkoutChange}
+                                  name="miles"
+                                />
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Pace</Form.Label>
+                                <Form.Control
+                                  type="number"
+                                  value={editWorkoutInfo.pace}
+                                  onChange={handleWorkoutChange}
+                                  name="pace"
+                                />
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <Form.Label>Notes</Form.Label>
+                                <Form.Control
+                                  as="textarea"
+                                  rows={3}
+                                  value={editWorkoutInfo.notes}
+                                  onChange={handleWorkoutChange}
+                                  name="notes"
+                                />
+                              </Form.Group>
+                              <Button variant="success" onClick={handleSaveEdit} className="me-2">Save</Button>
+                              <Button variant="secondary" onClick={() => setEditingWorkoutId(null)}>Cancel</Button>
+                            </Form>
+                          ) : (
+                            <div className="workoutStats" onClick={() => handleEditClick(workout)}>
+                              <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
+                              <p>Sets: {workout.sets}</p>
+                              <p>Weight: {workout.weight}</p>
+                              <p>Reps: {workout.reps}</p>
+                              <><p>Miles: {workout.miles}</p>
+                                <p>Pace: {workout.pace}</p></>
+                              <p>Notes: {workout.notes}</p>
+                              {/* <Button variant="primary" onClick={() => handleEditClick(workout)} className="mt-2">
                                   Edit Workout
                                 </Button> */}
-                              </div>
-                            )}
-                            <div>
-                              <DeleteWorkout refetch={refetch} workoutId={workout._id} />
                             </div>
-                          </Card.Body>
-
+                          )}
+                          <div>
+                            <DeleteWorkout refetch={refetch} workoutId={workout._id} />
+                          </div>
                         </Card>
                       ))}
                     </Accordion.Body>

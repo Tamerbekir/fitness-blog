@@ -14,6 +14,9 @@ import 'react-quill/dist/quill.snow.css'
 import './assets/createPost.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { QUERY_POSTS } from '../../../utils/queries';
+import { OrbitProgress } from 'react-loading-indicators';
+
 
 
 const CreatePost = () => {
@@ -26,7 +29,8 @@ const CreatePost = () => {
   const {
     loading: loadingMe,
     error: errorMe,
-    data: dataMe
+    data: dataMe,
+    refetch: refetchMe
   } = useQuery(QUERY_ME);
 
   // Bringing in QUERY for topics
@@ -34,8 +38,15 @@ const CreatePost = () => {
     loading: loadingTopics,
     error: errorTopics,
     data: dataTopics,
-    refetch
   } = useQuery(QUERY_TOPICS);
+
+  const {
+    loading: loadingPosts,
+    error: errorPosts,
+    data: dataPosts,
+    refetch: refetchPosts
+  } = useQuery(QUERY_POSTS)
+
 
   // adding mutation to add a post
   const [addPost] = useMutation(ADD_POST);
@@ -87,19 +98,30 @@ const CreatePost = () => {
           topic: addPostInfo.topic
         }
       });
-      toast.success('Post created!')
+      refetchPosts()
+      toast.success('Posted!')
       navigate('/')
-      // show the view post form/button once post is made
       setViewPostForm(true);
+      // show the view post form/button once post is made
     } catch (error) {
-      toast.error('Error posting')
+      toast.error('An Error Ocurred')
       console.error('There was an error creating this post:', error);
     }
   };
 
+
   // handling all loading for query Me and query topics
-  if (loadingMe || loadingTopics) return <p>Loading your post creation...</p>;
-  if (errorMe || errorTopics) return <div><p>Whoops! You need to be logged in to do that.</p></div>;
+  if (loadingMe || loadingTopics || loadingPosts)
+    return
+  <p>
+    <OrbitProgress
+      variant="spokes"
+      color="#32cd32"
+      size="large"
+      text=""
+      textColor="#c85f5f" />
+  </p>;
+  if (errorMe || errorTopics || errorPosts) return <div><p>Whoops! You need to be logged in to do that.</p></div>;
   if (!dataTopics) return <p>Profile not found to create post</p>;
 
   if (!loggedIn) {

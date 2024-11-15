@@ -10,21 +10,29 @@ import AccessPrompt from "../AccessPrompt/AccessPrompt";
 import WorkoutImages from "./WorkoutImages";
 
 const CreateWorkout = ({ refetch }) => {
+
   const loggedIn = Auth.loggedIn();
 
-  const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
-  const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
+  const {
+    loading: loadingExercise,
+    error: errorExercise,
+    data: dataExercise } = useQuery(QUERY_EXERCISE);
+
+  const {
+    loading: loadingMe,
+    error: errorMe,
+    data: dataMe } = useQuery(QUERY_ME);
 
   const [addWorkout] = useMutation(ADD_WORKOUT);
 
   const [workoutForm, setWorkoutForm] = useState(() => {
     const savedWorkoutForm = localStorage.getItem('workoutForm');
-    return savedWorkoutForm ? JSON.parse(savedWorkoutForm) : [{ set: 1, weight: '', reps: '', miles: '', pace: '' }];
+    return JSON.parse(savedWorkoutForm)
   });
 
   const [addWorkoutInfo, setAddWorkoutInfo] = useState(() => {
     const savedWorkoutInfo = localStorage.getItem('addWorkoutInfo');
-    return savedWorkoutInfo ? JSON.parse(savedWorkoutInfo) : { exercise: '', notes: '' };
+    return JSON.parse(savedWorkoutInfo)
   });
 
   const [filteredExercises, setFilteredExercises] = useState([]);
@@ -40,7 +48,15 @@ const CreateWorkout = ({ refetch }) => {
   }, [addWorkoutInfo]);
 
   const calculateTotalWeight = () => {
-    const totalWeight = workoutForm.reduce((total, set) => total + (parseFloat(set.weight) || 0), 0);
+    let totalWeight = 0;
+
+    workoutForm.forEach((set) => {
+      const weight = set.weight
+      const reps = set.reps
+
+      totalWeight += weight * reps
+    });
+
     setCountWeight(totalWeight)
   };
 
@@ -76,14 +92,20 @@ const CreateWorkout = ({ refetch }) => {
   };
 
   const handleAddSet = () => {
-    setWorkoutForm([...workoutForm, { set: workoutForm.length + 1, weight: '', reps: '', miles: '', pace: '' }]);
+    const lastSet = workoutForm[workoutForm.length - 1]
+
+    setWorkoutForm(
+      [...workoutForm,
+      { set: workoutForm.length + 1, weight: `${lastSet.weight}`, reps: `${lastSet.reps}`, miles: '', pace: '' }]);
   };
 
   const handleRemoveSet = () => {
     if (workoutForm.length > 1) {
-      setWorkoutForm(workoutForm.slice(0, -1));
+      const workoutFormData = [...workoutForm]
+      workoutFormData.pop()
+      setWorkoutForm(workoutFormData)
     } else {
-      toast.warn("You must have at least one set!");
+      toast.warn("You must have at least one set");
     }
   };
 
@@ -125,6 +147,7 @@ const CreateWorkout = ({ refetch }) => {
       console.error("Error logging workout", error);
     }
   };
+
 
   if (loadingExercise || loadingMe) return <p>Loading...</p>;
   if (errorExercise || errorMe) return <p>Error loading data</p>;
@@ -181,42 +204,42 @@ const CreateWorkout = ({ refetch }) => {
           {isRunningExercise || isWalkingExercise ? (
             <>
               <Col>
-                <Form.Group controlId={`setSet${index}`}>
+                <Form.Group>
                   <Form.Control
                     placeholder="Set"
                     type="number"
                     value={set.set}
-                    onChange={(e) => handleSetChange(index, 'set', e.target.value)}
+                    onChange={(event) => handleSetChange(event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId={`setReps${index}`}>
+                <Form.Group >
                   <Form.Control
                     placeholder="Reps"
                     type="number"
                     value={set.reps}
-                    onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
+                    onChange={(event) => handleSetChange(event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId={`setMiles${index}`}>
+                <Form.Group key={index}>
                   <Form.Control
                     placeholder="Miles"
                     type="number"
                     value={set.miles}
-                    onChange={(e) => handleSetChange(index, 'miles', e.target.value)}
+                    onChange={(event) => handleSetChange(index, 'miles', event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId={`setPace${index}`}>
+                <Form.Group key={index}>
                   <Form.Control
                     placeholder="Pace"
                     type="number"
                     value={set.pace}
-                    onChange={(e) => handleSetChange(index, 'pace', e.target.value)}
+                    onChange={(event) => handleSetChange(index, 'pace', event.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -224,39 +247,40 @@ const CreateWorkout = ({ refetch }) => {
           ) : (
             <>
               <Col>
-                <Form.Group controlId={`setSet${index}`}>
+                <Form.Group key={index}>
                   <Form.Control
                     placeholder="Set"
                     type="number"
                     value={set.set}
-                    onChange={(e) => handleSetChange(index, 'set', e.target.value)}
+                    onChange={(event) => handleSetChange(index, 'set', event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId={`setWeight${index}`}>
+                <Form.Group key={index}>
                   <Form.Control
                     placeholder="Weight"
                     type="number"
                     value={set.weight}
-                    onChange={(e) => handleSetChange(index, 'weight', e.target.value)}
+                    onChange={(event) => handleSetChange(index, 'weight', event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId={`setReps${index}`}>
+                <Form.Group key={index}>
                   <Form.Control
                     placeholder="Reps"
                     type="number"
                     value={set.reps}
-                    onChange={(e) => handleSetChange(index, 'reps', e.target.value)}
+                    onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
                   />
                 </Form.Group>
               </Col>
             </>
           )}
         </Row>
-      ))}
+      ))
+      }
 
       <div className="totalWeight">
         <p style={{ color: 'white', fontSize: '20px' }}>Total Weight {countWeight}</p>
@@ -285,7 +309,7 @@ const CreateWorkout = ({ refetch }) => {
         </Button>
       </div>
       <WorkoutGrid />
-    </Container>
+    </Container >
   );
 };
 
