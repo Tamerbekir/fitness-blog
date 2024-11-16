@@ -20,7 +20,7 @@ import "react-quill/dist/quill.snow.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/postCard.css";
 import { useNavigate } from "react-router-dom";
-import Reaction from "../Reactions/Reactions.jsx";
+// import Reaction from "../Reactions/Reactions.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { QUERY_POSTS } from "../../../utils/queries";
