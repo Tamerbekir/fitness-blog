@@ -2,77 +2,79 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_EXERCISE, QUERY_ME } from "../../../utils/queries";
 import { ADD_WORKOUT } from "../../../utils/mutations";
-import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, ListGroup, Accordion, Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Auth from '../../../utils/auth';
 import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 import AccessPrompt from "../AccessPrompt/AccessPrompt";
 import WorkoutImages from "./WorkoutImages";
+import { useNavigate } from "react-router-dom";
 
 const CreateWorkout = ({ refetch }) => {
-
   const loggedIn = Auth.loggedIn();
 
-  const {
-    loading: loadingExercise,
-    error: errorExercise,
-    data: dataExercise } = useQuery(QUERY_EXERCISE);
+  const navigate = useNavigate()
 
-  const {
-    loading: loadingMe,
-    error: errorMe,
-    data: dataMe } = useQuery(QUERY_ME);
+  const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
+  const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
 
   const [addWorkout] = useMutation(ADD_WORKOUT);
 
-  const [workoutForm, setWorkoutForm] = useState(() => {
-    const savedWorkoutForm = localStorage.getItem('workoutForm');
-    return JSON.parse(savedWorkoutForm)
-  });
 
-  const [addWorkoutInfo, setAddWorkoutInfo] = useState(() => {
-    const savedWorkoutInfo = localStorage.getItem('addWorkoutInfo');
-    return JSON.parse(savedWorkoutInfo)
-  });
+  const [workoutData, setWorkoutData] = useState(() => {
+    const savedWorkoutData = localStorage.getItem('workoutData');
+    if (savedWorkoutData) {
+      return JSON.parse(savedWorkoutData)
+    } else {
+      return {
+        exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '' }]
+      }
+    }
+  })
 
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [showExerciseList, setShowExerciseList] = useState(false);
-  const [countWeight, setCountWeight] = useState(0)
+  const [countWeight, setCountWeight] = useState(0);
+
+
+
+  const handleSearchBtn = (exerciseName) => {
+    setWorkoutData((prevData) => {
+      const updatedData = { ...prevData, exercise: exerciseName };
+      handleExerciseChange({ target: { value: exerciseName } });
+      return updatedData;
+    });
+  };
 
   useEffect(() => {
-    localStorage.setItem('workoutForm', JSON.stringify(workoutForm));
-  }, [workoutForm]);
-
-  useEffect(() => {
-    localStorage.setItem('addWorkoutInfo', JSON.stringify(addWorkoutInfo));
-  }, [addWorkoutInfo]);
+    localStorage.setItem('workoutData', JSON.stringify(workoutData));
+  }, [workoutData]);
 
   const calculateTotalWeight = () => {
     let totalWeight = 0;
 
-    workoutForm.forEach((set) => {
-      const weight = set.weight
-      const reps = set.reps
-
-      totalWeight += weight * reps
+    workoutData.sets.forEach((set) => {
+      const weight = parseFloat(set.weight) || 0;
+      const reps = parseFloat(set.reps) || 0;
+      totalWeight += weight * reps;
     });
 
-    setCountWeight(totalWeight)
+    setCountWeight(totalWeight);
   };
 
   useEffect(() => {
     calculateTotalWeight();
-  }, [workoutForm]);
+  }, [workoutData.sets]);
 
-  const handleExerciseChange = (e) => {
-    const query = e.target.value;
-    setAddWorkoutInfo({ ...addWorkoutInfo, exercise: query });
+  const handleExerciseChange = (event) => {
+    const selectedActivity = event.target.value;
+    setWorkoutData({ ...workoutData, exercise: selectedActivity });
 
-    if (query.length > 0) {
-      const matches = dataExercise?.exercises.filter((exercise) =>
-        exercise.exerciseName.toLowerCase().includes(query.toLowerCase())
+    if (selectedActivity.length > 0) {
+      const activityMatch = dataExercise?.exercises.filter((exercise) =>
+        exercise.exerciseName.toLowerCase().includes(selectedActivity.toLowerCase())
       );
-      setFilteredExercises(matches);
+      setFilteredExercises(activityMatch);
       setShowExerciseList(true);
     } else {
       setFilteredExercises([]);
@@ -81,73 +83,68 @@ const CreateWorkout = ({ refetch }) => {
   };
 
   const handleSelectExercise = (exerciseName) => {
-    setAddWorkoutInfo({ ...addWorkoutInfo, exercise: exerciseName });
+    setWorkoutData({ ...workoutData, exercise: exerciseName });
     setShowExerciseList(false);
   };
 
   const handleSetChange = (index, field, value) => {
-    const updatedForm = [...workoutForm];
-    updatedForm[index][field] = value;
-    setWorkoutForm(updatedForm);
+    const updatedSets = [...workoutData.sets];
+    updatedSets[index][field] = value;
+    setWorkoutData({ ...workoutData, sets: updatedSets });
   };
 
   const handleAddSet = () => {
-    const lastSet = workoutForm[workoutForm.length - 1]
-
-    setWorkoutForm(
-      [...workoutForm,
-      { set: workoutForm.length + 1, weight: `${lastSet.weight}`, reps: `${lastSet.reps}`, miles: '', pace: '' }]);
+    const lastSet = workoutData.sets[workoutData.sets.length - 1];
+    setWorkoutData({
+      ...workoutData,
+      sets: [
+        ...workoutData.sets,
+        { set: workoutData.sets.length + 1, weight: lastSet.weight, reps: lastSet.reps, miles: '', pace: '' }
+      ]
+    });
   };
 
   const handleRemoveSet = () => {
-    if (workoutForm.length > 1) {
-      const workoutFormData = [...workoutForm]
-      workoutFormData.pop()
-      setWorkoutForm(workoutFormData)
+    if (workoutData.sets.length > 1) {
+      const updatedSets = [...workoutData.sets];
+      updatedSets.pop();
+      setWorkoutData({ ...workoutData, sets: updatedSets });
     } else {
       toast.warn("You must have at least one set");
     }
   };
 
-  const handleAddWorkoutToLocalStorage = () => {
-    localStorage.setItem('workoutForm', JSON.stringify(workoutForm));
-  };
-
   const handleLogWorkout = async () => {
-    if (!addWorkoutInfo.exercise) {
+    if (!workoutData.exercise) {
       toast.error('Please fill in all fields before logging the workout.', { position: 'bottom-right' });
       return;
     }
 
     try {
-      for (const set of workoutForm) {
+      for (const set of workoutData.sets) {
         await addWorkout({
           variables: {
-            exercise: addWorkoutInfo.exercise,
+            exercise: workoutData.exercise,
             reps: parseFloat(set.reps),
             sets: parseFloat(set.set),
             miles: parseFloat(set.miles),
             pace: parseFloat(set.pace),
             weight: parseFloat(set.weight),
-            notes: addWorkoutInfo.notes,
+            notes: workoutData.notes,
           },
         });
       }
-
       toast.success('Workout Logged!', {
         position: 'bottom-right',
       });
 
-      localStorage.removeItem('workoutForm');
-      localStorage.removeItem('addWorkoutInfo');
-      setWorkoutForm([{ set: 1, weight: '', reps: '', miles: '', pace: '' }]);
-      setAddWorkoutInfo({ exercise: '', notes: '' });
+      localStorage.removeItem('workoutData');
+      setWorkoutData({ exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '' }] });
     } catch (error) {
       toast.error('Error logging workout. Please try again.', { position: 'bottom-right' });
       console.error("Error logging workout", error);
     }
   };
-
 
   if (loadingExercise || loadingMe) return <p>Loading...</p>;
   if (errorExercise || errorMe) return <p>Error loading data</p>;
@@ -161,10 +158,8 @@ const CreateWorkout = ({ refetch }) => {
     );
   }
 
-  const isRunningExercise = addWorkoutInfo.exercise.toLowerCase().includes("running");
-  const isWalkingExercise = addWorkoutInfo.exercise.toLowerCase().includes("walk");
-
-  // const comingSoonImage = 'https://pitchpodcasts.com/img/image-coming-soon.jpg'
+  const isRunningExercise = workoutData.exercise.toLowerCase().includes("running");
+  const isWalkingExercise = workoutData.exercise.toLowerCase().includes("walk");
 
   return (
     <Container>
@@ -172,25 +167,33 @@ const CreateWorkout = ({ refetch }) => {
         <Form.Label>Search an Activity</Form.Label>
         <Form.Control
           type="text"
-          value={addWorkoutInfo.exercise}
+          value={workoutData.exercise}
           onChange={handleExerciseChange}
           placeholder="Type to search for an activity"
         />
-
+        <button onClick={() => handleSearchBtn('chest')}>Chest</button>
+        <button onClick={() => handleSearchBtn('biceps')}>Biceps</button>
+        <button onClick={() => handleSearchBtn('triceps')}>Triceps</button>
+        <button onClick={() => handleSearchBtn('abs')}>Abs</button>
+        <button onClick={() => handleSearchBtn('Quads')}>Quads</button>
+        <button onClick={() => handleSearchBtn('hamstrings')}>Hamstrings</button>
+        <button onClick={() => handleSearchBtn('running')}>Running</button>
+        <button onClick={() => handleSearchBtn('walking')}>Walking</button>
         {showExerciseList && (
           <ListGroup>
             {filteredExercises.map((exercise) => {
-              const workoutImages = WorkoutImages[exercise.exerciseName.toLowerCase()]
+              const workoutImages = WorkoutImages[exercise.exerciseName.toLowerCase()];
               return (
                 <ListGroup.Item
                   key={exercise._id}
                   action
                   onClick={() => handleSelectExercise(exercise.exerciseName)}
                 >
-                  {workoutImages ? <img style={{ width: '320px' }} src={workoutImages} />
-                    :
-                    <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="" />
-                  }
+                  {workoutImages ? (
+                    <img style={{ width: '320px' }} src={workoutImages} alt={exercise.exerciseName} />
+                  ) : (
+                    <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="Coming soon" />
+                  )}
                   <p>{exercise.exerciseName}</p>
                 </ListGroup.Item>
               );
@@ -199,7 +202,7 @@ const CreateWorkout = ({ refetch }) => {
         )}
       </Form.Group>
 
-      {workoutForm.map((set, index) => (
+      {workoutData.sets.map((set, index) => (
         <Row key={index} className="mb-3" style={{ padding: '10px' }}>
           {isRunningExercise || isWalkingExercise ? (
             <>
@@ -209,22 +212,22 @@ const CreateWorkout = ({ refetch }) => {
                     placeholder="Set"
                     type="number"
                     value={set.set}
-                    onChange={(event) => handleSetChange(event.target.value)}
+                    onChange={(event) => handleSetChange(index, 'set', event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group >
+                <Form.Group>
                   <Form.Control
                     placeholder="Reps"
                     type="number"
                     value={set.reps}
-                    onChange={(event) => handleSetChange(event.target.value)}
+                    onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
                   />
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group key={index}>
+                <Form.Group>
                   <Form.Control
                     placeholder="Miles"
                     type="number"
@@ -234,7 +237,7 @@ const CreateWorkout = ({ refetch }) => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group key={index}>
+                <Form.Group>
                   <Form.Control
                     placeholder="Pace"
                     type="number"
@@ -247,7 +250,7 @@ const CreateWorkout = ({ refetch }) => {
           ) : (
             <>
               <Col>
-                <Form.Group key={index}>
+                <Form.Group>
                   <Form.Control
                     placeholder="Set"
                     type="number"
@@ -257,7 +260,7 @@ const CreateWorkout = ({ refetch }) => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group key={index}>
+                <Form.Group>
                   <Form.Control
                     placeholder="Weight"
                     type="number"
@@ -267,7 +270,7 @@ const CreateWorkout = ({ refetch }) => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group key={index}>
+                <Form.Group>
                   <Form.Control
                     placeholder="Reps"
                     type="number"
@@ -279,8 +282,7 @@ const CreateWorkout = ({ refetch }) => {
             </>
           )}
         </Row>
-      ))
-      }
+      ))}
 
       <div className="totalWeight">
         <p style={{ color: 'white', fontSize: '20px' }}>Total Weight {countWeight}</p>
@@ -290,9 +292,11 @@ const CreateWorkout = ({ refetch }) => {
         <Button
           onClick={() => {
             handleAddSet();
-            handleAddWorkoutToLocalStorage();
           }}
-          className="me-2 addSetBtn">Add Set</Button>
+          className="me-2 addSetBtn"
+        >
+          Add Set
+        </Button>
 
         <Button
           className="removeSetBtn"
@@ -302,14 +306,17 @@ const CreateWorkout = ({ refetch }) => {
         </Button>
         <Button
           className="logWorkoutBtn"
-          onClick={handleLogWorkout}
-          refetch={refetch}
+          onClick={() => {
+            handleLogWorkout(),
+              navigate('/log-workout')
+          }}
+
         >
           Log Workout
         </Button>
       </div>
       <WorkoutGrid />
-    </Container >
+    </Container>
   );
 };
 

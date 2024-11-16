@@ -20,7 +20,9 @@ import "react-quill/dist/quill.snow.css";
 import "react-toastify/dist/ReactToastify.css";
 import "./assets/postCard.css";
 import { useNavigate } from "react-router-dom";
-
+import Reaction from "../Reactions/Reactions.jsx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { QUERY_POSTS } from "../../../utils/queries";
 
 const PostCard = ({
@@ -107,35 +109,43 @@ const PostCard = ({
         <Card.Text className="text-muted">{topicName}</Card.Text>
       </Card.Body>
       <div className="postIcons">
-        <Button className="faveBtn">Favorite</Button>
+        {/* Bring back after applying css to fit via mobile */}
+        {/* <Reactiosn /> */}
         {!userLeaveComment ? (
+
           <Button className="commentBtn" onClick={handleCommentClick}>
-            {postComments.length} Comments
+            {postComments.length} {' '}
+            <FontAwesomeIcon icon={faComment} />
           </Button>
         ) : (
           <Button className="commentBtn" onClick={handleCommentClick}>
-            Close Comments
+            Close {' '}
+            <FontAwesomeIcon icon={faComment} />
           </Button>
         )}
+        <Button className="faveBtn">Favorite</Button>
         <Button className="shareBtn">Share</Button>
-        <Button className="reactBtn">React</Button>
       </div>
 
-      {showEditBtn && (
-        <div className="postCardIconDiv">
-          <EditPost
-            className="editIcon"
-            postId={postId}
-            refetch={refetch} />
-        </div>
-      )}
-      {userLeaveComment && (
-        <>
-          <AddComment postId={postId} refetch={refetch} />
-          <UserComments postComments={postComments} refetch={refetch} />
-        </>
-      )}
-    </Card>
+      {
+        showEditBtn && (
+          <div className="postCardIconDiv">
+            <EditPost
+              className="editIcon"
+              postId={postId}
+              refetch={refetch} />
+          </div>
+        )
+      }
+      {
+        userLeaveComment && (
+          <>
+            <AddComment postId={postId} refetch={refetch} />
+            <UserComments postComments={postComments} refetch={refetch} />
+          </>
+        )
+      }
+    </Card >
   );
 };
 
