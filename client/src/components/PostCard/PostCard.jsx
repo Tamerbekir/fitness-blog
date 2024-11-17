@@ -90,7 +90,7 @@ const PostCard = ({
   if (errorProfiles || errorMe || errorComments || errorPosts) return <p>{errorProfiles}</p>;
 
   return (
-    <Card className="my-3">
+    <Card className="my-3 postCard">
       <Card.Header className="d-flex justify-content-between align-items-center">
         <Avatar
           key={postId}

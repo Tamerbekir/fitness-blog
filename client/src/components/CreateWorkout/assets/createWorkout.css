@@ -1,0 +1,24 @@
+.selectActivityDropdown {
+  /* margin: 1%; */
+  width: 100%;
+  position: relative;
+  bottom: 18px
+}
+
+.clearIcon {
+  position: relative;
+  color: black;
+  left: 90%;
+  bottom: 32px;
+  cursor: pointer
+}
+
+.totalWeightDiv {
+  display: flex;
+  gap: 60px;
+}
+
+.maxRepCal {
+  margin-left: auto;
+  cursor: pointer;
+}

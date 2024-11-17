@@ -1,0 +1,30 @@
+.searchDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  padding: 5px; 
+  border-radius: 10px;
+  z-index: 1;
+  background-color: #b2b2b27a;
+}
+
+.searchBar {
+  border-radius: 10px; 
+  padding: 5px; 
+  right: 20px;
+}
+
+.dropDownToggleTopic {
+  border-radius: 10px;
+  padding: 5px; 
+  background-color: #f9c000;
+  border: none;
+}
+
+.clearBtn {
+  position: absolute;
+  left: 190px;
+  color: rgba(0, 0, 0, 0.258);
+}

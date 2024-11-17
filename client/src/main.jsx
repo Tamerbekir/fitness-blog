@@ -16,12 +16,13 @@ import {
   Account,
   UserProfile,
   About,
+  Calculator
 } from './pages/index.js'
 
 import {
   CreatePost,
   CreateWorkout,
-  SearchProvider
+  // SearchProvider
 } from './components/index.js'
 
 
@@ -40,7 +41,8 @@ const router = createBrowserRouter([
       { path: 'create-post', element: <CreatePost /> },
       { path: 'log-workout', element: <CreateWorkout /> },
       { path: 'about', element: <About /> },
-      { path: 'userprofile/:id', element: <UserProfile /> }
+      { path: 'userprofile/:id', element: <UserProfile /> },
+      { path: 'maxrepcalculator', element: <Calculator /> }
     ],
   },
 ]);

@@ -19,3 +19,9 @@
 .faveBtn:hover, .commentBtn:hover, .shareBtn:hover, .reactBtn:hover {
   background-color: #777;
 } 
+
+.postCard {
+  position: relative;
+  top: -50px;
+  margin: 4%;
+}

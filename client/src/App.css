@@ -1,5 +1,13 @@
-.welcomeHomeText,
-.welcomeHeader {
-  color: white;
+.welcomeHeader, .nameHeader {
+  color: #f9c000;
   text-align: center;
+  border: 1px solid white;
+  border-radius: 10px;
+  font-family: 'Times New Roman', Times, serif;
 }
+.welcomeBackText {
+  margin: 20%;
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+}
+

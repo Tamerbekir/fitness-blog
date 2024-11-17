@@ -8,6 +8,8 @@ import AccessPrompt from "../components/AccessPrompt/AccessPrompt.jsx";
 import { toast } from "react-toastify";
 import { useSearch } from "../components/Search/SearchProvider.jsx";
 import { UserProfile } from './index.js'
+import { SearchBar } from "../components/index.js";
+import zIndex from "@mui/material/styles/zIndex.js";
 
 
 const Home = () => {
@@ -52,6 +54,7 @@ const Home = () => {
     return <p>No posts found</p>;
   }
 
+
   return (
     <div>
       <div>
@@ -60,9 +63,11 @@ const Home = () => {
       <div>
         {loggedIn && dataMe && (
           <>
-            <h1 className="welcomeHomeText">
-              Hey there, {dataMe.me.username}, check out the latest posts!
-            </h1>
+            <h1 className="nameHeader">Live Fit</h1>
+            <SearchBar />
+            <h5 className="welcomeBackText">
+              Welcome back, {dataMe.me.username}.
+            </h5>
             {searchPosts.map((post) => (
               <PostCard
                 className="postCardHome"

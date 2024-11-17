@@ -9,6 +9,11 @@ import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
 import AccessPrompt from "../AccessPrompt/AccessPrompt";
 import WorkoutImages from "./WorkoutImages";
 import { useNavigate } from "react-router-dom";
+import Dropdown from 'react-bootstrap/Dropdown';
+import { MdClear } from "react-icons/md";
+import { Calculator } from '../../pages/index'
+
+import './assets/createWorkout.css'
 
 const CreateWorkout = ({ refetch }) => {
   const loggedIn = Auth.loggedIn();
@@ -39,11 +44,8 @@ const CreateWorkout = ({ refetch }) => {
 
 
   const handleSearchBtn = (exerciseName) => {
-    setWorkoutData((prevData) => {
-      const updatedData = { ...prevData, exercise: exerciseName };
-      handleExerciseChange({ target: { value: exerciseName } });
-      return updatedData;
-    });
+    setWorkoutData({ ...workoutData, exercise: exerciseName });
+    handleExerciseChange({ target: { value: exerciseName } });
   };
 
   useEffect(() => {
@@ -54,11 +56,10 @@ const CreateWorkout = ({ refetch }) => {
     let totalWeight = 0;
 
     workoutData.sets.forEach((set) => {
-      const weight = parseFloat(set.weight) || 0;
-      const reps = parseFloat(set.reps) || 0;
+      const weight = parseFloat(set.weight) || 0
+      const reps = parseFloat(set.reps) || 0
       totalWeight += weight * reps;
     });
-
     setCountWeight(totalWeight);
   };
 
@@ -120,6 +121,8 @@ const CreateWorkout = ({ refetch }) => {
       return;
     }
 
+
+
     try {
       for (const set of workoutData.sets) {
         await addWorkout({
@@ -161,46 +164,72 @@ const CreateWorkout = ({ refetch }) => {
   const isRunningExercise = workoutData.exercise.toLowerCase().includes("running");
   const isWalkingExercise = workoutData.exercise.toLowerCase().includes("walk");
 
+  const workoutBtn = [
+    'Chest', 'Biceps',
+    'Walk', 'Triceps', 'Quads',
+    'Hamstrings', 'Running',
+    'Shoulders', 'Back'
+  ]
+
+  const clearActivity = () => {
+    setWorkoutData({
+      ...workoutData,
+      exercise: ''
+    })
+    setShowExerciseList(false)
+  }
+
+  // const workoutMap = workoutBtn.map((workout) => workout)
+  // console.log(workoutMap)
+
   return (
     <Container>
-      <Form.Group controlId="exerciseSearch">
-        <Form.Label>Search an Activity</Form.Label>
-        <Form.Control
-          type="text"
-          value={workoutData.exercise}
-          onChange={handleExerciseChange}
-          placeholder="Type to search for an activity"
-        />
-        <button onClick={() => handleSearchBtn('chest')}>Chest</button>
-        <button onClick={() => handleSearchBtn('biceps')}>Biceps</button>
-        <button onClick={() => handleSearchBtn('triceps')}>Triceps</button>
-        <button onClick={() => handleSearchBtn('abs')}>Abs</button>
-        <button onClick={() => handleSearchBtn('Quads')}>Quads</button>
-        <button onClick={() => handleSearchBtn('hamstrings')}>Hamstrings</button>
-        <button onClick={() => handleSearchBtn('running')}>Running</button>
-        <button onClick={() => handleSearchBtn('walking')}>Walking</button>
-        {showExerciseList && (
-          <ListGroup>
-            {filteredExercises.map((exercise) => {
-              const workoutImages = WorkoutImages[exercise.exerciseName.toLowerCase()];
-              return (
-                <ListGroup.Item
-                  key={exercise._id}
-                  action
-                  onClick={() => handleSelectExercise(exercise.exerciseName)}
-                >
-                  {workoutImages ? (
-                    <img style={{ width: '320px' }} src={workoutImages} alt={exercise.exerciseName} />
-                  ) : (
-                    <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="Coming soon" />
-                  )}
-                  <p>{exercise.exerciseName}</p>
-                </ListGroup.Item>
-              );
-            })}
-          </ListGroup>
-        )}
-      </Form.Group>
+      <div>
+        <Form.Group className="selectActivityInput" controlId="exerciseSearch">
+          <Form.Label>Search an Activity</Form.Label>
+          <Form.Control
+            type="text"
+            value={workoutData.exercise}
+            onChange={handleExerciseChange}
+            placeholder="Type to search for an activity"
+          />
+          <MdClear className="clearIcon" onClick={clearActivity} />
+          <div>
+            <Dropdown className='selectActivity'>
+              <Dropdown.Toggle className="selectActivityDropdown" variant="light" id="dropdown-basic">
+                ..or select an activity
+              </Dropdown.Toggle>
+              <Dropdown.Menu >
+                {workoutBtn.map((workout, index) => (
+                  <Dropdown.Item key={index} onClick={() => handleSearchBtn(workout)}>{workout}</Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          {showExerciseList && (
+            <ListGroup>
+              {filteredExercises.map((exercise) => {
+                const workoutImages = WorkoutImages[exercise.exerciseName.toLowerCase()];
+                return (
+                  <ListGroup.Item
+                    key={exercise._id}
+                    action
+                    onClick={() => handleSelectExercise(exercise.exerciseName)}
+                  >
+                    {workoutImages ? (
+                      <img style={{ width: '320px' }} src={workoutImages} alt={exercise.exerciseName} />
+                    ) : (
+                      <img style={{ width: '100px' }} src="https://pitchpodcasts.com/img/image-coming-soon.jpg" alt="Coming soon" />
+                    )}
+                    <p>{exercise.exerciseName}</p>
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
+          )}
+        </Form.Group>
+      </div>
+
 
       {workoutData.sets.map((set, index) => (
         <Row key={index} className="mb-3" style={{ padding: '10px' }}>
@@ -282,10 +311,12 @@ const CreateWorkout = ({ refetch }) => {
             </>
           )}
         </Row>
-      ))}
+      ))
+      }
 
-      <div className="totalWeight">
-        <p style={{ color: 'white', fontSize: '20px' }}>Total Weight {countWeight}</p>
+      <div className="totalWeightDiv">
+        <p style={{ color: 'white', fontSize: '15px' }}>Total Weight {countWeight}</p>
+        <p style={{ color: 'white', fontSize: '15px' }} onClick={() => navigate('/maxrepcalculator')} className="maxRepCal">Max Rep Calculator</p>
       </div>
 
       <div className="btnDiv">
@@ -316,7 +347,7 @@ const CreateWorkout = ({ refetch }) => {
         </Button>
       </div>
       <WorkoutGrid />
-    </Container>
+    </Container >
   );
 };
 

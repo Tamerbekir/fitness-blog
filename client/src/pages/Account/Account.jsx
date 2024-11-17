@@ -226,7 +226,6 @@ const Account = () => {
     <Container>
       {!showUserForm && (
         <>
-          <h3 className='welcomeText'>Hey there, {userInfo.username}. Feel free to make changes to your account below</h3>
           <div className="user-info-container">
             <div className="user-info-item mb-3">
               <strong>Email:</strong> <p className='userEmailField'>{userInfo.email}</p>
