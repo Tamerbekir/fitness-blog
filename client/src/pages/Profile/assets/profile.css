@@ -1,3 +1,16 @@
 .workoutGrid {
   background-color: aliceblue;
 }
+
+.userFavList, .favoritePostHeader {
+  margin: 1%;
+  padding: 5px;
+  color: white;
+}
+.favoritePostHeader {
+  text-decoration: underline;
+}
+
+.postCard {
+  margin-top: 18% !important;
+}

@@ -32,3 +32,31 @@
   color: #777;
   margin-bottom: 5px;
 }
+
+.replyCommentUsername {
+  font-size: 14px;
+  font-weight: bold;
+  color: #816402a5;
+  margin-bottom: 5px;
+  padding-left: 10%;
+}
+
+.commentDateReply, .originalUserComment {
+  padding-left: 10%;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.replyContent {
+  font-size: 17px;
+  color: #777;
+  margin-bottom: 5px;
+  padding-left: 10%;
+}
+
+.userReplyComment {
+  margin: 10px;
+  border-bottom: 2px solid rgba(77, 75, 75, 0.126);
+  border-radius: 10px;
+}

@@ -32,16 +32,26 @@ query Query {
         topicName
       }
       comments {
-      _id
-      content
-      createdAt
-      profile {
         _id
-        username
+        content
+        createdAt
+        commentReplies {
+        _id
+        content
+        createdAt
+        profile {
+          _id
+          username
+        }
+        }
+        profile {
+          _id
+          username
+        }
       }
     }
-    }
     favoritePost {
+      _id
       title
     }
     reactions {
@@ -50,6 +60,7 @@ query Query {
   }
 }
 `;
+
 
 export const QUERY_PROFILES = gql`
   query Profile {
@@ -90,6 +101,13 @@ query Posts {
       _id
       content
       createdAt
+      commentReplies {
+      content
+      createdAt
+      profile {
+          username
+        }
+    }
       profile {
       _id
       username
@@ -101,7 +119,12 @@ query Posts {
     profile {
       _id
       username
+      favoritePost {
+        _id
+      title
     }
+    }
+    
   }
 }
 `
@@ -149,6 +172,9 @@ export const QUERY_COMMENTS = gql`
       _id
       content
       createdAt
+      commentReplies {
+      content
+    }
     }
   }
 `

@@ -22,8 +22,10 @@ import "./assets/postCard.css";
 import { useNavigate } from "react-router-dom";
 // import Reaction from "../Reactions/Reactions.jsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faShare } from '@fortawesome/free-solid-svg-icons';
 import { QUERY_POSTS } from "../../../utils/queries";
+
+import FavoritePost from "../FavoritePost/FavoritePost.jsx";
 
 const PostCard = ({
   postId,
@@ -82,6 +84,8 @@ const PostCard = ({
     console.log(userId)
   }
 
+  // console.log(postId)
+
   const handleCommentClick = () => {
     setUserLeaveComment(!userLeaveComment);
   };
@@ -123,8 +127,14 @@ const PostCard = ({
             <FontAwesomeIcon icon={faComment} />
           </Button>
         )}
-        <Button className="faveBtn">Favorite</Button>
-        <Button className="shareBtn">Share</Button>
+
+        <FavoritePost
+          postId={postId}
+          refetch={refetch}
+        />
+
+
+        <Button className="shareBtn"><FontAwesomeIcon icon={faShare} /> Share</Button>
       </div>
 
       {
@@ -140,8 +150,12 @@ const PostCard = ({
       {
         userLeaveComment && (
           <>
-            <AddComment postId={postId} refetch={refetch} />
-            <UserComments postComments={postComments} refetch={refetch} />
+            <UserComments
+              postComments={postComments}
+              refetch={refetch} />
+            <AddComment
+              postId={postId}
+              refetch={refetch} />
           </>
         )
       }

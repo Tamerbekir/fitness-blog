@@ -4,6 +4,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { setContext } from '@apollo/client/link/context';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ErrorBoundary from './pages/ErrorBoundary/ErrorBoundary.jsx';
+
 import {
   NavBar,
   SearchProvider,
@@ -32,14 +34,16 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    <SearchProvider>
-      <ApolloProvider client={client}>
-        <NavBar />
-        <style>{'body { background-color: #303134; }'}</style>
-        <ToastContainer />
-        <Outlet />
-      </ApolloProvider>
-    </SearchProvider>
+    <ErrorBoundary>
+      <SearchProvider>
+        <ApolloProvider client={client}>
+          <NavBar />
+          <style>{'body { background-color: #303134; }'}</style>
+          <ToastContainer />
+          <Outlet />
+        </ApolloProvider>
+      </SearchProvider>
+    </ErrorBoundary>
   );
 }
 

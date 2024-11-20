@@ -10,6 +10,7 @@ import { useSearch } from "../components/Search/SearchProvider.jsx";
 import { UserProfile } from './index.js'
 import { SearchBar } from "../components/index.js";
 import zIndex from "@mui/material/styles/zIndex.js";
+import FavoritePost from "../components/FavoritePost/FavoritePost.jsx";
 
 
 const Home = () => {
@@ -54,7 +55,6 @@ const Home = () => {
     return <p>No posts found</p>;
   }
 
-
   return (
     <div>
       <div>
@@ -74,6 +74,8 @@ const Home = () => {
                 key={post._id}
                 postId={post._id}
                 postComments={post.comments}
+                postCommentReplies={post.comments.commentReplies}
+                postFavorites={post.profile.favoritePost}
                 title={post.title}
                 username={usernameInitial(post.profile.username)}
                 content={post.content}

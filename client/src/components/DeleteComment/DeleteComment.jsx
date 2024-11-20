@@ -10,18 +10,6 @@ import './assets/deleteComment.css'
 
 const DeleteComment = ({ commentId, refetch }) => {
 
-  // const {
-  //   loading: loadingMe,
-  //   data: dataMe,
-  //   error: errorMe
-  // } = useQuery(QUERY_ME)
-
-  // const {
-  //   loading: loadingComments,
-  //   data: dataComments,
-  //   error: errorComments
-  // } = useQuery(QUERY_ME)
-
   const [removeComment] = useMutation(REMOVE_COMMENT, {
     onCompleted: () => refetch(),
     onError: (error) => console.error('error removing comments', error)

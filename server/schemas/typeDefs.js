@@ -54,6 +54,7 @@ const typeDefs = `#graphql
     comments: [Comment!]
     reactions: [Profile!]
     favoritePost: [Profile!]
+    commentReplies: [Comment!]
     topic: [Topic!]
   }
   # all things associated with a comment

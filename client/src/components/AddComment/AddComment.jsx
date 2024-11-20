@@ -1,31 +1,16 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { ADD_COMMENT } from "../../../utils/mutations";
-import { QUERY_COMMENTS, QUERY_ME } from "../../../utils/queries";
-import { Button } from "@mui/material";
+import { QUERY_ME } from "../../../utils/queries";
+import { Button, TextField } from "@mui/material";
 import { useState } from "react";
-import TextField from "@mui/material/TextField";
-import { toast, Bounce } from 'react-toastify'
-
-
+import { toast } from "react-toastify";
 
 const AddComment = ({ postId, refetch }) => {
-
-
-  const {
-    loading: loadingComments,
-    error: errorComments,
-    data: dataComments
-  } = useQuery(QUERY_COMMENTS);
-
   const {
     loading: loadingMe,
     error: errorMe,
     data: dataMe
   } = useQuery(QUERY_ME);
-
-  if (loadingComments || loadingMe) return <p>Loading comments...</p>;
-  if (errorComments || errorMe) return <p>{errorComments.message}</p>;
-  if (!dataComments) return <p>No comment data found</p>;
 
   const [addComment] = useMutation(ADD_COMMENT, {
     onCompleted: () => refetch(),
@@ -44,6 +29,11 @@ const AddComment = ({ postId, refetch }) => {
   };
 
   const handleAddComment = async () => {
+    if (!addCommentInfo.content) {
+      toast.error("Comment cannot be empty")
+      return
+    }
+
     try {
       await addComment({
         variables: {
@@ -61,8 +51,8 @@ const AddComment = ({ postId, refetch }) => {
       console.error('There was an issue adding the comment:', error);
     }
   };
-
-
+  if (loadingMe) return <p>Loading comments...</p>
+  if (errorMe) return <p>Error: {errorMe.message}</p>
 
 
   return (
@@ -79,14 +69,11 @@ const AddComment = ({ postId, refetch }) => {
             rows={4}
             variant="filled"
             fullWidth
-            refetch={refetch}
           />
-          <Button onClick={handleAddComment} refetch={refetch} >Submit</Button>
+          <Button onClick={handleAddComment}>Submit</Button>
         </div>}
     </div>
   );
 };
-
-
 
 export default AddComment;
