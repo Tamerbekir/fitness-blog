@@ -9,6 +9,7 @@ import { REPLY_TO_COMMENT } from '../../../utils/mutations';
 import { useState } from 'react';
 import { TextField } from '@mui/material';
 import Button from 'react-bootstrap/Button'
+import { toast } from 'react-toastify';
 
 
 
@@ -56,6 +57,9 @@ export default function userReplyComment({ commentId, refetch }) {
 
   const handleAddReplyComment = async () => {
     try {
+      if (!addReplyCommentInfo.content) {
+        toast.error('Cannot leave blank')
+      }
       await replyToComment({
         variables: {
           commentId,
@@ -97,7 +101,7 @@ export default function userReplyComment({ commentId, refetch }) {
               refetch={refetch}
             >
             </TextField>
-            <Button onClick={handleAddReplyComment}>Reply</Button>
+            <Button className='commentReplyBtn' onClick={handleAddReplyComment}>Post</Button>
           </>
           : ''}
 
