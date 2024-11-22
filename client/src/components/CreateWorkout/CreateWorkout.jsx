@@ -11,7 +11,9 @@ import WorkoutImages from "./WorkoutImages";
 import { useNavigate } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { MdClear } from "react-icons/md";
-import { Calculator } from '../../pages/index'
+// import { Calculator } from '../../pages/index'
+import TextField from '@mui/material/TextField';
+
 
 import './assets/createWorkout.css'
 
@@ -19,6 +21,25 @@ const CreateWorkout = ({ refetch }) => {
   const loggedIn = Auth.loggedIn();
 
   const navigate = useNavigate()
+
+  const sx = {
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        border: 'none',
+      },
+    },
+    '& .MuiInputLabel-root': {
+      fontSize: '10px',
+    },
+    '& .MuiInputLabel-shrink': {
+      transform: 'translate(16px, -0px)',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#f9c000',
+    },
+  };
 
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
   const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
@@ -40,6 +61,7 @@ const CreateWorkout = ({ refetch }) => {
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [showExerciseList, setShowExerciseList] = useState(false);
   const [countWeight, setCountWeight] = useState(0);
+
 
 
 
@@ -102,7 +124,7 @@ const CreateWorkout = ({ refetch }) => {
         ...workoutData.sets,
         {
           set: workoutData.sets.length + 1,
-          weight: lastSet.weight,
+          weight: lastSet.weight + 'lb',
           reps: lastSet.reps,
           miles: '',
           pace: ''
@@ -175,7 +197,9 @@ const CreateWorkout = ({ refetch }) => {
     'Chest', 'Biceps',
     'Walk', 'Triceps', 'Quads',
     'Hamstrings', 'Running',
-    'Shoulders', 'Back'
+    'Shoulders', 'Back',
+    'Adductor',
+    'Abductor'
   ]
 
   const clearActivity = () => {
@@ -263,24 +287,28 @@ const CreateWorkout = ({ refetch }) => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Control
-                    placeholder="Miles"
-                    type="number"
-                    value={set.miles}
-                    onChange={(event) => handleSetChange(index, 'miles', event.target.value)}
-                  />
-                </Form.Group>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Miles"
+                  variant="outlined"
+                  type="number"
+                  value={set.miles}
+                  onChange={(event) => handleSetChange(index, 'miles', event.target.value)}
+                />
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Control
-                    placeholder="Pace"
-                    type="number"
-                    value={set.pace}
-                    onChange={(event) => handleSetChange(index, 'pace', event.target.value)}
-                  />
-                </Form.Group>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Pace"
+                  variant="outlined"
+                  type="number"
+                  value={set.pace}
+                  onChange={(event) => handleSetChange(index, 'pace', event.target.value)}
+                />
               </Col>
             </>
           ) : (
@@ -296,24 +324,28 @@ const CreateWorkout = ({ refetch }) => {
                 </Form.Group>
               </Col> */}
               <Col>
-                <Form.Group>
-                  <Form.Control
-                    placeholder="Total Weight"
-                    type="number"
-                    value={set.weight}
-                    onChange={(event) => handleSetChange(index, 'weight', event.target.value)}
-                  />
-                </Form.Group>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Total Weight"
+                  variant="outlined"
+                  type="number"
+                  value={set.weight}
+                  onChange={(event) => handleSetChange(index, 'weight', event.target.value)}
+                />
               </Col>
               <Col>
-                <Form.Group>
-                  <Form.Control
-                    placeholder="Reps"
-                    type="number"
-                    value={set.reps}
-                    onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
-                  />
-                </Form.Group>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Reps"
+                  variant="outlined"
+                  type="number"
+                  value={set.reps}
+                  onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
+                />
               </Col>
             </>
           )}
@@ -343,6 +375,7 @@ const CreateWorkout = ({ refetch }) => {
           Remove Set
         </Button>
         <Button
+          style={{ marginLeft: '15%' }}
           className="logWorkoutBtn"
           onClick={() => {
             handleLogWorkout(),
@@ -350,7 +383,7 @@ const CreateWorkout = ({ refetch }) => {
           }}
 
         >
-          Log Workout
+          Complete
         </Button>
       </div>
       <WorkoutGrid />

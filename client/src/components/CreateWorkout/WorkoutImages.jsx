@@ -85,6 +85,49 @@ const WorkoutImages = {
   'dumbbell pull over (chest)': 'https://app-media.fitbod.me/v2/3077/images/landscape/0_960x540.jpg',
   //stopping at 33
 
+  // quads
+  'leg extension (quads)': 'https://app-media.fitbod.me/v2/217/images/landscape/0_960x540.jpg',
+  'leg press quads (quads)': 'https://app-media.fitbod.me/v2/218/images/landscape/0_960x540.jpg',
+  'back squat (quads)': 'https://app-media.fitbod.me/v2/26/images/landscape/0_960x540.jpg',
+  'dumbbell lunge (quads)': 'https://app-media.fitbod.me/v2/115/images/landscape/0_960x540.jpg',
+  'dumbbell squat (quads)': 'https://app-media.fitbod.me/v2/126/images/landscape/0_960x540.jpg',
+  'machine leg press (quads)': 'https://app-media.fitbod.me/v2/241/images/landscape/0_960x540.jpg',
+  'air squats (quads)': 'https://app-media.fitbod.me/v2/13/images/landscape/0_960x540.jpg',
+  'dumbbell lunge (quads)': 'https://app-media.fitbod.me/v2/37/images/landscape/0_960x540.jpg',
+  'dumbbell squat to shoulder press (quads, shoulders)': 'https://app-media.fitbod.me/v2/127/images/landscape/0_960x540.jpg',
+  'dumbbell bulgarian split squat (quads)': 'https://app-media.fitbod.me/v2/549/images/landscape/0_960x540.jpg',
+  'bulgarian split squat (quads)': 'https://app-media.fitbod.me/v2/57/images/landscape/0_960x540.jpg',
+  'front squat (quads)': 'https://app-media.fitbod.me/v2/150/images/landscape/0_960x540.jpg',
+  'single dumbbell sumo squat (quads)': 'https://app-media.fitbod.me/v2/761/images/landscape/0_960x540.jpg',
+  'lunge (quads)': 'https://app-media.fitbod.me/v2/234/images/landscape/0_960x540.jpg',
+  //stopped at 19
+
+
+  //hamstrings
+  'seated leg curl (hamstrings)': 'https://app-media.fitbod.me/v2/305/images/landscape/0_960x540.jpg',
+  'dumbbell romanian deadlift (hamstrings)': 'https://app-media.fitbod.me/v2/110/images/landscape/0_960x540.jpg',
+  'deadlift (hamstrings)': 'https://app-media.fitbod.me/v2/94/images/landscape/0_960x540.jpg',
+  'lying hamstring curl (hamstrings)': 'https://app-media.fitbod.me/v2/236/images/landscape/0_960x540.jpg',
+  'seated leg romanian deadlift (hamstrings)': 'https://app-media.fitbod.me/v2/334/images/landscape/0_960x540.jpg',
+  'dumbbell stiff legged deadlift (hamstrings)': 'https://app-media.fitbod.me/v2/129/images/landscape/0_960x540.jpg',
+  'romanian deadlift (hamstrings)': 'https://app-media.fitbod.me/v2/292/images/landscape/0_960x540.jpg',
+  'kettlebell swing (hamstrings)': 'https://app-media.fitbod.me/v2/197/images/landscape/0_960x540.jpg',
+  'good morning (hamstrings)': 'https://app-media.fitbod.me/v2/156/images/landscape/0_960x540.jpg',
+  'kettlebell sum squat (hamstrings)': 'https://app-media.fitbod.me/v2/196/images/landscape/0_960x540.jpg',
+  //stopped at 11
+
+  // inner thigh
+  'machine hip adductor (inner adductor)': 'https://app-media.fitbod.me/v2/387/images/landscape/0_960x540.jpg',
+  'cable hip adduction (inner adductor)': 'https://app-media.fitbod.me/v2/64/images/landscape/0_960x540.jpg',
+  'butterfly stretch (inner adductor)': 'https://app-media.fitbod.me/v2/558/images/landscape/0_960x540.jpg',
+  'loop band standing hip adduction (inner adductor)': 'https://app-media.fitbod.me/v2/571/images/landscape/0_960x540.jpg',
+
+
+  // outter thigh
+  'machine hip abductor (outter abductor)': 'https://app-media.fitbod.me/v2/386/images/landscape/0_960x540.jpg',
+  'standing hip abduction (outter abductor)': 'https://app-media.fitbod.me/v2/539/images/landscape/0_960x540.jpg',
+  'mini loop band side-lying hip abduction (outter abductor)': 'https://app-media.fitbod.me/v2/607/images/landscape/0_960x540.jpg',
+  'side leg raises (outter abductor)': 'https://app-media.fitbod.me/v2/312/images/landscape/0_960x540.jpg'
 }
 
 

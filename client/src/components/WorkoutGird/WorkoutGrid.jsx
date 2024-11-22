@@ -1,16 +1,39 @@
 import { useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
-import { Accordion, Card, Button, Form, Container } from 'react-bootstrap';
+import { Accordion, Card, Col, Button, Form, Container } from 'react-bootstrap';
 import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 import { UPDATE_WORKOUT } from "../../../utils/mutations";
 import DeleteWorkout from '../../components/DeleteWorkout/DeleteWorkouts.jsx'
 import './assets/workoutGrid.css'
 // import Auth from '../../../utils/auth'
+import TextField from '@mui/material/TextField';
+import { MdMargin } from "react-icons/md";
+
 
 const WorkoutGrid = ({ workoutId }) => {
   // const loggedIn = Auth.loggedIn()
 
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
+
+  const sx = {
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        border: 'none',
+      },
+    },
+    '& .MuiInputLabel-root': {
+      fontSize: '10px',
+    },
+    '& .MuiInputLabel-shrink': {
+      transform: 'translate(16px, -0px)',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#f9c000',
+    },
+    margin: '1%'
+  };
   const { loading: loadingExercise, error: errorExercise, data: dataExercise } = useQuery(QUERY_EXERCISE);
 
 
@@ -134,6 +157,7 @@ const WorkoutGrid = ({ workoutId }) => {
   if (!dataExercise) return <p>No workout data found</p>;
 
   const isRunning = editWorkoutInfo.exercise.toLowerCase().includes('running')
+  const isWalking = editWorkoutInfo.exercise.toLowerCase().includes('walk')
 
   return (
     <Container className="workout-container">
@@ -152,96 +176,200 @@ const WorkoutGrid = ({ workoutId }) => {
                       {groupedWorkouts[date][exerciseName].map((workout, index) => (
                         <Card className="mb-3" key={index}>
                           {editingWorkoutId === workout._id ? (
-                            <Form className="editFormInputs">
-                              <Form.Group className="mb-3">
-                                <Form.Label>Exercise</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  value={editWorkoutInfo.exercise}
-                                  onChange={handleWorkoutChange}
-                                  name="exercise"
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                {/* <Form.Label>Sets</Form.Label> */}
-                                <p>Set</p>
-                                <Form.Control
-                                  type="number"
-                                  value={editWorkoutInfo.sets}
-                                  onChange={handleWorkoutChange}
-                                  name="sets"
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                {/* <Form.Label>Weight</Form.Label> */}
-                                <p>Weight</p>
-                                <Form.Control
-                                  type="number"
-                                  value={editWorkoutInfo.weight}
-                                  onChange={handleWorkoutChange}
-                                  name="weight"
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                {/* <Form.Label>Reps</Form.Label> */}
-                                <p>Reps</p>
-                                <Form.Control
-                                  type="number"
-                                  value={editWorkoutInfo.reps}
-                                  onChange={handleWorkoutChange}
-                                  name="reps"
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                {/* <Form.Label>Miles</Form.Label> */}
-                                <p>Miles</p>
-                                <Form.Control
-                                  type="number"
-                                  value={editWorkoutInfo.miles}
-                                  onChange={handleWorkoutChange}
-                                  name="miles"
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                {/* <Form.Label>Pace</Form.Label> */}
-                                <p>Pace</p>
-                                <Form.Control
-                                  type="number"
-                                  value={editWorkoutInfo.pace}
-                                  onChange={handleWorkoutChange}
-                                  name="pace"
-                                />
-                              </Form.Group>
-                              <Form.Group className="mb-3">
-                                <Form.Label>Notes</Form.Label>
-                                <Form.Control
-                                  as="textarea"
-                                  rows={3}
-                                  value={editWorkoutInfo.notes}
-                                  onChange={handleWorkoutChange}
-                                  name="notes"
-                                />
-                              </Form.Group>
-                              <Button variant="success" onClick={handleSaveEdit} className="me-2">Save</Button>
-                              <Button variant="secondary" onClick={() => setEditingWorkoutId(null)}>Cancel</Button>
+
+                            <Form className="editFormInputs" onClick={handleSaveEdit}>
+                              {/* Make search activity a component and add here */}
+                              {isRunning || isWalking ? (
+                                <>
+                                  <Form.Group className="mb-2">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Exercise"
+                                        variant="outlined"
+                                        type="text"
+                                        name="exercise"
+                                        value={editWorkoutInfo.exercise}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group>
+
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Set"
+                                        variant="outlined"
+                                        type="number"
+                                        name="sets"
+                                        value={editWorkoutInfo.sets}
+                                        onChange={handleWorkoutChange}
+                                      />
+                                    </Col>
+                                  </Form.Group>
+
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Reps"
+                                        variant="outlined"
+                                        type="number"
+                                        name="reps"
+                                        value={editWorkoutInfo.reps}
+                                        onChange={handleWorkoutChange}
+                                      />
+                                    </Col>
+                                  </Form.Group>
+
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Miles"
+                                        variant="outlined"
+                                        type="number"
+                                        name="miles"
+                                        value={editWorkoutInfo.miles}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group>
+
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Pace"
+                                        variant="outlined"
+                                        type="number"
+                                        name="pace"
+                                        value={editWorkoutInfo.pace}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group>
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="xl"
+                                        id="outlined-basic"
+                                        label="Notes"
+                                        variant="outlined"
+                                        type="text"
+                                        name="notes"
+                                        value={editWorkoutInfo.notes}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group>
+                                </>
+                              ) : (
+                                <><Col>
+                                  <TextField
+                                    sx={sx}
+                                    size="small"
+                                    id="outlined-basic"
+                                    label="Exercise"
+                                    variant="outlined"
+                                    type="text"
+                                    name="exercise"
+                                    value={editWorkoutInfo.exercise}
+                                    onChange={handleWorkoutChange} />
+                                </Col>
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Set"
+                                        variant="outlined"
+                                        type="number"
+                                        name="sets"
+                                        value={editWorkoutInfo.sets}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group><Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Reps"
+                                        variant="outlined"
+                                        type="number"
+                                        name="reps"
+                                        value={editWorkoutInfo.reps}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group><Form.Group className="mb-3">
+                                    {/* <Form.Label>Weight</Form.Label> */}
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        label="Total Weight"
+                                        variant="outlined"
+                                        type="number"
+                                        name="weight"
+                                        value={editWorkoutInfo.weight}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group><Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="xl"
+                                        id="outlined-basic"
+                                        label="Notes"
+                                        variant="outlined"
+                                        type="text"
+                                        name="notes"
+                                        value={editWorkoutInfo.notes}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group></>
+                              )}
+
+                              {/* <Button variant="success" onClick={handleSaveEdit} className="me-2">Save</Button> */}
+                              {/* <Button variant="secondary" onClick={() => setEditingWorkoutId(null)}>Cancel</Button> */}
+                              <div>
+                                <DeleteWorkout
+                                  refetch={refetch}
+                                  workoutId={workout._id} />
+                              </div>
                             </Form>
                           ) : (
                             <div className="workoutStats" onClick={() => handleEditClick(workout)}>
+                              {/* <p>Click for more info</p> */}
                               <p>Exercise: {workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
-                              <p>Sets: {workout.sets}</p>
-                              <p>Weight: {workout.weight}</p>
-                              <p>Reps: {workout.reps}</p>
-                              <><p>Miles: {workout.miles}</p>
-                                <p>Pace: {workout.pace}</p></>
-                              <p>Notes: {workout.notes}</p>
+                              {isRunning || isWalking ? (
+                                <>
+                                  <p>Miles: {workout.miles}</p>
+                                  <p>Pace: {workout.pace}</p>
+                                  {/* <p>Notes: {workout.notes}</p> */}
+                                </>
 
+                              ) : (
+                                <>
+                                  {/* <p>Set: {workout.sets}</p> */}
+                                  <p>Weight: {workout.weight}</p>
+                                  <p>Reps: {workout.reps}</p>
+                                  {/* <p>Notes: {workout.notes}</p> */}
+                                </>
+                              )}
                             </div>
                           )}
-                          <div>
-                            <DeleteWorkout
-                              refetch={refetch}
-                              workoutId={workout._id} />
-                          </div>
                         </Card>
                       ))}
                     </Accordion.Body>
@@ -249,8 +377,8 @@ const WorkoutGrid = ({ workoutId }) => {
                 </Accordion>
               ))}
             </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+          </Accordion.Item >
+        </Accordion >
       ))
       }
     </Container >
