@@ -1,0 +1,11 @@
+.deleteCommentReplyBtn {
+  padding: 2px !important;
+  font-size: 10px !important;
+  color: rgb(247, 247, 247) !important;
+  background-color: #816402a5 !important;
+  border: none;
+}
+
+.deleteCommentReplyBtn:hover {
+  background-color: #f9bf0050(255, 166, 0, 0.5) !important;
+}

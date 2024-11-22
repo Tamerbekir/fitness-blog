@@ -5,6 +5,7 @@ import { REMOVE_COMMENT } from "../../../utils/mutations";
 import { Button } from "@mui/material";
 import { toast } from 'react-toastify'
 import { useState } from "react";
+// import { useLongPress } from 'use-long-press';
 import './assets/deleteComment.css'
 
 
@@ -16,6 +17,13 @@ const DeleteComment = ({ commentId, refetch }) => {
   })
 
   const [confirmDelete, setConfirmDelete] = useState(false)
+
+  // const onLongPress = () => {
+  //   setConfirmDelete(true)
+  // }
+
+  // const longPressProps = useLongPress(onLongPress, { threshold: 500 });
+
 
 
 
@@ -33,7 +41,8 @@ const DeleteComment = ({ commentId, refetch }) => {
     }
   }
   return (
-    <div>
+    // <div {...longPressProps}>
+    <div >
       <div>
         {!confirmDelete ? (
           <Button className="deleteCommentBtn" type='button' onClick={() => setConfirmDelete(true)}>Delete</Button>

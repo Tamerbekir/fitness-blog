@@ -100,10 +100,17 @@ const CreateWorkout = ({ refetch }) => {
       ...workoutData,
       sets: [
         ...workoutData.sets,
-        { set: workoutData.sets.length + 1, weight: lastSet.weight, reps: lastSet.reps, miles: '', pace: '' }
+        {
+          set: workoutData.sets.length + 1,
+          weight: lastSet.weight,
+          reps: lastSet.reps,
+          miles: '',
+          pace: ''
+        }
       ]
     });
   };
+
 
   const handleRemoveSet = () => {
     if (workoutData.sets.length > 1) {
@@ -235,7 +242,7 @@ const CreateWorkout = ({ refetch }) => {
         <Row key={index} className="mb-3" style={{ padding: '10px' }}>
           {isRunningExercise || isWalkingExercise ? (
             <>
-              <Col>
+              {/* <Col>
                 <Form.Group>
                   <Form.Control
                     placeholder="Set"
@@ -244,7 +251,7 @@ const CreateWorkout = ({ refetch }) => {
                     onChange={(event) => handleSetChange(index, 'set', event.target.value)}
                   />
                 </Form.Group>
-              </Col>
+              </Col> */}
               <Col>
                 <Form.Group>
                   <Form.Control
@@ -278,7 +285,7 @@ const CreateWorkout = ({ refetch }) => {
             </>
           ) : (
             <>
-              <Col>
+              {/* <Col>
                 <Form.Group>
                   <Form.Control
                     placeholder="Set"
@@ -287,11 +294,11 @@ const CreateWorkout = ({ refetch }) => {
                     onChange={(event) => handleSetChange(index, 'set', event.target.value)}
                   />
                 </Form.Group>
-              </Col>
+              </Col> */}
               <Col>
                 <Form.Group>
                   <Form.Control
-                    placeholder="Weight"
+                    placeholder="Total Weight"
                     type="number"
                     value={set.weight}
                     onChange={(event) => handleSetChange(index, 'weight', event.target.value)}

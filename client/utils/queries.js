@@ -1,66 +1,65 @@
 import { gql } from '@apollo/client'
 
 export const QUERY_ME = gql`
-query Query {
-  me {
-    _id
-    email
-    username
-    password
-    location
-    socialHandle
-    bio
-    createdAt
-    workouts {
+  query Query {
+    me {
       _id
-      weight
-      reps
-      sets
-      miles
-      pace
-      notes
+      email
+      username
+      password
+      location
+      socialHandle
+      bio
       createdAt
-      exercise {
-        exerciseName
-      }
-    }
-    posts {
-      _id
-      title
-      content
-      topic {
-        topicName
-      }
-      comments {
+      workouts {
         _id
-        content
+        weight
+        reps
+        sets
+        miles
+        pace
+        notes
         createdAt
-        commentReplies {
-        _id
-        content
-        createdAt
-        profile {
-          _id
-          username
-        }
-        }
-        profile {
-          _id
-          username
+        exercise {
+          exerciseName
         }
       }
-    }
-    favoritePost {
-      _id
-      title
-    }
-    reactions {
-      _id
+      posts {
+        _id
+        title
+        content
+        topic {
+          topicName
+        }
+        comments {
+          _id
+          content
+          createdAt
+          commentReplies {
+            _id
+            content
+            createdAt
+            profile {
+              _id
+              username
+            }
+          }
+          profile {
+            _id
+            username
+          }
+        }
+      }
+      favoritePost {
+        _id
+        title
+      }
+      reactions {
+        _id
+      }
     }
   }
-}
 `;
-
 
 export const QUERY_PROFILES = gql`
   query Profile {
@@ -80,7 +79,7 @@ export const QUERY_PROFILES = gql`
         topic {
           _id
           topicName
-        } 
+        }
         comments {
           _id
           content
@@ -91,42 +90,42 @@ export const QUERY_PROFILES = gql`
 `
 
 export const QUERY_POSTS = gql`
-query Posts {
-  posts {
-    _id
-    title
-    content
-    createdAt
-    comments {
+  query Posts {
+    posts {
       _id
+      title
       content
       createdAt
-      commentReplies {
-      content
-      createdAt
-      profile {
+      comments {
+        _id
+        content
+        createdAt
+        commentReplies {
+          _id
+          content
+          createdAt
+          profile {
+            username
+          }
+        }
+        profile {
+          _id
           username
         }
-    }
+      }
+      topic {
+        topicName
+      }
       profile {
-      _id
-      username
+        _id
+        username
+        favoritePost {
+          _id
+          title
+        }
       }
     }
-    topic {
-      topicName
-    }
-    profile {
-      _id
-      username
-      favoritePost {
-        _id
-      title
-    }
-    }
-    
   }
-}
 `
 
 
@@ -149,21 +148,21 @@ export const QUERY_EXERCISE = gql`
 `
 
 export const QUERY_WORKOUTS = gql`
-query Workout {
-  workouts {
-    _id
-    weight
-    reps
-    sets
-    pace
-    notes
-    miles
-    createdAt
-    exercise {
-      exerciseName
+  query Workout {
+    workouts {
+      _id
+      weight
+      reps
+      sets
+      pace
+      notes
+      miles
+      createdAt
+      exercise {
+        exerciseName
+      }
     }
   }
-}
 `
 
 export const QUERY_COMMENTS = gql`
@@ -172,9 +171,16 @@ export const QUERY_COMMENTS = gql`
       _id
       content
       createdAt
+      profile {
+        username
+      }
       commentReplies {
-      content
-    }
+        _id
+        content
+        profile {
+          username
+        }
+      }
     }
   }
 `

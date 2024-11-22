@@ -8,10 +8,10 @@ import UserReplyComment from "../UserReplyComment/UserReplyComment.jsx";
 import Collapse from 'react-bootstrap/Collapse';
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
-// import DeleteReplyComment from '../DeleteReplyComment/DeleteReplyComment';
+import DeleteReplyComment from '../DeleteReplyComment/DeleteReplyComment';
 
 
-const UserComments = ({ replyId, postComments, refetch, postCommentReplies }) => {
+const UserComments = ({ postComments, refetch, postCommentReplies, replyId }) => {
   const loggedIn = Auth.loggedIn();
 
   const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
@@ -49,24 +49,33 @@ const UserComments = ({ replyId, postComments, refetch, postCommentReplies }) =>
 
                 <Collapse in={open}>
                   <div className="commentReplies">
-                    {(comment.commentReplies).map((reply, index) => (
-                      <div className="userReplyComment" key={index}>
-                        <p className="replyCommentUsername">
-                          {/* throwing error with user name, will leave this as a temp */}
-                          {reply.profile.username}
-                        </p>
-                        <Box className="replyContent">
-                          @{comment.profile.username} {reply.content}
-                        </Box>
-                        <Box className="commentDateReply">
-                          {new Date(parseInt(reply.createdAt)).toLocaleDateString()}
-                          {/* <DeleteReplyComment
-                            commentId={comment._id}
-                            replyId={replyId}
-                          /> */}
-                        </Box>
-                      </div>
-                    ))}
+                    {comment.commentReplies.map((reply) => {
+                      console.log("reply id", reply._id);
+                      return (
+                        <div className="userReplyComment" key={reply._id}>
+                          <p className="replyCommentUsername">
+                            {reply.profile.username || "Deleted Profile"}
+                          </p>
+                          <Box className="replyContent">
+                            {/* Display username being replied to */}
+                            @{comment.profile.username} {reply.content}
+                          </Box>
+                          <Box className="commentDateReply">
+                            {new Date(parseInt(reply.createdAt)).toLocaleDateString()}
+                            <UserReplyComment
+                              commentId={comment._id}
+                              refetch={refetch}
+                              postCommentReplies={postCommentReplies}
+                            />
+                            <DeleteReplyComment
+                              commentId={comment._id}
+                              replyId={reply._id}
+                              refetch={refetch}
+                            />
+                          </Box>
+                        </div>
+                      );
+                    })}
                   </div>
                 </Collapse>
 

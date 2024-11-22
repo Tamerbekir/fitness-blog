@@ -133,6 +133,8 @@ const WorkoutGrid = ({ workoutId }) => {
   if (error || errorExercise) return <p>{error.message || errorExercise.message}</p>;
   if (!dataExercise) return <p>No workout data found</p>;
 
+  const isRunning = editWorkoutInfo.exercise.toLowerCase().includes('running')
+
   return (
     <Container className="workout-container">
       <h4 className="text-center mb-4 title">Workout History</h4>
@@ -150,7 +152,7 @@ const WorkoutGrid = ({ workoutId }) => {
                       {groupedWorkouts[date][exerciseName].map((workout, index) => (
                         <Card className="mb-3" key={index}>
                           {editingWorkoutId === workout._id ? (
-                            <Form>
+                            <Form className="editFormInputs">
                               <Form.Group className="mb-3">
                                 <Form.Label>Exercise</Form.Label>
                                 <Form.Control
@@ -161,7 +163,8 @@ const WorkoutGrid = ({ workoutId }) => {
                                 />
                               </Form.Group>
                               <Form.Group className="mb-3">
-                                <Form.Label>Sets</Form.Label>
+                                {/* <Form.Label>Sets</Form.Label> */}
+                                <p>Set</p>
                                 <Form.Control
                                   type="number"
                                   value={editWorkoutInfo.sets}
@@ -170,7 +173,8 @@ const WorkoutGrid = ({ workoutId }) => {
                                 />
                               </Form.Group>
                               <Form.Group className="mb-3">
-                                <Form.Label>Weight</Form.Label>
+                                {/* <Form.Label>Weight</Form.Label> */}
+                                <p>Weight</p>
                                 <Form.Control
                                   type="number"
                                   value={editWorkoutInfo.weight}
@@ -179,7 +183,8 @@ const WorkoutGrid = ({ workoutId }) => {
                                 />
                               </Form.Group>
                               <Form.Group className="mb-3">
-                                <Form.Label>Reps</Form.Label>
+                                {/* <Form.Label>Reps</Form.Label> */}
+                                <p>Reps</p>
                                 <Form.Control
                                   type="number"
                                   value={editWorkoutInfo.reps}
@@ -188,7 +193,8 @@ const WorkoutGrid = ({ workoutId }) => {
                                 />
                               </Form.Group>
                               <Form.Group className="mb-3">
-                                <Form.Label>Miles</Form.Label>
+                                {/* <Form.Label>Miles</Form.Label> */}
+                                <p>Miles</p>
                                 <Form.Control
                                   type="number"
                                   value={editWorkoutInfo.miles}
@@ -197,7 +203,8 @@ const WorkoutGrid = ({ workoutId }) => {
                                 />
                               </Form.Group>
                               <Form.Group className="mb-3">
-                                <Form.Label>Pace</Form.Label>
+                                {/* <Form.Label>Pace</Form.Label> */}
+                                <p>Pace</p>
                                 <Form.Control
                                   type="number"
                                   value={editWorkoutInfo.pace}
@@ -220,20 +227,20 @@ const WorkoutGrid = ({ workoutId }) => {
                             </Form>
                           ) : (
                             <div className="workoutStats" onClick={() => handleEditClick(workout)}>
-                              <p>Exercise:{workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
+                              <p>Exercise: {workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
                               <p>Sets: {workout.sets}</p>
                               <p>Weight: {workout.weight}</p>
                               <p>Reps: {workout.reps}</p>
                               <><p>Miles: {workout.miles}</p>
                                 <p>Pace: {workout.pace}</p></>
                               <p>Notes: {workout.notes}</p>
-                              {/* <Button variant="primary" onClick={() => handleEditClick(workout)} className="mt-2">
-                                  Edit Workout
-                                </Button> */}
+
                             </div>
                           )}
                           <div>
-                            <DeleteWorkout refetch={refetch} workoutId={workout._id} />
+                            <DeleteWorkout
+                              refetch={refetch}
+                              workoutId={workout._id} />
                           </div>
                         </Card>
                       ))}
