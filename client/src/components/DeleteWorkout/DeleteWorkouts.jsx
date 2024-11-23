@@ -29,8 +29,9 @@ const DeleteWorkout = ({ workoutId, refetch }) => {
   return (
     <div>
       <Button
+        className="deleteWorkoutBtn"
         onClick={handleDeleteWorkout}
-      > Delete Workout
+      > Delete
       </Button>
     </div>
   )

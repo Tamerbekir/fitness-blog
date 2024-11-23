@@ -8,6 +8,7 @@ import './assets/workoutGrid.css'
 // import Auth from '../../../utils/auth'
 import TextField from '@mui/material/TextField';
 import { MdMargin } from "react-icons/md";
+import { isArray } from "@apollo/client/utilities";
 
 
 const WorkoutGrid = ({ workoutId }) => {
@@ -169,20 +170,37 @@ const WorkoutGrid = ({ workoutId }) => {
             <Accordion.Header>{date}</Accordion.Header>
             <Accordion.Body>
               {Object.keys(groupedWorkouts[date]).map((exerciseName) => (
-                <Accordion key={exerciseName} className="mb-2 header">
+                <Accordion Accordion key={exerciseName} className="mb-2 header" >
                   <Accordion.Item eventKey={exerciseName}>
                     <Accordion.Header>{exerciseName}</Accordion.Header>
+
                     <Accordion.Body>
+                      <div className="infoWorkoutDiv">
+                        {groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('running')
+                          || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('walk') ? (
+                          <>
+                            <p>Set</p>
+                            <p>Miles</p>
+                            <p>Pace</p>
+                          </>
+                        ) : (
+                          <>
+                            <p>Set</p>
+                            <p>Weight</p>
+                            <p>Reps</p>
+                          </>
+                        )
+                        }
+                      </div>
                       {groupedWorkouts[date][exerciseName].map((workout, index) => (
                         <Card className="mb-3" key={index}>
                           {editingWorkoutId === workout._id ? (
-
-                            <Form className="editFormInputs" onClick={handleSaveEdit}>
+                            <Form className="editFormInputs" >
                               {/* Make search activity a component and add here */}
                               {isRunning || isWalking ? (
                                 <>
                                   <Form.Group className="mb-2">
-                                    <Col>
+                                    {/* <Col>
                                       <TextField
                                         sx={sx}
                                         size="small"
@@ -193,7 +211,9 @@ const WorkoutGrid = ({ workoutId }) => {
                                         name="exercise"
                                         value={editWorkoutInfo.exercise}
                                         onChange={handleWorkoutChange} />
-                                    </Col>
+                                    </Col> */}
+                                    {/* User will be able to edit exercisename once I make universal search for worokout component */}
+                                    {/* <p>{editWorkoutInfo.exercise}</p> */}
                                   </Form.Group>
 
                                   <Form.Group className="mb-3">
@@ -202,7 +222,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         sx={sx}
                                         size="small"
                                         id="outlined-basic"
-                                        label="Set"
+                                        // label="Set"
                                         variant="outlined"
                                         type="number"
                                         name="sets"
@@ -218,7 +238,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         sx={sx}
                                         size="small"
                                         id="outlined-basic"
-                                        label="Reps"
+                                        // label="Reps"
                                         variant="outlined"
                                         type="number"
                                         name="reps"
@@ -234,7 +254,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         sx={sx}
                                         size="small"
                                         id="outlined-basic"
-                                        label="Miles"
+                                        // label="Miles"
                                         variant="outlined"
                                         type="number"
                                         name="miles"
@@ -249,7 +269,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         sx={sx}
                                         size="small"
                                         id="outlined-basic"
-                                        label="Pace"
+                                        // label="Pace"
                                         variant="outlined"
                                         type="number"
                                         name="pace"
@@ -273,59 +293,64 @@ const WorkoutGrid = ({ workoutId }) => {
                                   </Form.Group>
                                 </>
                               ) : (
-                                <><Col>
-                                  <TextField
-                                    sx={sx}
-                                    size="small"
-                                    id="outlined-basic"
-                                    label="Exercise"
-                                    variant="outlined"
-                                    type="text"
-                                    name="exercise"
-                                    value={editWorkoutInfo.exercise}
-                                    onChange={handleWorkoutChange} />
-                                </Col>
+                                <>
+                                  {/* <Col>
+                                    <TextField
+                                      sx={sx}
+                                      size="small"
+                                      id="outlined-basic"
+                                      label="Exercise"
+                                      variant="outlined"
+                                      type="text"
+                                      name="exercise"
+                                      value={editWorkoutInfo.exercise}
+                                      onChange={handleWorkoutChange} />
+                                  </Col> */}
+                                  {/* User will be able to edit exercisename once I make universal search for worokout component */}
+                                  {/* <p>{editWorkoutInfo.exercise}</p> */}
                                   <Form.Group className="mb-3">
                                     <Col>
                                       <TextField
                                         sx={sx}
                                         size="small"
                                         id="outlined-basic"
-                                        label="Set"
+                                        // label="Set"
                                         variant="outlined"
                                         type="number"
                                         name="sets"
                                         value={editWorkoutInfo.sets}
                                         onChange={handleWorkoutChange} />
                                     </Col>
-                                  </Form.Group><Form.Group className="mb-3">
+                                  </Form.Group>
+                                  <Form.Group className="mb-3">
                                     <Col>
                                       <TextField
                                         sx={sx}
                                         size="small"
                                         id="outlined-basic"
-                                        label="Reps"
-                                        variant="outlined"
-                                        type="number"
-                                        name="reps"
-                                        value={editWorkoutInfo.reps}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group><Form.Group className="mb-3">
-                                    {/* <Form.Label>Weight</Form.Label> */}
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        id="outlined-basic"
-                                        label="Total Weight"
+                                        // label="Total Weight"
                                         variant="outlined"
                                         type="number"
                                         name="weight"
                                         value={editWorkoutInfo.weight}
                                         onChange={handleWorkoutChange} />
                                     </Col>
-                                  </Form.Group><Form.Group className="mb-3">
+                                  </Form.Group>
+                                  <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
+                                        size="small"
+                                        id="outlined-basic"
+                                        // label="Reps"
+                                        variant="outlined"
+                                        type="number"
+                                        name="reps"
+                                        value={editWorkoutInfo.reps}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group>
+                                  {/* <Form.Group className="mb-3">
                                     <Col>
                                       <TextField
                                         sx={sx}
@@ -335,39 +360,51 @@ const WorkoutGrid = ({ workoutId }) => {
                                         variant="outlined"
                                         type="text"
                                         name="notes"
+                                        multiline
                                         value={editWorkoutInfo.notes}
                                         onChange={handleWorkoutChange} />
                                     </Col>
-                                  </Form.Group></>
+                                  </Form.Group>  */}
+                                </>
                               )}
-
-                              {/* <Button variant="success" onClick={handleSaveEdit} className="me-2">Save</Button> */}
-                              {/* <Button variant="secondary" onClick={() => setEditingWorkoutId(null)}>Cancel</Button> */}
-                              <div>
-                                <DeleteWorkout
-                                  refetch={refetch}
-                                  workoutId={workout._id} />
-                              </div>
                             </Form>
                           ) : (
                             <div className="workoutStats" onClick={() => handleEditClick(workout)}>
-                              {/* <p>Click for more info</p> */}
-                              <p>Exercise: {workout.exercise.map((exercise) => exercise.exerciseName).join(", ")}</p>
-                              {isRunning || isWalking ? (
+                              {workout.exercise[0].exerciseName.toLowerCase().includes('running')
+                                || workout.exercise[0].exerciseName.toLowerCase().includes('walk') ? (
                                 <>
-                                  <p>Miles: {workout.miles}</p>
-                                  <p>Pace: {workout.pace}</p>
-                                  {/* <p>Notes: {workout.notes}</p> */}
+                                  <p>{workout.sets}</p>
+                                  <p>{workout.miles}</p>
+                                  <p>{workout.pace}</p>
                                 </>
-
                               ) : (
                                 <>
-                                  {/* <p>Set: {workout.sets}</p> */}
-                                  <p>Weight: {workout.weight}</p>
-                                  <p>Reps: {workout.reps}</p>
-                                  {/* <p>Notes: {workout.notes}</p> */}
+                                  <p>{workout.sets}</p>
+                                  <p>{workout.weight}</p>
+                                  <p>{workout.reps}</p>
                                 </>
                               )}
+                            </div>
+                          )}
+                          {editingWorkoutId === workout._id && (
+                            <div className="BtnDiv">
+                              <Button
+                                className="saveBtn"
+                                onClick={() => handleSaveEdit(workout._id)}
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                className="cancelSaveBtn"
+                                onClick={() => setEditingWorkoutId(null)}
+                              >
+                                Cancel
+                              </Button>
+                              <DeleteWorkout
+                                className="deleteBtn"
+                                refetch={refetch}
+                                workoutId={workout._id}
+                              />
                             </div>
                           )}
                         </Card>

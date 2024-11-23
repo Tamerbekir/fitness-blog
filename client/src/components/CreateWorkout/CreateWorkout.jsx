@@ -277,14 +277,16 @@ const CreateWorkout = ({ refetch }) => {
                 </Form.Group>
               </Col> */}
               <Col>
-                <Form.Group>
-                  <Form.Control
-                    placeholder="Reps"
-                    type="number"
-                    value={set.reps}
-                    onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
-                  />
-                </Form.Group>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Reps"
+                  variant="outlined"
+                  type="number"
+                  value={set.reps}
+                  onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
+                />
               </Col>
               <Col>
                 <TextField
@@ -386,7 +388,8 @@ const CreateWorkout = ({ refetch }) => {
           Complete
         </Button>
       </div>
-      <WorkoutGrid />
+      <WorkoutGrid
+        refetch={refetch} />
     </Container >
   );
 };
