@@ -189,7 +189,7 @@ const WorkoutGrid = ({ workoutId }) => {
                         ) : (
                           <>
                             <p>Set</p>
-                            <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') ? 'Weight Per Arm' : 'Weight'}</p>
+                            <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('hammer') ? 'Weight Per Arm' : 'Weight'}</p>
                             <p>Reps</p>
                           </>
                         )

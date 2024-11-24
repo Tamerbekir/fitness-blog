@@ -82,8 +82,9 @@ const CreateWorkout = ({ refetch }) => {
       const weight = parseFloat(set.weight) || 0;
       const reps = parseFloat(set.reps) || 0;
       const dumbbellOnly = workoutData.exercise.toLowerCase().includes('dumbbell')
+      const hammerOnly = workoutData.exercise.toLowerCase().includes('hammer')
 
-      if (dumbbellOnly) {
+      if (dumbbellOnly || hammerOnly) {
         totalWeight += (weight * 2) * reps
       } else {
         totalWeight += weight * reps
@@ -201,6 +202,7 @@ const CreateWorkout = ({ refetch }) => {
   const isRunningExercise = workoutData.exercise.toLowerCase().includes("running");
   const isWalkingExercise = workoutData.exercise.toLowerCase().includes("walk");
   const dumbbellOnly = workoutData.exercise.toLowerCase().includes('dumbbell')
+  const hammerOnly = workoutData.exercise.toLowerCase().includes('hammer')
 
 
   const workoutBtn = [
@@ -341,7 +343,7 @@ const CreateWorkout = ({ refetch }) => {
                   sx={sx}
                   size="small"
                   id="outlined-basic"
-                  label={dumbbellOnly ? 'Weight Per Arm' : 'Weight'}
+                  label={dumbbellOnly || hammerOnly ? 'Weight Per Arm' : 'Weight'}
                   variant="outlined"
                   type="number"
                   value={set.weight}
