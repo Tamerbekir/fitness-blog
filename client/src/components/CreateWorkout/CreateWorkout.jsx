@@ -133,7 +133,7 @@ const CreateWorkout = ({ refetch }) => {
         ...workoutData.sets,
         {
           set: workoutData.sets.length + 1,
-          weight: lastSet.weight + 'lb',
+          weight: lastSet.weight,
           reps: lastSet.reps,
           miles: '',
           pace: ''
