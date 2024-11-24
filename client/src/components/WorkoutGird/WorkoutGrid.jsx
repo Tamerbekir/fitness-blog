@@ -159,6 +159,8 @@ const WorkoutGrid = ({ workoutId }) => {
 
   const isRunning = editWorkoutInfo.exercise.toLowerCase().includes('running')
   const isWalking = editWorkoutInfo.exercise.toLowerCase().includes('walk')
+  const dumbbellOnly = editWorkoutInfo.exercise.toLowerCase().includes('dumbbell')
+
 
   return (
     <Container className="workout-container">
@@ -177,7 +179,8 @@ const WorkoutGrid = ({ workoutId }) => {
                     <Accordion.Body>
                       <div className="infoWorkoutDiv">
                         {groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('running')
-                          || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('walk') ? (
+                          || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('walk')
+                          || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cycling') ? (
                           <>
                             <p>Set</p>
                             <p>Miles</p>
@@ -186,7 +189,7 @@ const WorkoutGrid = ({ workoutId }) => {
                         ) : (
                           <>
                             <p>Set</p>
-                            <p>Weight</p>
+                            <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') ? 'Weight Per Arm' : 'Weight'}</p>
                             <p>Reps</p>
                           </>
                         )
@@ -215,8 +218,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                     {/* User will be able to edit exercisename once I make universal search for worokout component */}
                                     {/* <p>{editWorkoutInfo.exercise}</p> */}
                                   </Form.Group>
-
-                                  <Form.Group className="mb-3">
+                                  {/* <Form.Group className="mb-3">
                                     <Col>
                                       <TextField
                                         sx={sx}
@@ -230,7 +232,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         onChange={handleWorkoutChange}
                                       />
                                     </Col>
-                                  </Form.Group>
+                                  </Form.Group> */}
 
                                   <Form.Group className="mb-3">
                                     <Col>
@@ -277,7 +279,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         onChange={handleWorkoutChange} />
                                     </Col>
                                   </Form.Group>
-                                  <Form.Group className="mb-3">
+                                  {/* <Form.Group className="mb-3">
                                     <Col>
                                       <TextField
                                         sx={sx}
@@ -290,7 +292,7 @@ const WorkoutGrid = ({ workoutId }) => {
                                         value={editWorkoutInfo.notes}
                                         onChange={handleWorkoutChange} />
                                     </Col>
-                                  </Form.Group>
+                                  </Form.Group> */}
                                 </>
                               ) : (
                                 <>

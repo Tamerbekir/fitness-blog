@@ -70,6 +70,7 @@ const CreateWorkout = ({ refetch }) => {
     handleExerciseChange({ target: { value: exerciseName } });
   };
 
+
   useEffect(() => {
     localStorage.setItem('workoutData', JSON.stringify(workoutData));
   }, [workoutData]);
@@ -78,10 +79,17 @@ const CreateWorkout = ({ refetch }) => {
     let totalWeight = 0;
 
     workoutData.sets.forEach((set) => {
-      const weight = parseFloat(set.weight) || 0
-      const reps = parseFloat(set.reps) || 0
-      totalWeight += weight * reps;
+      const weight = parseFloat(set.weight) || 0;
+      const reps = parseFloat(set.reps) || 0;
+      const dumbbellOnly = workoutData.exercise.toLowerCase().includes('dumbbell')
+
+      if (dumbbellOnly) {
+        totalWeight += (weight * 2) * reps
+      } else {
+        totalWeight += weight * reps
+      }
     });
+
     setCountWeight(totalWeight);
   };
 
@@ -192,6 +200,8 @@ const CreateWorkout = ({ refetch }) => {
 
   const isRunningExercise = workoutData.exercise.toLowerCase().includes("running");
   const isWalkingExercise = workoutData.exercise.toLowerCase().includes("walk");
+  const dumbbellOnly = workoutData.exercise.toLowerCase().includes('dumbbell')
+
 
   const workoutBtn = [
     'Chest', 'Biceps',
@@ -212,6 +222,7 @@ const CreateWorkout = ({ refetch }) => {
 
   // const workoutMap = workoutBtn.map((workout) => workout)
   // console.log(workoutMap)
+
 
   return (
     <Container>
@@ -330,7 +341,7 @@ const CreateWorkout = ({ refetch }) => {
                   sx={sx}
                   size="small"
                   id="outlined-basic"
-                  label="Total Weight"
+                  label={dumbbellOnly ? 'Weight Per Arm' : 'Weight'}
                   variant="outlined"
                   type="number"
                   value={set.weight}
