@@ -22,7 +22,7 @@ import {
 import {
   CreatePost,
   CreateWorkout,
-  // SearchProvider
+  PlateCalculator,
 } from './components/index.js'
 
 
@@ -42,7 +42,8 @@ const router = createBrowserRouter([
       { path: 'log-workout', element: <CreateWorkout /> },
       { path: 'about', element: <About /> },
       { path: 'userprofile/:id', element: <UserProfile /> },
-      { path: 'maxrepcalculator', element: <Calculator /> }
+      { path: 'maxrepcalculator', element: <Calculator /> },
+      { path: 'platecalculator', element: <PlateCalculator /> }
     ],
   },
 ]);

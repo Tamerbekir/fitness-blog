@@ -12,6 +12,7 @@ export { default as UserComments } from './UserComments/UserComments.jsx'
 export { default as EditWorkout } from './EditWorkout/EditWorkout.jsx'
 export { default as DeleteWorkout } from './DeleteWorkout/DeleteWorkouts.jsx'
 export { default as SearchBar } from './SeachBar/SearchBar.jsx'
+export { default as PlateCalculator } from './PlateCalculator/PlateCalculator.jsx'
 
 
 //export provider

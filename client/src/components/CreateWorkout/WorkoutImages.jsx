@@ -124,10 +124,10 @@ const WorkoutImages = {
 
 
   // outter thigh
-  'machine hip abductor (outter abductor)': 'https://app-media.fitbod.me/v2/386/images/landscape/0_960x540.jpg',
-  'standing hip abduction (outter abductor)': 'https://app-media.fitbod.me/v2/539/images/landscape/0_960x540.jpg',
-  'mini loop band side-lying hip abduction (outter abductor)': 'https://app-media.fitbod.me/v2/607/images/landscape/0_960x540.jpg',
-  'side leg raises (outter abductor)': 'https://app-media.fitbod.me/v2/312/images/landscape/0_960x540.jpg'
+  'machine hip abductor (outer abductor)': 'https://app-media.fitbod.me/v2/386/images/landscape/0_960x540.jpg',
+  'standing hip abduction (outer abductor)': 'https://app-media.fitbod.me/v2/539/images/landscape/0_960x540.jpg',
+  'mini loop band side-lying hip abduction (outer abductor)': 'https://app-media.fitbod.me/v2/607/images/landscape/0_960x540.jpg',
+  'side leg raises (outer abductor)': 'https://app-media.fitbod.me/v2/312/images/landscape/0_960x540.jpg'
 }
 
 

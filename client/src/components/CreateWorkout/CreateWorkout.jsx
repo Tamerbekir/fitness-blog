@@ -13,6 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { MdClear } from "react-icons/md";
 // import { Calculator } from '../../pages/index'
 import TextField from '@mui/material/TextField';
+import { PlateCalculator } from '../index'
 
 
 import './assets/createWorkout.css'
@@ -248,6 +249,7 @@ const CreateWorkout = ({ refetch }) => {
                   <Dropdown.Item key={index} onClick={() => handleSearchBtn(workout)}>{workout}</Dropdown.Item>
                 ))}
               </Dropdown.Menu>
+
             </Dropdown>
           </div>
           {showExerciseList && (
@@ -281,12 +283,12 @@ const CreateWorkout = ({ refetch }) => {
             <>
               {/* <Col>
                 <Form.Group>
-                  <Form.Control
-                    placeholder="Set"
-                    type="number"
-                    value={set.set}
-                    onChange={(event) => handleSetChange(index, 'set', event.target.value)}
-                  />
+                <Form.Control
+                placeholder="Set"
+                type="number"
+                value={set.set}
+                onChange={(event) => handleSetChange(index, 'set', event.target.value)}
+                />
                 </Form.Group>
               </Col> */}
               <Col>
@@ -330,12 +332,12 @@ const CreateWorkout = ({ refetch }) => {
             <>
               {/* <Col>
                 <Form.Group>
-                  <Form.Control
-                    placeholder="Set"
-                    type="number"
-                    value={set.set}
-                    onChange={(event) => handleSetChange(index, 'set', event.target.value)}
-                  />
+                <Form.Control
+                placeholder="Set"
+                type="number"
+                value={set.set}
+                onChange={(event) => handleSetChange(index, 'set', event.target.value)}
+                />
                 </Form.Group>
               </Col> */}
               <Col>
@@ -368,9 +370,26 @@ const CreateWorkout = ({ refetch }) => {
       ))
       }
 
+      {/* <PlateCalculator /> */}
+
       <div className="totalWeightDiv">
-        <p style={{ color: 'white', fontSize: '15px' }}>Total Weight {countWeight}</p>
-        <p style={{ color: 'white', fontSize: '15px' }} onClick={() => navigate('/maxrepcalculator')} className="maxRepCal">Max Rep Calculator</p>
+        <p className="totalWeightText"
+          style={{ color: 'white', fontSize: '15px' }}
+        >
+          Total Weight {countWeight}
+        </p>
+        <p className="plateCalculatorText"
+          style={{ color: 'white', fontSize: '15px' }}
+          onClick={() => navigate('/platecalculator')}
+        >
+          Plate Calculator
+        </p>
+        <p className="maxWeightText"
+          style={{ color: 'white', fontSize: '15px' }}
+          onClick={() => navigate('/maxrepcalculator')}
+        >
+          Max Rep Calculator
+        </p>
       </div>
 
       <div className="btnDiv">
