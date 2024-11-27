@@ -40,6 +40,7 @@ const typeDefs = `#graphql
     miles: Float
     pace: Float
     notes: String
+    duration: Float
     createdAt: String!
     profile: Profile!
     exercise: [Exercise!]

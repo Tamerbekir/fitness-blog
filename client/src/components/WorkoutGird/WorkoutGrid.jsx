@@ -9,6 +9,7 @@ import './assets/workoutGrid.css'
 import TextField from '@mui/material/TextField';
 import { MdMargin } from "react-icons/md";
 import { isArray } from "@apollo/client/utilities";
+import { parse } from "postcss";
 
 
 const WorkoutGrid = ({ workoutId }) => {
@@ -45,6 +46,7 @@ const WorkoutGrid = ({ workoutId }) => {
     reps: "",
     weight: "",
     pace: "",
+    duration: "",
     sets: "",
     miles: "",
     notes: "",
@@ -142,6 +144,7 @@ const WorkoutGrid = ({ workoutId }) => {
           sets: parseFloat(editWorkoutInfo.sets),
           miles: parseFloat(editWorkoutInfo.miles),
           pace: parseFloat(editWorkoutInfo.pace),
+          duration: parseFloat(editWorkoutInfo.duration),
           notes: editWorkoutInfo.notes,
           exercise: editWorkoutInfo.exercise,
         },
@@ -159,7 +162,9 @@ const WorkoutGrid = ({ workoutId }) => {
 
   const isRunning = editWorkoutInfo.exercise.toLowerCase().includes('running')
   const isWalking = editWorkoutInfo.exercise.toLowerCase().includes('walk')
-  const dumbbellOnly = editWorkoutInfo.exercise.toLowerCase().includes('dumbbell')
+  const isCardioOnly = editWorkoutInfo.exercise.toLowerCase().includes('cardio')
+
+  // const dumbbellOnly = editWorkoutInfo.exercise.toLowerCase().includes('dumbbell')
 
 
   return (
@@ -186,14 +191,19 @@ const WorkoutGrid = ({ workoutId }) => {
                             <p>Miles</p>
                             <p>Pace</p>
                           </>
+                        ) : groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
+                          <>
+                            <p>Set</p>
+                            <p>Reps</p>
+                            <p>Duration</p>
+                          </>
                         ) : (
                           <>
                             <p>Set</p>
                             <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('hammer') ? 'Weight Per Arm' : 'Weight'}</p>
                             <p>Reps</p>
                           </>
-                        )
-                        }
+                        )}
                       </div>
                       {groupedWorkouts[date][exerciseName].map((workout, index) => (
                         <Card className="mb-3" key={index}>
@@ -226,7 +236,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Set"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="sets"
                                         value={editWorkoutInfo.sets}
                                         onChange={handleWorkoutChange}
@@ -242,7 +255,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Reps"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="reps"
                                         value={editWorkoutInfo.reps}
                                         onChange={handleWorkoutChange}
@@ -258,7 +274,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Miles"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="miles"
                                         value={editWorkoutInfo.miles}
                                         onChange={handleWorkoutChange} />
@@ -273,7 +292,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Pace"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="pace"
                                         value={editWorkoutInfo.pace}
                                         onChange={handleWorkoutChange} />
@@ -293,6 +315,55 @@ const WorkoutGrid = ({ workoutId }) => {
                                         onChange={handleWorkoutChange} />
                                     </Col>
                                   </Form.Group> */}
+                                </>
+                              ) : isCardioOnly ? (
+                                <>
+                                  <Col>
+                                    <TextField
+                                      sx={sx}
+                                      size="small"
+                                      id="outlined-basic"
+                                      label="Reps"
+                                      variant="outlined"
+                                      inputProps={{
+                                        inputMode: "decimal",
+                                        pattern: "[0-9]*[.]?[0-9]*",
+                                      }}
+                                      value={editWorkoutInfo.sets}
+                                      onChange={(event) => handleSetChange(index, "reps", event.target.value)}
+                                    />
+                                  </Col>
+
+                                  <Col>
+                                    <TextField
+                                      sx={sx}
+                                      size="small"
+                                      id="outlined-basic"
+                                      label="Reps"
+                                      variant="outlined"
+                                      inputProps={{
+                                        inputMode: "decimal",
+                                        pattern: "[0-9]*[.]?[0-9]*",
+                                      }}
+                                      value={editWorkoutInfo.reps}
+                                      onChange={(event) => handleSetChange(index, "reps", event.target.value)}
+                                    />
+                                  </Col>
+                                  <Col>
+                                    <TextField
+                                      sx={sx}
+                                      size="small"
+                                      id="outlined-basic"
+                                      label="Duration(mins)"
+                                      variant="outlined"
+                                      inputProps={{
+                                        inputMode: "decimal",
+                                        pattern: "[0-9]*[.]?[0-9]*",
+                                      }}
+                                      value={editWorkoutInfo.duration}
+                                      onChange={(event) => handleSetChange(index, "duration", event.target.value)}
+                                    />
+                                  </Col>
                                 </>
                               ) : (
                                 <>
@@ -318,7 +389,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Set"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="sets"
                                         value={editWorkoutInfo.sets}
                                         onChange={handleWorkoutChange} />
@@ -332,7 +406,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Total Weight"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="weight"
                                         value={editWorkoutInfo.weight}
                                         onChange={handleWorkoutChange} />
@@ -346,7 +423,10 @@ const WorkoutGrid = ({ workoutId }) => {
                                         id="outlined-basic"
                                         // label="Reps"
                                         variant="outlined"
-                                        type="number"
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
                                         name="reps"
                                         value={editWorkoutInfo.reps}
                                         onChange={handleWorkoutChange} />
@@ -378,6 +458,12 @@ const WorkoutGrid = ({ workoutId }) => {
                                   <p>{workout.sets}</p>
                                   <p>{workout.miles}</p>
                                   <p>{workout.pace}</p>
+                                </>
+                              ) : workout.exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
+                                <>
+                                  <p>{workout.sets}</p>
+                                  <p>{workout.duration}</p>
+                                  <p>{workout.reps}</p>
                                 </>
                               ) : (
                                 <>

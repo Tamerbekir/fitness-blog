@@ -1,0 +1,17 @@
+.divBtns .backBtn,
+.divBtns .calculateBtn {
+  background-color: #f9c000 !important;
+  color: white;
+  border: none;
+  padding: 5px;
+  margin: 2%;
+  border-radius: 8px;
+}
+
+.clearButton {
+  background-color: #f9c000;
+  border-top: none;
+  border-bottom: none;
+  color: white;
+  border-radius: 8px;
+}

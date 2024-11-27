@@ -16,13 +16,13 @@ import {
   Account,
   UserProfile,
   About,
-  Calculator
+  Calculator,
+  PlateCalculator,
 } from './pages/index.js'
 
 import {
   CreatePost,
   CreateWorkout,
-  PlateCalculator,
 } from './components/index.js'
 
 

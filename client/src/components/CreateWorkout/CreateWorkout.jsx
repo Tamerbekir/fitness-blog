@@ -13,7 +13,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { MdClear } from "react-icons/md";
 // import { Calculator } from '../../pages/index'
 import TextField from '@mui/material/TextField';
-import { PlateCalculator } from '../index'
+import Input from "@mui/material/Input";
+
 
 
 import './assets/createWorkout.css'
@@ -54,7 +55,7 @@ const CreateWorkout = ({ refetch }) => {
       return JSON.parse(savedWorkoutData)
     } else {
       return {
-        exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '' }]
+        exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '', duration: '' }]
       }
     }
   })
@@ -172,6 +173,7 @@ const CreateWorkout = ({ refetch }) => {
             miles: parseFloat(set.miles),
             pace: parseFloat(set.pace),
             weight: parseFloat(set.weight),
+            duration: parseFloat(set.duration),
             notes: workoutData.notes,
           },
         });
@@ -181,7 +183,7 @@ const CreateWorkout = ({ refetch }) => {
       });
 
       localStorage.removeItem('workoutData');
-      setWorkoutData({ exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '' }] });
+      setWorkoutData({ exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '', duration: '' }] });
     } catch (error) {
       toast.error('Error logging workout. Please try again.', { position: 'bottom-right' });
       console.error("Error logging workout", error);
@@ -204,10 +206,11 @@ const CreateWorkout = ({ refetch }) => {
   const isWalkingExercise = workoutData.exercise.toLowerCase().includes("walk");
   const dumbbellOnly = workoutData.exercise.toLowerCase().includes('dumbbell')
   const hammerOnly = workoutData.exercise.toLowerCase().includes('hammer')
+  const cardioOnly = workoutData.exercise.toLowerCase().includes('cardio')
 
 
   const workoutBtn = [
-    'Chest', 'Biceps',
+    'Abs', 'Biceps', 'Chest', 'Cardio',
     'Walk', 'Triceps', 'Quads',
     'Hamstrings', 'Running',
     'Shoulders', 'Back',
@@ -276,21 +279,21 @@ const CreateWorkout = ({ refetch }) => {
         </Form.Group>
       </div>
 
-
       {workoutData.sets.map((set, index) => (
         <Row key={index} className="mb-3" style={{ padding: '10px' }}>
-          {isRunningExercise || isWalkingExercise ? (
+          {cardioOnly ? (
+            // Cardio Only: Show Reps and Duration
             <>
               {/* <Col>
-                <Form.Group>
-                <Form.Control
-                placeholder="Set"
-                type="number"
-                value={set.set}
-                onChange={(event) => handleSetChange(index, 'set', event.target.value)}
-                />
-                </Form.Group>
-              </Col> */}
+          <Form.Group>
+            <Form.Control
+              placeholder="Set"
+              type="number"
+              value={set.set}
+              onChange={(event) => handleSetChange(index, 'set', event.target.value)}
+            />
+          </Form.Group>
+        </Col> */}
               <Col>
                 <TextField
                   sx={sx}
@@ -298,9 +301,56 @@ const CreateWorkout = ({ refetch }) => {
                   id="outlined-basic"
                   label="Reps"
                   variant="outlined"
-                  type="number"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
                   value={set.reps}
-                  onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
+                  onChange={(event) => handleSetChange(index, "reps", event.target.value)}
+                />
+              </Col>
+              <Col>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Duration (mins)"
+                  variant="outlined"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
+                  value={set.duration}
+                  onChange={(event) => handleSetChange(index, "duration", event.target.value)}
+                />
+              </Col>
+            </>
+          ) : isRunningExercise || isWalkingExercise ? (
+            // Running or Walking: Show Reps, Miles, and Pace
+            <>
+              {/* <Col>
+          <Form.Group>
+            <Form.Control
+              placeholder="Set"
+              type="number"
+              value={set.set}
+              onChange={(event) => handleSetChange(index, 'set', event.target.value)}
+            />
+          </Form.Group>
+        </Col> */}
+              <Col>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Reps"
+                  variant="outlined"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
+                  value={set.reps}
+                  onChange={(event) => handleSetChange(index, "reps", event.target.value)}
                 />
               </Col>
               <Col>
@@ -310,9 +360,12 @@ const CreateWorkout = ({ refetch }) => {
                   id="outlined-basic"
                   label="Miles"
                   variant="outlined"
-                  type="number"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
                   value={set.miles}
-                  onChange={(event) => handleSetChange(index, 'miles', event.target.value)}
+                  onChange={(event) => handleSetChange(index, "miles", event.target.value)}
                 />
               </Col>
               <Col>
@@ -322,24 +375,28 @@ const CreateWorkout = ({ refetch }) => {
                   id="outlined-basic"
                   label="Pace"
                   variant="outlined"
-                  type="number"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
                   value={set.pace}
-                  onChange={(event) => handleSetChange(index, 'pace', event.target.value)}
+                  onChange={(event) => handleSetChange(index, "pace", event.target.value)}
                 />
               </Col>
             </>
           ) : (
+            // Everything Else: Show Weight and Reps
             <>
               {/* <Col>
-                <Form.Group>
-                <Form.Control
-                placeholder="Set"
-                type="number"
-                value={set.set}
-                onChange={(event) => handleSetChange(index, 'set', event.target.value)}
-                />
-                </Form.Group>
-              </Col> */}
+          <Form.Group>
+            <Form.Control
+              placeholder="Set"
+              type="number"
+              value={set.set}
+              onChange={(event) => handleSetChange(index, 'set', event.target.value)}
+            />
+          </Form.Group>
+        </Col> */}
               <Col>
                 <TextField
                   sx={sx}
@@ -347,9 +404,12 @@ const CreateWorkout = ({ refetch }) => {
                   id="outlined-basic"
                   label={dumbbellOnly || hammerOnly ? 'Weight Per Arm' : 'Weight'}
                   variant="outlined"
-                  type="number"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
                   value={set.weight}
-                  onChange={(event) => handleSetChange(index, 'weight', event.target.value)}
+                  onChange={(event) => handleSetChange(index, "weight", event.target.value)}
                 />
               </Col>
               <Col>
@@ -359,19 +419,19 @@ const CreateWorkout = ({ refetch }) => {
                   id="outlined-basic"
                   label="Reps"
                   variant="outlined"
-                  type="number"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
                   value={set.reps}
-                  onChange={(event) => handleSetChange(index, 'reps', event.target.value)}
+                  onChange={(event) => handleSetChange(index, "reps", event.target.value)}
                 />
               </Col>
             </>
           )}
         </Row>
-      ))
-      }
-
+      ))}
       {/* <PlateCalculator /> */}
-
       <div className="totalWeightDiv">
         <p className="totalWeightText"
           style={{ color: 'white', fontSize: '15px' }}

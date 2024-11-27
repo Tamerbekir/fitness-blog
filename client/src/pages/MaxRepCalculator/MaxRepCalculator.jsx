@@ -57,6 +57,8 @@ export default function Calculator() {
         <InputGroup style={{ padding: '10px' }}>
           <Form.Control
             type='number'
+            inputmode="numeric"
+            pattern="[0-9]*"
             name='maxLb'
             onChange={handleMaxLiftChange}
             placeholder='Max Lift (lb)'
@@ -65,6 +67,8 @@ export default function Calculator() {
         <InputGroup style={{ padding: '10px' }}>
           <Form.Control
             type='number'
+            inputmode="numeric"
+            pattern="[0-9]*"
             name='maxReps'
             onChange={handleMaxLiftChange}
             placeholder='Repetitions'

@@ -234,7 +234,7 @@ const resolvers = {
       }
     },
 
-    addWorkout: async (parent, { exercise, weight, reps, sets, notes, miles, pace }, context) => {
+    addWorkout: async (parent, { exercise, weight, reps, sets, notes, miles, pace, duration }, context) => {
       try {
         if (context.user) {
 
@@ -253,6 +253,7 @@ const resolvers = {
             notes,
             miles,
             pace,
+            duration,
             createdAt: new Date()
           })
           
@@ -272,7 +273,7 @@ const resolvers = {
 
     
 
-    updateWorkout: async (parent, { _id, exercise, reps, weight, miles, sets, pace, notes }, context) => {
+    updateWorkout: async (parent, { _id, exercise, reps, weight, miles, sets, pace, notes, duration }, context) => {
       try {
         if (context.user) {
           // variable for finding an exercise

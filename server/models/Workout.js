@@ -39,6 +39,10 @@ const workoutSchema = new Schema({
     type: String,
     required: false
   },
+  duration: {
+    type: Number,
+    required: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
