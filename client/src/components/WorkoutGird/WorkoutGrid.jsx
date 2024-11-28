@@ -7,9 +7,6 @@ import DeleteWorkout from '../../components/DeleteWorkout/DeleteWorkouts.jsx'
 import './assets/workoutGrid.css'
 // import Auth from '../../../utils/auth'
 import TextField from '@mui/material/TextField';
-import { MdMargin } from "react-icons/md";
-import { isArray } from "@apollo/client/utilities";
-import { parse } from "postcss";
 
 
 const WorkoutGrid = () => {
@@ -194,7 +191,7 @@ const WorkoutGrid = () => {
                           <>
                             <p>Set</p>
                             <p>Reps</p>
-                            <p>Duration</p>
+                            <p>Duration)</p>
                           </>
                         ) : (
                           <>
@@ -319,6 +316,7 @@ const WorkoutGrid = () => {
                                       sx={sx}
                                       size="small"
                                       name='duration'
+                                      label='(mms)'
                                       inputProps={{
                                         inputMode: "decimal",
                                         pattern: "[0-9]*[.]?[0-9]*",

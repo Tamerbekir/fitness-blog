@@ -22,3 +22,18 @@
   margin-left: auto;
   cursor: pointer;
 }
+
+.logWorkoutBtn{
+  background-color: green !important;
+  color: white !important;
+  margin-left: 60% !important;
+  border: none;
+}
+
+.maxWeightText {
+  margin-left: -10%;
+  background-color: transparent;
+  color: rgb(59, 75, 139);
+  border: none;
+}
+

@@ -13,9 +13,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { MdClear } from "react-icons/md";
 // import { Calculator } from '../../pages/index'
 import TextField from '@mui/material/TextField';
-import Input from "@mui/material/Input";
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faMinus, faCalculator, faCheck, faDumbbell } from '@fortawesome/free-solid-svg-icons';
 
 import './assets/createWorkout.css'
 
@@ -397,7 +396,18 @@ const CreateWorkout = ({ refetch }) => {
             />
           </Form.Group>
         </Col> */}
-              <Col>
+              <Col style={{ display: 'flex' }}>
+                <Button className="maxWeightText "
+                  onClick={() => navigate('/maxrepcalculator')}
+                >
+                  <FontAwesomeIcon icon={faDumbbell} size="m" />
+                </Button>
+                <Button
+                  style={{ backgroundColor: 'transparent', border: 'none' }}
+                  onClick={() => navigate('/platecalculator')}
+                >
+                  <FontAwesomeIcon icon={faCalculator} size="m" style={{ color: "#f9c000", }} />
+                </Button>
                 <TextField
                   sx={sx}
                   size="small"
@@ -431,54 +441,41 @@ const CreateWorkout = ({ refetch }) => {
           )}
         </Row>
       ))}
-      {/* <PlateCalculator /> */}
-      <div className="totalWeightDiv">
-        <p className="totalWeightText"
-          style={{ color: 'white', fontSize: '15px' }}
-        >
-          Total Weight {countWeight}
-        </p>
-        <p className="plateCalculatorText"
-          style={{ color: 'white', fontSize: '15px' }}
-          onClick={() => navigate('/platecalculator')}
-        >
-          Plate Calculator
-        </p>
-        <p className="maxWeightText"
-          style={{ color: 'white', fontSize: '15px' }}
-          onClick={() => navigate('/maxrepcalculator')}
-        >
-          Max Rep Calculator
-        </p>
-      </div>
+      <div className="btnDivCreateWorkout">
 
-      <div className="btnDiv">
         <Button
           onClick={() => {
             handleAddSet();
           }}
           className="me-2 addSetBtn"
         >
-          Add Set
+          <FontAwesomeIcon icon={faPlus} />
         </Button>
 
         <Button
           className="removeSetBtn"
           onClick={handleRemoveSet}
         >
-          Remove Set
+          <FontAwesomeIcon icon={faMinus} />
         </Button>
+
         <Button
-          style={{ marginLeft: '15%' }}
           className="logWorkoutBtn"
           onClick={() => {
             handleLogWorkout(),
               navigate('/log-workout')
           }}
-
         >
-          Complete
+          <FontAwesomeIcon icon={faCheck} />
         </Button>
+      </div>
+      {/* <PlateCalculator /> */}
+      <div className="totalWeightDiv">
+        <p className="totalWeightText"
+          style={{ color: 'white', fontSize: '15px' }}
+        >
+          Total Weight {countWeight} lb
+        </p>
       </div>
       <WorkoutGrid
         refetch={refetch} />
