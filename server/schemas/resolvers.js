@@ -288,7 +288,7 @@ const resolvers = {
           //finding the workout by its id, using set (becasue we arent adding, just setting) the exercise ID, weight and reps
           const updateWorkout = await Workout.findByIdAndUpdate(
             _id,
-            { $set: { exercise: exerciseChoice._id, weight, reps, sets, miles, notes, pace } },
+            { $set: { exercise: exerciseChoice._id, weight, reps, sets, miles, notes, pace, duration } },
             { new: true, runValidators: true }
           ).populate('profile exercise')
 

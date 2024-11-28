@@ -150,6 +150,7 @@ const typeDefs = `#graphql
       miles: Float
       pace: Float
       notes: String
+      duration: Float
     ): Workout
 
     updateWorkout(
@@ -161,6 +162,7 @@ const typeDefs = `#graphql
       miles: Float
       pace: Float
       notes: String
+      duration: Float
     ): Workout
 
     removeWorkout(

@@ -19,6 +19,7 @@ export const QUERY_ME = gql`
         miles
         pace
         notes
+        duration
         createdAt
         exercise {
           exerciseName
@@ -157,6 +158,7 @@ export const QUERY_WORKOUTS = gql`
       pace
       notes
       miles
+      duration
       createdAt
       exercise {
         exerciseName
