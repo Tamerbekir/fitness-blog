@@ -41,6 +41,7 @@ const typeDefs = `#graphql
     pace: Float
     notes: String
     duration: Float
+    calories: Float
     createdAt: String!
     profile: Profile!
     exercise: [Exercise!]
@@ -151,6 +152,7 @@ const typeDefs = `#graphql
       pace: Float
       notes: String
       duration: Float
+      calories: Float
     ): Workout
 
     updateWorkout(
@@ -163,6 +165,7 @@ const typeDefs = `#graphql
       pace: Float
       notes: String
       duration: Float
+      calories: Float
     ): Workout
 
     removeWorkout(

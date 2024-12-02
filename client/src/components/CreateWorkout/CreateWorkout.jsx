@@ -5,7 +5,7 @@ import { ADD_WORKOUT } from "../../../utils/mutations";
 import { Form, Button, Container, Row, Col, ListGroup, Accordion, Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Auth from '../../../utils/auth';
-import WorkoutGrid from '../WorkoutGird/WorkoutGrid';
+import WorkoutGrid from '../WorkoutHistory/WorkoutHistory';
 import AccessPrompt from "../AccessPrompt/AccessPrompt";
 import WorkoutImages from "./WorkoutImages";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faCalculator, faCheck, faDumbbell } from '@fortawesome/free-solid-svg-icons';
 
 import './assets/createWorkout.css'
+import CurrentWorkout from '../CurrentWorkout/CurrentWorkout.jsx';
 
 const CreateWorkout = ({ refetch }) => {
   const loggedIn = Auth.loggedIn();
@@ -54,7 +55,8 @@ const CreateWorkout = ({ refetch }) => {
       return JSON.parse(savedWorkoutData)
     } else {
       return {
-        exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '', duration: '' }]
+        exercise: '', notes: '', sets:
+          [{ set: 1, weight: '', reps: '', miles: '', pace: '', duration: '', calories: '', }]
       }
     }
   })
@@ -137,7 +139,7 @@ const CreateWorkout = ({ refetch }) => {
           weight: lastSet.weight,
           reps: lastSet.reps,
           miles: '',
-          pace: ''
+          pace: '',
         }
       ]
     });
@@ -173,6 +175,7 @@ const CreateWorkout = ({ refetch }) => {
             pace: parseFloat(set.pace),
             weight: parseFloat(set.weight),
             duration: parseFloat(set.duration),
+            calories: parseFloat(set.calories),
             notes: workoutData.notes,
           },
         });
@@ -182,7 +185,10 @@ const CreateWorkout = ({ refetch }) => {
       });
 
       localStorage.removeItem('workoutData');
-      setWorkoutData({ exercise: '', notes: '', sets: [{ set: 1, weight: '', reps: '', miles: '', pace: '', duration: '' }] });
+      setWorkoutData({
+        exercise: '', notes: '', sets:
+          [{ set: 1, weight: '', reps: '', miles: '', pace: '', duration: '', calories: '', }]
+      });
     } catch (error) {
       toast.error('Error logging workout. Please try again.', { position: 'bottom-right' });
       console.error("Error logging workout", error);
@@ -323,6 +329,21 @@ const CreateWorkout = ({ refetch }) => {
                   onChange={(event) => handleSetChange(index, "duration", event.target.value)}
                 />
               </Col>
+              <Col>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Calories"
+                  variant="outlined"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
+                  value={set.calories}
+                  onChange={(event) => handleSetChange(index, "calories", event.target.value)}
+                />
+              </Col>
             </>
           ) : isRunningExercise || isWalkingExercise ? (
             // Running or Walking: Show Reps, Miles, and Pace
@@ -380,6 +401,21 @@ const CreateWorkout = ({ refetch }) => {
                   }}
                   value={set.pace}
                   onChange={(event) => handleSetChange(index, "pace", event.target.value)}
+                />
+              </Col>
+              <Col>
+                <TextField
+                  sx={sx}
+                  size="small"
+                  id="outlined-basic"
+                  label="Calories"
+                  variant="outlined"
+                  inputProps={{
+                    inputMode: "decimal",
+                    pattern: "[0-9]*[.]?[0-9]*",
+                  }}
+                  value={set.calories}
+                  onChange={(event) => handleSetChange(index, "calories", event.target.value)}
                 />
               </Col>
             </>
@@ -477,7 +513,7 @@ const CreateWorkout = ({ refetch }) => {
           Total Weight {countWeight} lb
         </p>
       </div>
-      <WorkoutGrid
+      <CurrentWorkout
         refetch={refetch} />
     </Container >
   );

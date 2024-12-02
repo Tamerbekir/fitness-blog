@@ -43,6 +43,10 @@ const workoutSchema = new Schema({
     type: Number,
     required: false
   },
+  calories: {
+    type: Number,
+    required: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

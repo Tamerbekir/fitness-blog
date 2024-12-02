@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ME, QUERY_POSTS } from "../../../utils/queries";
 import "./assets/profile.css";
 import PostCard from "../../components/PostCard/PostCard.jsx";
-import WorkoutGrid from "../../components/WorkoutGird/WorkoutGrid.jsx"
+import WorkoutHistory from "../../components/WorkoutHistory/WorkoutHistory.jsx"
 import AccessPrompt from '../../components/AccessPrompt/AccessPrompt.jsx'
 import { Form } from "react-bootstrap";
 
@@ -82,7 +82,7 @@ const Profile = () => {
             <p className="userFavList"> <a href="/">{favTitle.title}</a></p>
           </div>
         ))}
-        <WorkoutGrid />
+        <WorkoutHistory />
       </div>
     </div>
   );

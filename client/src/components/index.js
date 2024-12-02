@@ -7,11 +7,12 @@ export { default as DeletePost } from "./DeletePost/DeletePost.jsx";
 export { default as PostCard } from "./PostCard/PostCard.jsx";
 export { default as AddReaction } from "./AddReaction/AddReaction.jsx";
 export { default as EditPost } from "./EditPost/EditPost.jsx";
-export { default as WorkoutGrid } from './WorkoutGird/WorkoutGrid.jsx'
+export { default as WorkoutGrid } from './WorkoutHistory/WorkoutHistory.jsx'
 export { default as UserComments } from './UserComments/UserComments.jsx'
 export { default as EditWorkout } from './EditWorkout/EditWorkout.jsx'
 export { default as DeleteWorkout } from './DeleteWorkout/DeleteWorkouts.jsx'
 export { default as SearchBar } from './SeachBar/SearchBar.jsx'
+export { default as CurrentWorkout } from './CurrentWorkout/CurrentWorkout.jsx'
 
 
 

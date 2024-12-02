@@ -89,16 +89,16 @@ mutation removePost($id: ID!) {
 
 
 export const ADD_WORKOUT = gql`
-mutation addWorkout($exercise: String!, $reps: Float!, $miles: Float, $sets: Float, $pace: Float, $weight: Float, $notes: String, $duration: Float) {
-  addWorkout(exercise: $exercise, reps: $reps, sets: $sets, miles: $miles, pace: $pace, weight: $weight, notes: $notes, duration: $duration) {
+mutation addWorkout($exercise: String!, $reps: Float!, $miles: Float, $sets: Float, $pace: Float, $weight: Float, $notes: String, $duration: Float, $calories: Float) {
+  addWorkout(exercise: $exercise, reps: $reps, sets: $sets, miles: $miles, pace: $pace, weight: $weight, notes: $notes, duration: $duration, calories: $calories) {
     _id
   }
 }
 `
 
 export const UPDATE_WORKOUT = gql`
-mutation updateWorkout($id: ID!, $exercise: String!, $reps: Float!, $weight: Float, $sets: Float, $miles: Float, $pace: Float, $notes: String, $duration: Float) {
-  updateWorkout(_id: $id, exercise: $exercise, reps: $reps, weight: $weight, sets: $sets, miles: $miles, pace: $pace, notes: $notes, duration: $duration) {
+mutation updateWorkout($id: ID!, $exercise: String!, $reps: Float!, $weight: Float, $sets: Float, $miles: Float, $pace: Float, $notes: String, $duration: Float, $calories: Float) {
+  updateWorkout(_id: $id, exercise: $exercise, reps: $reps, weight: $weight, sets: $sets, miles: $miles, pace: $pace, notes: $notes, duration: $duration, calories: $calories) {
     _id
     reps
     pace

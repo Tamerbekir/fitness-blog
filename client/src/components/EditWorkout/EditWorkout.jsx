@@ -5,7 +5,7 @@ import AutosuggestHighlightMatch from "autosuggest-highlight/match";
 import AutosuggestHighlightParse from "autosuggest-highlight/parse";
 import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
 import { UPDATE_WORKOUT } from '../../../utils/mutations';
-import WorkoutGrid from '../../components/WorkoutGird/WorkoutGrid.jsx';
+import WorkoutGrid from '../WorkoutHistory/WorkoutHistory.jsx';
 
 const EditWorkout = () => {
   const { loading, error, data, refetch } = useQuery(QUERY_ME);

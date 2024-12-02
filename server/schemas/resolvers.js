@@ -234,7 +234,8 @@ const resolvers = {
       }
     },
 
-    addWorkout: async (parent, { exercise, weight, reps, sets, notes, miles, pace, duration }, context) => {
+    addWorkout: async (parent, 
+      { exercise, weight, reps, sets, notes, miles, pace, duration, calories }, context) => {
       try {
         if (context.user) {
 
@@ -254,6 +255,7 @@ const resolvers = {
             miles,
             pace,
             duration,
+            calories,
             createdAt: new Date()
           })
           
@@ -273,7 +275,8 @@ const resolvers = {
 
     
 
-    updateWorkout: async (parent, { _id, exercise, reps, weight, miles, sets, pace, notes, duration }, context) => {
+    updateWorkout: async (parent, 
+      { _id, exercise, reps, weight, miles, sets, pace, notes, duration, calories }, context) => {
       try {
         if (context.user) {
           // variable for finding an exercise
@@ -288,7 +291,8 @@ const resolvers = {
           //finding the workout by its id, using set (becasue we arent adding, just setting) the exercise ID, weight and reps
           const updateWorkout = await Workout.findByIdAndUpdate(
             _id,
-            { $set: { exercise: exerciseChoice._id, weight, reps, sets, miles, notes, pace, duration } },
+            { $set: 
+              { exercise: exerciseChoice._id, weight, reps, sets, miles, notes, pace, duration, calories } },
             { new: true, runValidators: true }
           ).populate('profile exercise')
 

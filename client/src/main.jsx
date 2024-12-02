@@ -43,7 +43,7 @@ const router = createBrowserRouter([
       { path: 'about', element: <About /> },
       { path: 'userprofile/:id', element: <UserProfile /> },
       { path: 'maxrepcalculator', element: <Calculator /> },
-      { path: 'platecalculator', element: <PlateCalculator /> }
+      { path: 'platecalculator', element: <PlateCalculator /> },
     ],
   },
 ]);

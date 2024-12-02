@@ -1,15 +1,15 @@
 import { useQuery, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { Accordion, Card, Col, Button, Form, Container } from 'react-bootstrap';
-import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries";
-import { UPDATE_WORKOUT } from "../../../utils/mutations";
-import DeleteWorkout from '../../components/DeleteWorkout/DeleteWorkouts.jsx'
-import './assets/workoutGrid.css'
+import { QUERY_ME, QUERY_EXERCISE } from "../../../utils/queries.js";
+import { UPDATE_WORKOUT } from "../../../utils/mutations.js";
+import DeleteWorkout from '../DeleteWorkout/DeleteWorkouts.jsx'
+import './assets/currentWorkout.css'
 // import Auth from '../../../utils/auth'
 import TextField from '@mui/material/TextField';
 
 
-const WorkoutGrid = () => {
+const WorkoutData = () => {
   // const loggedIn = Auth.loggedIn()
 
   const { loading, error, data, refetch } = useQuery(QUERY_ME);
@@ -44,6 +44,7 @@ const WorkoutGrid = () => {
     weight: "",
     pace: "",
     duration: "",
+    calories: '',
     sets: "",
     miles: "",
     notes: "",
@@ -60,49 +61,53 @@ const WorkoutGrid = () => {
     },
     onError: (error) => {
       console.error("Error updating workout:", error);
-      // this console error shows us the error as a string. Will keep for now
-      // console.log("error details", JSON.stringify(error))
     },
   });
 
+  const today = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+
   const workouts = data?.me?.workouts || [];
-  const exercises = dataExercise?.exercises || [];
 
   // we make groupedWorkouts an empty object so we can push our workouts into it
   const groupedWorkouts = {};
 
   // using a for loop to iterate over each of the users workout and group them by the date
+  // Iterate through each workout
   for (let i = 0; i < workouts.length; i++) {
-    // First, we create a date variable by converting the createdAt timestamp found in data.me to a Date object
-    const date = new Date(parseInt(workouts[i].createdAt));
-    // we then take the date object and turn it into a string using the properties of our choosing
-    const formattedDate = date.toLocaleDateString("en-US", {
+    const workoutDate = new Date(parseInt(workouts[i].createdAt));
+    const currentDate = workoutDate.toLocaleDateString("en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
     });
 
-    // then we say, if there is no grouped workout by said formatted date, push the workout into an empty array
-    if (!groupedWorkouts[formattedDate]) {
-      // IF there is a grouped workout by said formatted date, we push the iterated workout into the existing array
-      groupedWorkouts[formattedDate] = {};
-    }
-
-    // Staying within our for loop iterating over the workouts, we then iterate over a second time to gain access to the exercise names
-
-    // iterate over each workout index with an exercise
-    for (let j = 0; j < workouts[i].exercise.length; j++) {
-      // we create a variable for the exercise name to make handling easy.
-      // we say the exercise name will be the workout at said index with exercise as said index, will be the exercise name
-      const exerciseName = workouts[i].exercise[j].exerciseName;
-
-      // if there are NO grouped workouts with said formatted date AND said exercise name, then put them into an array
-      if (!groupedWorkouts[formattedDate][exerciseName]) {
-        groupedWorkouts[formattedDate][exerciseName] = [];
+    // Check if the workout date matches today's date
+    if (currentDate === today) {
+      if (!groupedWorkouts[currentDate]) {
+        groupedWorkouts[currentDate] = {};
       }
 
-      // IF there is a grouped workout with an existing date AND exercise name, then push the iterated workout into the existing array
-      groupedWorkouts[formattedDate][exerciseName].push(workouts[i]);
+      const exercise = workouts[i].exercise
+      console.log(exercise)
+      if (exercise) {
+        for (let j = 0; j < workouts[i].exercise.length; j++) {
+          const exerciseName = workouts[i].exercise[j]?.exerciseName;
+
+          if (exerciseName) {
+            if (!groupedWorkouts[currentDate][exerciseName]) {
+              groupedWorkouts[currentDate][exerciseName] = [];
+            }
+            groupedWorkouts[currentDate][exerciseName].push(workouts[i]);
+          }
+        }
+      } else {
+        console.warn(`Workout ID ${workouts[i]._id} has no exercises`);
+      }
     }
   }
 
@@ -142,6 +147,7 @@ const WorkoutGrid = () => {
           miles: parseFloat(editWorkoutInfo.miles),
           pace: parseFloat(editWorkoutInfo.pace),
           duration: parseFloat(editWorkoutInfo.duration),
+          calories: parseFloat(editWorkoutInfo.calories),
           notes: editWorkoutInfo.notes,
           exercise: editWorkoutInfo.exercise,
         },
@@ -160,18 +166,17 @@ const WorkoutGrid = () => {
   const isRunning = editWorkoutInfo.exercise.toLowerCase().includes('running')
   const isWalking = editWorkoutInfo.exercise.toLowerCase().includes('walk')
   const isCardioOnly = editWorkoutInfo.exercise.toLowerCase().includes('cardio')
-
-  // const dumbbellOnly = editWorkoutInfo.exercise.toLowerCase().includes('dumbbell')
+  const dumbbellOnly = editWorkoutInfo.exercise.toLowerCase().includes('dumbbell')
 
 
   return (
     <Container className="workout-container">
-      <h4 className="text-center mb-4 title">Workout History</h4>
+      <h4 className="text-center mb-4 title">Workout</h4>
       {/* Grouping workouts by their date, mapping over each grouped workout */}
       {Object.keys(groupedWorkouts).map((date) => (
         <Accordion key={date} className="mb-2 main">
           <Accordion.Item className="item" eventKey={date}>
-            <Accordion.Header>{date}</Accordion.Header>
+            <Accordion.Header>Current Workout</Accordion.Header>
             <Accordion.Body>
               {Object.keys(groupedWorkouts[date]).map((exerciseName) => (
                 <Accordion Accordion key={exerciseName} className="mb-2 header" >
@@ -183,21 +188,33 @@ const WorkoutGrid = () => {
                           || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('walk')
                           || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cycling') ? (
                           <>
-                            <p>Set</p>
-                            <p>Miles</p>
-                            <p>Pace</p>
+                            {!editingWorkoutId && (
+                              <>
+                                <p>Set</p>
+                                <p>Miles</p>
+                                <p>Pace</p>
+                                <p>Calories</p></>
+                            )}
                           </>
                         ) : groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
                           <>
-                            <p>Set</p>
-                            <p>Reps</p>
-                            <p>Duration)</p>
+                            {!editingWorkoutId &&
+                              <>
+                                <p>Set</p>
+                                <p>Duration</p>
+                                <p>Calories</p>
+                              </>
+                            }
                           </>
                         ) : (
                           <>
-                            <p>Set</p>
-                            <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('hammer') ? 'Weight Per Arm' : 'Weight'}</p>
-                            <p>Reps</p>
+                            {!editingWorkoutId &&
+                              <>
+                                <p>Set</p>
+                                <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('hammer') ? 'Weight Per Arm' : 'Weight'}</p>
+                                <p>Reps</p>
+                              </>
+                            }
                           </>
                         )}
                       </div>
@@ -208,8 +225,8 @@ const WorkoutGrid = () => {
                               {/* Make search activity a component and add here */}
                               {isRunning || isWalking ? (
                                 <>
-                                  <Form.Group className="mb-2">
-                                    {/* <Col>
+                                  {/* <Form.Group className="mb-2">
+                                    <Col>
                                       <TextField
                                         sx={sx}
                                         size="small"
@@ -219,22 +236,23 @@ const WorkoutGrid = () => {
                                         name="exercise"
                                         value={editWorkoutInfo.exercise}
                                         onChange={handleWorkoutChange} />
-                                    </Col> */}
-                                    {/* User will be able to edit exercisename once I make universal search for worokout component */}
-                                    {/* <p>{editWorkoutInfo.exercise}</p> */}
-                                  </Form.Group>
+                                    </Col> * */}
+                                  {/* User will be able to edit exercisename once I make universal search for worokout component */}
+                                  {/* <p>{editWorkoutInfo.exercise}</p> */}
+                                  {/* </Form.Group> */}
                                   <Form.Group className="mb-3">
                                     <Col>
                                       <TextField
                                         sx={sx}
                                         size="small"
                                         variant="outlined"
+                                        label='Set'
                                         inputProps={{
                                           inputMode: "decimal",
                                           pattern: "[0-9]*[.]?[0-9]*",
                                         }}
                                         name="reps"
-                                        value={editWorkoutInfo.reps}
+                                        value={editWorkoutInfo.sets}
                                         onChange={handleWorkoutChange}
                                       />
                                     </Col>
@@ -245,6 +263,7 @@ const WorkoutGrid = () => {
                                         sx={sx}
                                         size="small"
                                         variant="outlined"
+                                        label='Miles'
                                         inputProps={{
                                           inputMode: "decimal",
                                           pattern: "[0-9]*[.]?[0-9]*",
@@ -259,6 +278,7 @@ const WorkoutGrid = () => {
                                       <TextField
                                         sx={sx}
                                         size="small"
+                                        label='Pace'
                                         variant="outlined"
                                         inputProps={{
                                           inputMode: "decimal",
@@ -273,6 +293,22 @@ const WorkoutGrid = () => {
                                     <Col>
                                       <TextField
                                         sx={sx}
+                                        size="small"
+                                        variant="outlined"
+                                        label='Calories'
+                                        inputProps={{
+                                          inputMode: "decimal",
+                                          pattern: "[0-9]*[.]?[0-9]*",
+                                        }}
+                                        name="calories"
+                                        value={editWorkoutInfo.calories}
+                                        onChange={handleWorkoutChange} />
+                                    </Col>
+                                  </Form.Group>
+                                  {/* <Form.Group className="mb-3">
+                                    <Col>
+                                      <TextField
+                                        sx={sx}
                                         size="xl"
                                         label="Notes"
                                         variant="outlined"
@@ -281,7 +317,7 @@ const WorkoutGrid = () => {
                                         value={editWorkoutInfo.notes}
                                         onChange={handleWorkoutChange} />
                                     </Col>
-                                  </Form.Group>
+                                  </Form.Group> */}
                                 </>
                               ) : isCardioOnly ? (
                                 <>
@@ -290,6 +326,7 @@ const WorkoutGrid = () => {
                                       sx={sx}
                                       size="small"
                                       name='sets'
+                                      label='Set'
                                       inputProps={{
                                         inputMode: "decimal",
                                         pattern: "[0-9]*[.]?[0-9]*",
@@ -302,12 +339,13 @@ const WorkoutGrid = () => {
                                     <TextField
                                       sx={sx}
                                       size="small"
-                                      name='reps'
+                                      name='duration'
+                                      label='Dur. (mms)'
                                       inputProps={{
                                         inputMode: "decimal",
                                         pattern: "[0-9]*[.]?[0-9]*",
                                       }}
-                                      value={editWorkoutInfo.reps}
+                                      value={editWorkoutInfo.duration}
                                       onChange={handleWorkoutChange}
                                     />
                                   </Col>
@@ -315,13 +353,13 @@ const WorkoutGrid = () => {
                                     <TextField
                                       sx={sx}
                                       size="small"
-                                      name='duration'
-                                      label='(mms)'
+                                      name='calories'
+                                      label='Calories'
                                       inputProps={{
                                         inputMode: "decimal",
                                         pattern: "[0-9]*[.]?[0-9]*",
                                       }}
-                                      value={editWorkoutInfo.duration}
+                                      value={editWorkoutInfo.calories}
                                       onChange={handleWorkoutChange}
                                     />
                                   </Col>
@@ -346,7 +384,7 @@ const WorkoutGrid = () => {
                                       <TextField
                                         sx={sx}
                                         size="small"
-                                        // label="Set"
+                                        label="Set"
                                         variant="outlined"
                                         inputProps={{
                                           inputMode: "decimal",
@@ -363,6 +401,7 @@ const WorkoutGrid = () => {
                                         sx={sx}
                                         size="small"
                                         variant="outlined"
+                                        label={dumbbellOnly ? 'Wt. Per Arm' : 'Weight'}
                                         inputProps={{
                                           inputMode: "decimal",
                                           pattern: "[0-9]*[.]?[0-9]*",
@@ -378,6 +417,7 @@ const WorkoutGrid = () => {
                                         sx={sx}
                                         size="small"
                                         variant="outlined"
+                                        label='Reps'
                                         inputProps={{
                                           inputMode: "decimal",
                                           pattern: "[0-9]*[.]?[0-9]*",
@@ -412,12 +452,13 @@ const WorkoutGrid = () => {
                                   <p>{workout.sets}</p>
                                   <p>{workout.miles}</p>
                                   <p>{workout.pace}</p>
+                                  <p>{workout.calories}</p>
                                 </>
                               ) : workout.exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
                                 <>
                                   <p>{workout.sets}</p>
-                                  <p>{workout.reps}</p>
                                   <p>{workout.duration}</p>
+                                  <p>{workout.calories}</p>
                                 </>
                               ) : (
                                 <>
@@ -465,4 +506,4 @@ const WorkoutGrid = () => {
   );
 };
 
-export default WorkoutGrid;
+export default WorkoutData;
