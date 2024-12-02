@@ -176,11 +176,11 @@ const WorkoutData = () => {
 
   return (
     <Container className="workout-container">
-      {editWorkoutInfo.exercise ? (
+      {/* {!editingWorkoutId ? (
         <h4 className="text-center mb-4 title">No Workouts Recorded Today</h4>
       ) : (
         ''
-      )}
+      )} */}
 
       {/* Grouping workouts by their date, mapping over each grouped workout */}
       {Object.keys(groupedWorkouts).map((currentActivity) => (
@@ -243,7 +243,6 @@ const WorkoutData = () => {
                               name="sets"
                               value={editWorkoutInfo.sets}
                               onChange={handleWorkoutChange}
-                              onBlur={handleChangeBlur}
                             />
                             <TextField
                               sx={sx}

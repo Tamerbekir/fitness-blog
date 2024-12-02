@@ -304,7 +304,7 @@ const CreateWorkout = ({ refetch }) => {
                   sx={sx}
                   size="small"
                   id="outlined-basic"
-                  label="Sets"
+                  label="Set"
                   variant="outlined"
                   inputProps={{
                     inputMode: "decimal",
@@ -363,7 +363,7 @@ const CreateWorkout = ({ refetch }) => {
                   sx={sx}
                   size="small"
                   id="outlined-basic"
-                  label="Sets"
+                  label="Set"
                   variant="outlined"
                   inputProps={{
                     inputMode: "decimal",
