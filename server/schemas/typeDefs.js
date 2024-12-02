@@ -35,7 +35,7 @@ const typeDefs = `#graphql
   type Workout {
     _id: ID!
     weight: Float
-    reps: Float!
+    reps: Float
     sets: Float
     miles: Float
     pace: Float
@@ -146,7 +146,7 @@ const typeDefs = `#graphql
     addWorkout(
       exercise: String!
       weight: Float
-      reps: Float!
+      reps: Float
       sets: Float
       miles: Float
       pace: Float
@@ -160,7 +160,7 @@ const typeDefs = `#graphql
       exercise: String!
       weight: Float
       sets: Float
-      reps: Float!
+      reps: Float
       miles: Float
       pace: Float
       notes: String

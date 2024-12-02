@@ -304,14 +304,14 @@ const CreateWorkout = ({ refetch }) => {
                   sx={sx}
                   size="small"
                   id="outlined-basic"
-                  label="Reps"
+                  label="Sets"
                   variant="outlined"
                   inputProps={{
                     inputMode: "decimal",
                     pattern: "[0-9]*[.]?[0-9]*",
                   }}
-                  value={set.reps}
-                  onChange={(event) => handleSetChange(index, "reps", event.target.value)}
+                  value={set.sets}
+                  onChange={(event) => handleSetChange(index, "sets", event.target.value)}
                 />
               </Col>
               <Col>
@@ -363,13 +363,13 @@ const CreateWorkout = ({ refetch }) => {
                   sx={sx}
                   size="small"
                   id="outlined-basic"
-                  label="Reps"
+                  label="Sets"
                   variant="outlined"
                   inputProps={{
                     inputMode: "decimal",
                     pattern: "[0-9]*[.]?[0-9]*",
                   }}
-                  value={set.reps}
+                  value={set.sets}
                   onChange={(event) => handleSetChange(index, "reps", event.target.value)}
                 />
               </Col>
@@ -433,16 +433,20 @@ const CreateWorkout = ({ refetch }) => {
           </Form.Group>
         </Col> */}
               <Col style={{ display: 'flex' }}>
-                <Button className="maxWeightText "
+                <Button
+                  className="maxWeightText"
                   onClick={() => navigate('/maxrepcalculator')}
                 >
-                  <FontAwesomeIcon icon={faDumbbell} size="m" />
+                  <FontAwesomeIcon
+                    icon={faDumbbell} />
                 </Button>
                 <Button
                   style={{ backgroundColor: 'transparent', border: 'none' }}
                   onClick={() => navigate('/platecalculator')}
                 >
-                  <FontAwesomeIcon icon={faCalculator} size="m" style={{ color: "#f9c000", }} />
+                  <FontAwesomeIcon
+                    icon={faCalculator}
+                    style={{ color: "#f9c000", }} />
                 </Button>
                 <TextField
                   sx={sx}

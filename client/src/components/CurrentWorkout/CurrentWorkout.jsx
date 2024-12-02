@@ -106,7 +106,7 @@ const WorkoutData = () => {
           }
         }
       } else {
-        console.warn(`Workout ID ${workouts[i]._id} has no exercises`);
+        console.error(`Workout ID ${workouts[i]._id} has no exercises`);
       }
     }
   }
@@ -134,8 +134,12 @@ const WorkoutData = () => {
       [name]: value,
     });
   };
+  // Trigger mutation when user leaves the input field
+
+
 
   // the mutation to handle the edited workout and update it
+  //! currently using onBlur for saving
   const handleSaveEdit = async () => {
     try {
       await updateWorkout({
@@ -169,265 +173,194 @@ const WorkoutData = () => {
   const dumbbellOnly = editWorkoutInfo.exercise.toLowerCase().includes('dumbbell')
 
 
+
   return (
     <Container className="workout-container">
-      <h4 className="text-center mb-4 title">Workout</h4>
+      {editWorkoutInfo.exercise ? (
+        <h4 className="text-center mb-4 title">No Workouts Recorded Today</h4>
+      ) : (
+        ''
+      )}
+
       {/* Grouping workouts by their date, mapping over each grouped workout */}
-      {Object.keys(groupedWorkouts).map((date) => (
-        <Accordion key={date} className="mb-2 main">
-          <Accordion.Item className="item" eventKey={date}>
-            <Accordion.Header>Current Workout</Accordion.Header>
-            <Accordion.Body>
-              {Object.keys(groupedWorkouts[date]).map((exerciseName) => (
-                <Accordion Accordion key={exerciseName} className="mb-2 header" >
-                  <Accordion.Item eventKey={exerciseName}>
-                    <Accordion.Header>{exerciseName}</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="infoWorkoutDiv">
-                        {groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('running')
-                          || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('walk')
-                          || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cycling') ? (
+      {Object.keys(groupedWorkouts).map((currentActivity) => (
+        <Accordion className="item mb-2 main" >
+          {Object.keys(groupedWorkouts[currentActivity]).map((exerciseName) => (
+            <Accordion.Item eventKey={exerciseName}>
+              <Accordion.Header>{exerciseName}</Accordion.Header>
+              <Accordion.Body>
+                <div className="infoWorkoutDiv">
+                  {groupedWorkouts[currentActivity][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('running')
+                    || groupedWorkouts[currentActivity][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('walk')
+                    || groupedWorkouts[currentActivity][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cycling') ? (
+                    <>
+                      {!editingWorkoutId && (
+                        <>
+                          <p>Set</p>
+                          <p>Miles</p>
+                          <p>Pace</p>
+                          <p>Calories</p></>
+                      )}
+                    </>
+                  ) : groupedWorkouts[currentActivity][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
+                    <>
+                      {!editingWorkoutId &&
+                        <>
+                          <p>Set</p>
+                          <p>Duration</p>
+                          <p>Calories</p>
+                        </>
+                      }
+                    </>
+                  ) : (
+                    <>
+                      {!editingWorkoutId &&
+                        <>
+                          <p>Set</p>
+                          <p>{groupedWorkouts[currentActivity][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') || groupedWorkouts[currentActivity][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('hammer') ? 'Weight Per Arm' : 'Weight'}</p>
+                          <p>Reps</p>
+                        </>
+                      }
+                    </>
+                  )}
+                </div>
+                {groupedWorkouts[currentActivity][exerciseName].map((workout, index) => (
+                  <div className="mb-3" key={index}>
+                    {editingWorkoutId === workout._id ? (
+                      <Form className="editFormInputs" >
+                        {/* Make search activity a component and add here */}
+                        {isRunning || isWalking ? (
                           <>
-                            {!editingWorkoutId && (
-                              <>
-                                <p>Set</p>
-                                <p>Miles</p>
-                                <p>Pace</p>
-                                <p>Calories</p></>
-                            )}
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              variant="outlined"
+                              label='Set'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="sets"
+                              value={editWorkoutInfo.sets}
+                              onChange={handleWorkoutChange}
+                              onBlur={handleChangeBlur}
+                            />
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              variant="outlined"
+                              label='Miles'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="miles"
+                              value={editWorkoutInfo.miles}
+                              onChange={handleWorkoutChange} />
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              label='Pace'
+                              variant="outlined"
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="pace"
+                              value={editWorkoutInfo.pace}
+                              onChange={handleWorkoutChange} />
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              variant="outlined"
+                              label='Calories'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="calories"
+                              value={editWorkoutInfo.calories}
+                              onChange={handleWorkoutChange} />
                           </>
-                        ) : groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
+                        ) : isCardioOnly ? (
                           <>
-                            {!editingWorkoutId &&
-                              <>
-                                <p>Set</p>
-                                <p>Duration</p>
-                                <p>Calories</p>
-                              </>
-                            }
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              name='sets'
+                              label='Set'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              value={editWorkoutInfo.sets}
+                              onChange={handleWorkoutChange}
+                            />
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              name='duration'
+                              label='Dur. (mms)'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              value={editWorkoutInfo.duration}
+                              onChange={handleWorkoutChange}
+                            />
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              name='calories'
+                              label='Calories'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              value={editWorkoutInfo.calories}
+                              onChange={handleWorkoutChange}
+                            />
                           </>
                         ) : (
                           <>
-                            {!editingWorkoutId &&
-                              <>
-                                <p>Set</p>
-                                <p>{groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('dumbbell') || groupedWorkouts[date][exerciseName][0].exercise[0].exerciseName.toLowerCase().includes('hammer') ? 'Weight Per Arm' : 'Weight'}</p>
-                                <p>Reps</p>
-                              </>
-                            }
-                          </>
-                        )}
-                      </div>
-                      {groupedWorkouts[date][exerciseName].map((workout, index) => (
-                        <Card className="mb-3" key={index}>
-                          {editingWorkoutId === workout._id ? (
-                            <Form className="editFormInputs" >
-                              {/* Make search activity a component and add here */}
-                              {isRunning || isWalking ? (
-                                <>
-                                  {/* <Form.Group className="mb-2">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        label="Exercise"
-                                        variant="outlined"
-                                        type="text"
-                                        name="exercise"
-                                        value={editWorkoutInfo.exercise}
-                                        onChange={handleWorkoutChange} />
-                                    </Col> * */}
-                                  {/* User will be able to edit exercisename once I make universal search for worokout component */}
-                                  {/* <p>{editWorkoutInfo.exercise}</p> */}
-                                  {/* </Form.Group> */}
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        variant="outlined"
-                                        label='Set'
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="reps"
-                                        value={editWorkoutInfo.sets}
-                                        onChange={handleWorkoutChange}
-                                      />
-                                    </Col>
-                                  </Form.Group>
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        variant="outlined"
-                                        label='Miles'
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="miles"
-                                        value={editWorkoutInfo.miles}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group>
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        label='Pace'
-                                        variant="outlined"
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="pace"
-                                        value={editWorkoutInfo.pace}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group>
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        variant="outlined"
-                                        label='Calories'
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="calories"
-                                        value={editWorkoutInfo.calories}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group>
-                                  {/* <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="xl"
-                                        label="Notes"
-                                        variant="outlined"
-                                        type="text"
-                                        name="notes"
-                                        value={editWorkoutInfo.notes}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group> */}
-                                </>
-                              ) : isCardioOnly ? (
-                                <>
-                                  <Col>
-                                    <TextField
-                                      sx={sx}
-                                      size="small"
-                                      name='sets'
-                                      label='Set'
-                                      inputProps={{
-                                        inputMode: "decimal",
-                                        pattern: "[0-9]*[.]?[0-9]*",
-                                      }}
-                                      value={editWorkoutInfo.sets}
-                                      onChange={handleWorkoutChange}
-                                    />
-                                  </Col>
-                                  <Col>
-                                    <TextField
-                                      sx={sx}
-                                      size="small"
-                                      name='duration'
-                                      label='Dur. (mms)'
-                                      inputProps={{
-                                        inputMode: "decimal",
-                                        pattern: "[0-9]*[.]?[0-9]*",
-                                      }}
-                                      value={editWorkoutInfo.duration}
-                                      onChange={handleWorkoutChange}
-                                    />
-                                  </Col>
-                                  <Col>
-                                    <TextField
-                                      sx={sx}
-                                      size="small"
-                                      name='calories'
-                                      label='Calories'
-                                      inputProps={{
-                                        inputMode: "decimal",
-                                        pattern: "[0-9]*[.]?[0-9]*",
-                                      }}
-                                      value={editWorkoutInfo.calories}
-                                      onChange={handleWorkoutChange}
-                                    />
-                                  </Col>
-                                </>
-                              ) : (
-                                <>
-                                  {/* <Col>
-                                    <TextField
-                                      sx={sx}
-                                      size="small"
-                                      label="Exercise"
-                                      variant="outlined"
-                                      type="text"
-                                      name="exercise"
-                                      value={editWorkoutInfo.exercise}
-                                      onChange={handleWorkoutChange} />
-                                  </Col> */}
-                                  {/* User will be able to edit exercisename once I make universal search for worokout component */}
-                                  {/* <p>{editWorkoutInfo.exercise}</p> */}
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        label="Set"
-                                        variant="outlined"
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="sets"
-                                        value={editWorkoutInfo.sets}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group>
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        variant="outlined"
-                                        label={dumbbellOnly ? 'Wt. Per Arm' : 'Weight'}
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="weight"
-                                        value={editWorkoutInfo.weight}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group>
-                                  <Form.Group className="mb-3">
-                                    <Col>
-                                      <TextField
-                                        sx={sx}
-                                        size="small"
-                                        variant="outlined"
-                                        label='Reps'
-                                        inputProps={{
-                                          inputMode: "decimal",
-                                          pattern: "[0-9]*[.]?[0-9]*",
-                                        }}
-                                        name="reps"
-                                        value={editWorkoutInfo.reps}
-                                        onChange={handleWorkoutChange} />
-                                    </Col>
-                                  </Form.Group>
-                                  {/* <Form.Group className="mb-3 notesInput">
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              label="Set"
+                              variant="outlined"
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="sets"
+                              value={editWorkoutInfo.sets}
+                              onChange={handleWorkoutChange} />
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              variant="outlined"
+                              label={dumbbellOnly ? 'Wt. Per Arm' : 'Weight'}
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="weight"
+                              value={editWorkoutInfo.weight}
+                              onChange={handleWorkoutChange} />
+
+                            <TextField
+                              sx={sx}
+                              size="small"
+                              variant="outlined"
+                              label='Reps'
+                              inputProps={{
+                                inputMode: "decimal",
+                                pattern: "[0-9]*[.]?[0-9]*",
+                              }}
+                              name="reps"
+                              value={editWorkoutInfo.reps}
+                              onChange={handleWorkoutChange} />
+                            {/* <Form.Group className="mb-3 notesInput">
                                     <Col>
                                       <TextField
                                         sx={sx}
@@ -441,64 +374,89 @@ const WorkoutData = () => {
                                         onChange={handleWorkoutChange} />
                                     </Col>
                                   </Form.Group> */}
-                                </>
-                              )}
-                            </Form>
-                          ) : (
-                            <div className="workoutStats" onClick={() => handleEditClick(workout)}>
-                              {workout.exercise[0].exerciseName.toLowerCase().includes('running')
-                                || workout.exercise[0].exerciseName.toLowerCase().includes('walk') ? (
-                                <>
-                                  <p>{workout.sets}</p>
-                                  <p>{workout.miles}</p>
-                                  <p>{workout.pace}</p>
-                                  <p>{workout.calories}</p>
-                                </>
-                              ) : workout.exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
-                                <>
-                                  <p>{workout.sets}</p>
-                                  <p>{workout.duration}</p>
-                                  <p>{workout.calories}</p>
-                                </>
-                              ) : (
-                                <>
-                                  <p>{workout.sets}</p>
-                                  <p>{workout.weight}</p>
-                                  <p>{workout.reps}</p>
-                                </>
-                              )}
-                            </div>
+                          </>
+                        )}
+                      </Form>
+                    ) : (
+                      <div className="workoutStats" onClick={() => handleEditClick(workout)}>
+                        {workout.exercise[0].exerciseName.toLowerCase().includes('running')
+                          || workout.exercise[0].exerciseName.toLowerCase().includes('walk') ? (
+                          <>
+                            <p>{workout.sets}</p>
+                            <p>{workout.miles}</p>
+                            <p>{workout.pace}</p>
+                            <p>{workout.calories}</p>
+                          </>
+                        ) : workout.exercise[0].exerciseName.toLowerCase().includes('cardio') ? (
+                          <>
+                            <p>{workout.sets}</p>
+                            <p>{workout.duration}</p>
+                            <p>{workout.calories}</p>
+                          </>
+                        ) : (
+                          <>
+                            <p>{workout.sets}</p>
+                            <p>{workout.weight}</p>
+                            <p>{workout.reps}</p>
+                          </>
+                        )}
+                      </div>
 
-                          )}
-                          {editingWorkoutId === workout._id && (
-                            <div className="BtnDiv">
-                              <Button
-                                className="saveBtn"
-                                onClick={() => handleSaveEdit(workout._id)}
-                              >
-                                Save
-                              </Button>
-                              <Button
-                                className="cancelSaveBtn"
-                                onClick={() => setEditingWorkoutId(null)}
-                              >
-                                Cancel
-                              </Button>
-                              <DeleteWorkout
-                                className="deleteBtn"
-                                refetch={refetch}
-                                workoutId={workout._id}
+                    )}
+                    {editingWorkoutId === workout._id && (
+                      <div className="BtnDiv">
+                        <Button
+                          className="saveBtn"
+                          onClick={() => handleSaveEdit(workout._id)}
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          className="cancelSaveBtn"
+                          onClick={() => setEditingWorkoutId(null)}
+                        >
+                          Cancel
+                        </Button>
+                        <DeleteWorkout
+                          className="deleteBtn"
+                          refetch={refetch}
+                          workoutId={workout._id}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {/* <Accordion>
+                      <Accordion.Item eventKey="notesAcc">
+                        <Accordion.Header>Notes</Accordion.Header>
+                        <Accordion.Body>
+                          <Form.Group className="mb-3">
+                            <Col>
+                              <TextField
+                                sx={sx}
+                                size="xl"
+                                label="Notes"
+                                variant="outlined"
+                                type="text"
+                                name="notes"
+                                value={editWorkoutInfo.notes}
+                                onChange={handleWorkoutChange}
                               />
-                            </div>
-                          )}
-                        </Card>
-                      ))}
-                    </Accordion.Body>
-                  </Accordion.Item>
-                </Accordion>
-              ))}
-            </Accordion.Body>
-          </Accordion.Item >
+                            </Col>
+                            <Button
+                              className="saveBtn"
+                              onClick={() => handleSaveEdit(editingWorkoutId)}
+                            >
+                              Save
+                            </Button>
+                          </Form.Group>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion> */}
+              </Accordion.Body>
+            </Accordion.Item>
+          ))
+          }
         </Accordion >
       ))
       }
