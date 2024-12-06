@@ -29,6 +29,8 @@ const typeDefs = `#graphql
     reactions: [Post!]
     comments: [Comment!]
     favoritePost: [Post!]
+    likes: [Profile!]
+    dislikes: [Profile!]
     createdAt: String!
   }
 
@@ -207,12 +209,15 @@ const typeDefs = `#graphql
       replyId: ID!
     ): Comment
 
+    # Made both mutations (like and dislike) nullable for IDs because it allows the user to like a replied comment as well as a regular comment. IF made ID required, user cannot like a replied comment (because comment ID would be null and throw an error) and vise versa for liking a parent comment.
     likeComment(
-      commentId: ID!
+      commentId: ID
+      replyId: ID
     ): Comment
 
     dislikeComment(
-      commentId: ID!
+      commentId: ID
+      replyId: ID
     ): Comment
 
   # adding favorite and unfavorite post by post ID

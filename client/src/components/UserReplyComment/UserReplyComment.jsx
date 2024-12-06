@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 
 
 
-export default function userReplyComment({ commentId, refetch }) {
+export default function UserReplyComment({ commentId, refetch }) {
 
 
 

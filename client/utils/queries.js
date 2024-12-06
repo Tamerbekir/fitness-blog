@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const QUERY_ME = gql`
   query Query {
@@ -37,6 +37,10 @@ export const QUERY_ME = gql`
           _id
           content
           createdAt
+          profile {
+            _id
+            username
+          }
           commentReplies {
             _id
             content
@@ -45,10 +49,6 @@ export const QUERY_ME = gql`
               _id
               username
             }
-          }
-          profile {
-            _id
-            username
           }
         }
       }
@@ -89,7 +89,7 @@ export const QUERY_PROFILES = gql`
       }
     }
   }
-`
+`;
 
 export const QUERY_POSTS = gql`
   query Posts {
@@ -102,6 +102,16 @@ export const QUERY_POSTS = gql`
         _id
         content
         createdAt
+        profile {
+          _id
+          username
+        }
+        likes {
+          _id
+        }
+        dislikes {
+          _id
+        }
         commentReplies {
           _id
           content
@@ -109,10 +119,12 @@ export const QUERY_POSTS = gql`
           profile {
             username
           }
-        }
-        profile {
-          _id
-          username
+          likes {
+            _id
+          }
+          dislikes {
+            _id
+          }
         }
       }
       topic {
@@ -128,8 +140,7 @@ export const QUERY_POSTS = gql`
       }
     }
   }
-`
-
+`;
 
 export const QUERY_TOPICS = gql`
   query Topic {
@@ -138,7 +149,7 @@ export const QUERY_TOPICS = gql`
       topicName
     }
   }
-`
+`;
 
 export const QUERY_EXERCISE = gql`
   query Exercise {
@@ -147,7 +158,7 @@ export const QUERY_EXERCISE = gql`
       exerciseName
     }
   }
-`
+`;
 
 export const QUERY_WORKOUTS = gql`
   query Workout {
@@ -167,7 +178,7 @@ export const QUERY_WORKOUTS = gql`
       }
     }
   }
-`
+`;
 
 export const QUERY_COMMENTS = gql`
   query Comment {
@@ -175,6 +186,12 @@ export const QUERY_COMMENTS = gql`
       _id
       content
       createdAt
+      likes {
+        _id
+      }
+      dislikes {
+        _id
+      }
       profile {
         username
       }
@@ -187,4 +204,4 @@ export const QUERY_COMMENTS = gql`
       }
     }
   }
-`
+`;

@@ -171,16 +171,16 @@ mutation RemoveReplyToComment($commentId: ID!, $replyId: ID!) {
 `
 
 export const LIKE_COMMENT = gql`
-mutation Mutation($commentId: ID!) {
-  likeComment(commentId: $commentId) {
+mutation Mutation($commentId: ID,  $replyId: ID) {
+  likeComment(commentId: $commentId, replyId: $replyId) {
     _id
   }
 }
 `
 
 export const DISLIKE_COMMENT = gql`
-mutation DislikeComment($commentId: ID!) {
-  dislikeComment(commentId: $commentId) {
+mutation DislikeComment($commentId: ID, $replyId: ID) {
+  dislikeComment(commentId: $commentId, replyId: $replyId) {
     _id
   }
 }

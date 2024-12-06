@@ -1,0 +1,9 @@
+.likeDislikeDiv {
+  display: flex;
+  gap: 10px;
+}
+
+.likeDislikeLength {
+  display: flex;
+  gap: 30px;
+}
