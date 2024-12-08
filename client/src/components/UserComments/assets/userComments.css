@@ -60,3 +60,16 @@
   border-bottom: 2px solid rgba(77, 75, 75, 0.126);
   border-radius: 10px;
 }
+
+.userPostOptions {
+  display: flex;
+  gap: 15px;
+}
+
+.likeIcon, .dislikeIcon {
+  color: #38383833;
+}
+
+.likeDislikeLength {
+  font-size: 10px;
+}

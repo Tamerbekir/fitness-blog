@@ -82,8 +82,7 @@ export default function UserReplyComment({ commentId, refetch }) {
   return (
     <div>
       <FontAwesomeIcon
-        onClick={() => setAddReplyCommentForm(!addReplyCommentForm)}
-        className='commentReplyIcon'
+      onClick={() => setAddReplyCommentForm(!addReplyCommentForm)}
         icon={faReply} />
       <div>
         {addReplyCommentForm ?

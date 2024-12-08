@@ -42,16 +42,17 @@ const Home = () => {
   }
 
 
-  const searchPosts = dataPosts.posts.filter(post => post.title.toLowerCase().includes(searchKeyWord.toLowerCase()) || post.content.toLowerCase().includes(searchKeyWord.toLowerCase()))
-  // console.log('data',dataPosts)
-
+  
+  
   if (errorPosts || errorMe) {
     return <p>Error: {errorPosts.message}</p>;
   }
-
+  
   if (!dataPosts || !dataMe) {
     return <p>No posts found</p>;
   }
+  
+  const searchPosts = dataPosts.posts.filter(post => post.title.toLowerCase().includes(searchKeyWord.toLowerCase()) || post.content.toLowerCase().includes(searchKeyWord.toLowerCase()))
 
   return (
     <div>

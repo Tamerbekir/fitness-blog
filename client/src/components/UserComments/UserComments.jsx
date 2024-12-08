@@ -2,13 +2,15 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../../../utils/queries";
 import DeleteComment from "../DeleteComment/DeleteComment.jsx";
 import './assets/userComments.css';
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Auth from "../../../utils/auth";
 import UserReplyComment from "../UserReplyComment/UserReplyComment.jsx";
 import Collapse from 'react-bootstrap/Collapse';
 import { useState } from "react";
 import DeleteReplyComment from '../DeleteReplyComment/DeleteReplyComment';
-import LikeDislikeComment from '../LikeDislikeComment/LikeDislikeComment.jsx'
+import LikeComment from '../LikeDislikeComment/LikeComment.jsx'
+import DislikeComment from '../LikeDislikeComment/DislikeComment.jsx'
+// import Usernames from "../UserNames/Usernames.jsx";
 
 
 const UserComments = ({ postComments, refetch, postCommentReplies, replyId }) => {
@@ -17,6 +19,11 @@ const UserComments = ({ postComments, refetch, postCommentReplies, replyId }) =>
   const { loading: loadingMe, error: errorMe, data: dataMe } = useQuery(QUERY_ME);
 
   const [open, setOpen] = useState(false);
+  const [replyComment, setReplyComment] = useState(true)
+
+  const handleLikeDislikeForm = () => {
+    setReplyComment(false)
+  }
 
   if (loadingMe) return <p>Loading comments...please wait</p>;
   if (errorMe) return <p>Error: {errorMe.message}</p>;
@@ -33,28 +40,38 @@ const UserComments = ({ postComments, refetch, postCommentReplies, replyId }) =>
             return (
               <div className="commentsDiv" key={comment._id}>
                 <Box className="commentContent">{comment.content}</Box>
+                <UserReplyComment
+                      commentId={comment._id}
+                      refetch={refetch}
+                      postCommentReplies={postCommentReplies}
+                      />
                 <p className="commentUsername">
                   {comment.profile.username}
                 </p>
                 <Box className="commentDate">
                   {new Date(parseInt(comment.createdAt)).toLocaleDateString()}
                 </Box>
-
-                <UserReplyComment
-                  commentId={comment._id}
-                  refetch={refetch}
-                  postCommentReplies={postCommentReplies}
-                />
                 {/* Like and dislike parent comment for users, referring to the main parent comment when mapping over post comments */}
-                <LikeDislikeComment
-                  commentId={comment._id}
-                  refetch={refetch}
-                  postCommentReplies={postCommentReplies}
-                />
-                <div className="likeDislikeLength">
-                  <p>{comment.likes.length}</p>
-                  <p>{comment.dislikes.length}</p>
-                </div>
+
+                  <div className="userPostOptions">
+
+                      <>
+                      <LikeComment
+                        commentId={comment._id}
+                        refetch={refetch}
+                        postCommentReplies={postCommentReplies}
+                      />
+                      <p className="likeDislikeLength">{comment.likes.length}</p>
+                      <DislikeComment
+                        commentId={comment._id}
+                        refetch={refetch}
+                        postCommentReplies={postCommentReplies}
+                      />
+                      <p className="likeDislikeLength">{comment.dislikes.length}</p>
+                      </>
+                    </div>
+  
+
 
 
                 <Collapse in={open}>
@@ -70,32 +87,38 @@ const UserComments = ({ postComments, refetch, postCommentReplies, replyId }) =>
                           </p>
                           <Box className="replyContent">
                             {/* Profile of the user who left parent comment that is being replied to. Only working for parent profile and not the profiles of the users replying. Will fix soon. Content for reply displays here */}
-                            @{comment.profile.username} {reply.content}
-                          </Box>
-                          <Box className="commentDateReply">
-                            {/* show date of reply */}
-                            {new Date(parseInt(reply.createdAt)).toLocaleDateString()}
-                            {/* Reply icon which displays from the reply comment component and mutation  */}
+                            {reply.content}
                             <UserReplyComment
                               commentId={comment._id}
                               refetch={refetch}
                               postCommentReplies={postCommentReplies}
                             />
+                            {/* @{comment.profile.username} {reply.content} */}
+                          </Box>
+                          <Box className="commentDateReply">
+                            {/* show date of reply */}
+                            {new Date(parseInt(reply.createdAt)).toLocaleDateString()}
+                            {/* comment id is referring to the reply id when mapping over replies, so users can like replied comments separately */}
+                            <div className="userPostOptions">
+                            <LikeComment
+                              commentId={reply._id}
+                              replyId={replyId}
+                              refetch={refetch}
+                            />
+                            <p className="likeDislikeLength">{reply.likes.length}</p>
+                            <DislikeComment
+                              commentId={reply._id}
+                              replyId={replyId}
+                              refetch={refetch}
+                            />
+                            <p className="likeDislikeLength">{reply.dislikes.length}</p>
+                            </div>
+                            {/* Reply icon which displays from the reply comment component and mutation  */}
                             <DeleteReplyComment
                               commentId={comment._id}
                               replyId={reply._id}
                               refetch={refetch}
                             />
-                            {/* comment id is referring to the reply id when mapping over replies, so users can like replied comments separately */}
-                            <LikeDislikeComment
-                              commentId={reply._id}
-                              replyId={replyId}
-                              refetch={refetch}
-                            />
-                            <div className="likeDislikeLength">
-                              <p>{reply.likes.length}</p>
-                              <p>{reply.dislikes.length}</p>
-                            </div>
                           </Box>
                         </div>
                       );

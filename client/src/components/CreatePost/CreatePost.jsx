@@ -15,7 +15,7 @@ import './assets/createPost.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { QUERY_POSTS } from '../../../utils/queries';
-import { OrbitProgress } from 'react-loading-indicators';
+import OrbitProgress from 'react-loading-indicators';
 
 
 

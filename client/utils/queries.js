@@ -37,6 +37,12 @@ export const QUERY_ME = gql`
           _id
           content
           createdAt
+          likes {
+            _id
+          }
+          dislikes {
+            _id
+          }
           profile {
             _id
             username
@@ -45,6 +51,12 @@ export const QUERY_ME = gql`
             _id
             content
             createdAt
+            likes {
+              _id
+            }
+            dislikes {
+              _id
+            }
             profile {
               _id
               username
