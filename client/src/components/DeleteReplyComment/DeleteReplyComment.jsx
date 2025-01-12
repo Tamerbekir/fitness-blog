@@ -1,7 +1,8 @@
 import { useMutation } from "@apollo/client";
 import { REMOVE_REPLY_TO_COMMENT } from "../../../utils/mutations";
-import Button from "react-bootstrap/Button";
 import './assets/deleteReplyComment.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash } from "@fortawesome/free-solid-svg-icons"
 
 export default function DeleteReplyComment({ commentId, refetch, replyId }) {
   const [removeReplyComment] = useMutation(REMOVE_REPLY_TO_COMMENT, {
@@ -31,9 +32,10 @@ export default function DeleteReplyComment({ commentId, refetch, replyId }) {
 
   return (
     <div>
-      <Button className="deleteCommentReplyBtn" onClick={handleRemoveReplyComment}>
-        Delete
-      </Button>
+      <FontAwesomeIcon icon={faTrash}
+        className="deleteCommentReplyBtn" 
+        onClick={handleRemoveReplyComment}
+      />
     </div>
   );
 }
